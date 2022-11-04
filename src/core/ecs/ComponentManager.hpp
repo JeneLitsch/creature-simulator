@@ -22,19 +22,24 @@ namespace core::ecs {
 		}
 
 		void on_entity_delete(EntityID entity_id) {
-			auto f = [entity_id](auto & array) {
+			// Call for each element in tuple
+			static constexpr auto f = [](auto & array, auto entity_id) {
 				array.on_entity_delete(entity_id);
+				// Dummy return value. The return value cannot be void or the fold expression will not work. 
 				return 0;
 			};
-			auto dummy = { (f(array_for<Components>()))... };
+			// Use fold expression while creating a dummy intializer_list. 
+			auto dummy = { (f(array_for<Components>(), entity_id))... };
 		}
 
 	private:
+		// Returns the array for a given Component type
 		template<typename Component>
 		ComponentArray<Component> & array_for() {
 			return std::get<ComponentArray<Component>>(this->arrays);
 		}
 		
+		// A ComponentArray for each Component type.
 		std::tuple<ComponentArray<Components>...> arrays;
 	};
 }
