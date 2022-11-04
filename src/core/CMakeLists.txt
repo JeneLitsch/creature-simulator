@@ -1,0 +1,8 @@
+cmake_minimum_required (VERSION 3.8)
+
+add_library(core
+	App.cpp
+	StateManager.cpp
+	GameState.cpp
+	Event.cpp
+)
