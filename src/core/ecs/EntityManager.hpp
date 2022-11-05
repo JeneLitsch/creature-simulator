@@ -14,10 +14,11 @@ namespace core::ecs {
 		}
 
 
-
+		// Creates a new entity and returns its id.
+		// Previously freed slots are reused
 		EntityID new_entity() {
 			if(this->reuseable_ids.empty()) {
-				this->signatures.push_back(0);
+				this->signatures.push_back(Signature{});
 				return this->signatures.size() - 1;
 			}
 			else {
@@ -29,6 +30,7 @@ namespace core::ecs {
 
 
 
+		// Deletes entity and marks its id as reusable
 		void delete_entity(EntityID id) {
 			this->signatures[id].reset();
 			this->reuseable_ids.push(id);
@@ -36,12 +38,13 @@ namespace core::ecs {
 
 
 		
+		// Change the signature of an entity
 		void set_signature(EntityID id, Signature signature) {
 			this->signatures[id] = signature;
 		}
 
 
-
+		
 		Signature get_signature(EntityID id) const {
 			return this->signatures[id];
 		}

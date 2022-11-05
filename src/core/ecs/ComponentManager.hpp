@@ -24,6 +24,9 @@ namespace core::ecs {
 			return array_for<Component>().get(entity_id);
 		}
 
+
+
+		// Removes all components owned by the entity.
 		void on_entity_delete(EntityID entity_id) {
 			// Call for each element in tuple
 			static constexpr auto f = [](auto & array, auto entity_id) {

@@ -1,34 +1,19 @@
 #pragma once
+#include "index_of.hpp"
 #include "SystemManager.hpp"
 #include "EntityManager.hpp"
 #include "ComponentManager.hpp"
+#include "Signature.hpp"
 
 namespace core::ecs {
-	template <class T, class Tuple>
-	struct index_of;
-
-	template <class T, class... Types>
-	struct index_of<T, std::tuple<T, Types...>> {
-		static const std::size_t value = 0;
-	};
-
-	template <class T, class U, class... Types>
-	struct index_of<T, std::tuple<U, Types...>> {
-		static const std::size_t value = 1 + index_of<T, std::tuple<Types...>>::value;
-	};
-
-	template <class T, class... Types>
-	std::size_t index_of_v = index_of<T, std::tuple<Types...>>::value;
-
-
-
 	template<typename ... Components>
 	class Ecs {
 	public:
+		// Number of used Components
 		constexpr static std::size_t COMPONENT_COUNT = sizeof...(Components);
 
-		using Signature = std::bitset<COMPONENT_COUNT>;
-
+		// Some typedefs for easier usage
+		using Signature = core::ecs::Signature<Components...>;
 		using SystemManager = core::ecs::SystemManager<Signature>;
 		using EntityManager = core::ecs::EntityManager<Signature>;
 		using ComponentManager = core::ecs::ComponentManager<Components...>;
@@ -48,7 +33,7 @@ namespace core::ecs {
 		}
 
 
-
+		// Removes entity from all systems
 		void delete_entity(EntityID entity_id) {
 			this->entity_manager->delete_entity(entity_id);
 			this->system_manager->on_entity_delete(entity_id);
@@ -57,28 +42,41 @@ namespace core::ecs {
 
 
 
+		// Adds a component from an entity and updates all affected places.
 		template<typename Component>
 		void add_component(EntityID entity_id, Component component) {
+			// The actual creation of the component
 			this->component_manager-> template insert<Component>(entity_id, component);
+			
+			// Change signature
 			auto signature = this->entity_manager->get_signature(entity_id);
-			signature.set(index_of_v<Component, Components...>, true);
+			signature.template set<Component>(true);
 			this->entity_manager->set_signature(entity_id, signature);
+			
+			// Refresh systems
 			this->system_manager->on_entity_signature_changed(entity_id, signature);
 		}
 
 
 
+		// Removes a component from an entity and updates all affected places.
 		template<typename Component>
 		void remove_component(EntityID entity_id) {
+			// The actual deletion of the component
 			this->component_manager-> template remove<Component>(entity_id);
+			
+			// Change signature
 			auto signature = this->entity_manager->get_signature(entity_id);
-			signature.set(index_of_v<Component, Components...>, false);
+			signature.template set<Component>(false);
 			this->entity_manager->set_signature(entity_id, signature);
+			
+			// Refresh systems
 			this->system_manager->on_entity_signature_changed(entity_id, signature);
 		}
 
 
 
+		// Forwards to the component manager
 		template<typename Component>
 		Component & get_component(EntityID entity_id) {
 			return this->component_manager-> template get<Component>(entity_id);
@@ -86,6 +84,7 @@ namespace core::ecs {
 
 
 
+		// Forwards to the system manager
 		template<typename SystemType>
 		std::shared_ptr<SystemType> new_system() {
 			return this->system_manager-> template new_system<SystemType>();
