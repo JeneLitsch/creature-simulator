@@ -10,6 +10,8 @@ namespace core {
 		void events(const Event & event);
 		virtual void update(double dt) = 0;
 		virtual void render(sf::RenderTarget & render_target) = 0;
+		
+		virtual ~GameState() = default;
 	protected:
 		virtual void init() = 0;
 
