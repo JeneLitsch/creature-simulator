@@ -14,6 +14,7 @@ namespace core::ecs {
 
 		// Some typedefs for easier usage
 		using Signature = core::ecs::Signature<Components...>;
+		using System = core::ecs::System<Signature>;
 		using SystemManager = core::ecs::SystemManager<Signature>;
 		using EntityManager = core::ecs::EntityManager<Signature>;
 		using ComponentManager = core::ecs::ComponentManager<Components...>;

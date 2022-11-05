@@ -12,4 +12,7 @@ private:
 	void on_event(auto) {}
 	sf::RenderWindow window;
 	core::StateManager state_manager;
+	sf::Clock clock;
+	sf::Time then;
+	sf::Time now;
 };
