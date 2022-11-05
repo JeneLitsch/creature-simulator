@@ -17,20 +17,30 @@ namespace core::ecs {
 		static const std::size_t value = 1 + index_of<T, std::tuple<Types...>>::value;
 	};
 
+	template <class T, class... Types>
+	std::size_t index_of_v = index_of<T, std::tuple<Types...>>::value;
+
 
 
 	template<typename ... Components>
 	class Ecs {
 	public:
-		using SystemManager = core::ecs::SystemManager<sizeof...(Components)>;
-		using EntityManager = core::ecs::EntityManager<sizeof...(Components)>;
+		constexpr static std::size_t COMPONENT_COUNT = sizeof...(Components);
+
+		using Signature = std::bitset<COMPONENT_COUNT>;
+
+		using SystemManager = core::ecs::SystemManager<Signature>;
+		using EntityManager = core::ecs::EntityManager<Signature>;
 		using ComponentManager = core::ecs::ComponentManager<Components...>;
+
+
 
 		Ecs() {
 			this->system_manager = std::make_unique<SystemManager>();
 			this->entity_manager = std::make_unique<EntityManager>();
 			this->component_manager = std::make_unique<ComponentManager>();
 		}
+
 
 
 		EntityID new_entity() {
@@ -51,7 +61,7 @@ namespace core::ecs {
 		void add_component(EntityID entity_id, Component component) {
 			this->component_manager-> template insert<Component>(entity_id, component);
 			auto signature = this->entity_manager->get_signature(entity_id);
-			signature.set(index_of<Component, std::tuple<Components...>>::value, true);
+			signature.set(index_of_v<Component, Components...>, true);
 			this->entity_manager->set_signature(entity_id, signature);
 			this->system_manager->on_entity_signature_changed(entity_id, signature);
 		}
@@ -62,7 +72,7 @@ namespace core::ecs {
 		void remove_component(EntityID entity_id) {
 			this->component_manager-> template remove<Component>(entity_id);
 			auto signature = this->entity_manager->get_signature(entity_id);
-			signature.set(index_of<Component, std::tuple<Components...>>::value, false);
+			signature.set(index_of_v<Component, Components...>, false);
 			this->entity_manager->set_signature(entity_id, signature);
 			this->system_manager->on_entity_signature_changed(entity_id, signature);
 		}
@@ -78,7 +88,7 @@ namespace core::ecs {
 
 		template<typename SystemType>
 		std::shared_ptr<SystemType> new_system() {
-			return this->system_manager->template new_system<SystemType>();
+			return this->system_manager-> template new_system<SystemType>();
 		}
 
 

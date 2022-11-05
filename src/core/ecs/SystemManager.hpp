@@ -5,11 +5,9 @@
 
 namespace core::ecs {
 
-	template<std::size_t COMPONENT_COUNT>
+	template<typename Signature>
 	class SystemManager {
 	public:
-		using Signature = std::bitset<COMPONENT_COUNT>;
-
 		template<typename SystemType>
 		std::shared_ptr<SystemType> new_system() {
 			auto system = std::make_shared<SystemType>();
@@ -30,7 +28,6 @@ namespace core::ecs {
 			for(const auto & system : this->systems) {
 				if((signature & system->signature) == system->signature) {
 					system->entities.insert(entity_id);
-					std::cout << "XXX" << system->entities.size() << "\n";
 				}
 				else {
 					system->entities.erase(entity_id);
@@ -38,6 +35,6 @@ namespace core::ecs {
 			}
 		}
 	private:
-		std::vector<std::shared_ptr<System<COMPONENT_COUNT>>> systems;
+		std::vector<std::shared_ptr<System<Signature>>> systems;
 	};
 }

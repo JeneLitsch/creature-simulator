@@ -3,6 +3,7 @@
 #include <iostream>
 
 namespace test {
+
 	struct TestComponent {
 		int value = 0;
 	};
@@ -11,20 +12,22 @@ namespace test {
 		int value = 0;
 	};
 
-	struct TestSystem : core::ecs::System<2> {
+	using TestEcs = core::ecs::Ecs<TestComponent, TestComponent2>;
+	
+	struct TestSystem : core::ecs::System<TestEcs::Signature> {
 		TestSystem() {
 			this->signature.set(0, true);
 		}
 		void run(core::ecs::Ecs<TestComponent, TestComponent2> & ecs) {
-			std::cout << this->entities.size() << "\n";
 			for (auto const & entity : this->entities) {
 				std::cout << ecs.get_component<TestComponent>(entity).value << "\n";
 			}
 		}
 	};
+	
 
 	Test::Test() {
-		core::ecs::Ecs<TestComponent, TestComponent2> ecs;
+		TestEcs ecs;
 		auto test_system = ecs.new_system<TestSystem>();
 		const auto entity1 = ecs.new_entity();
 		ecs.add_component(entity1, TestComponent{.value = 42});
