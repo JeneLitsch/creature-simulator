@@ -39,7 +39,7 @@ namespace test {
 		// ecs.run_system(test_system);
 		// ecs.run_system(test_system2);
 
-		for(std::size_t i = 0; i < 50000; ++i) {
+		for(std::size_t i = 0; i < 200000; ++i) {
 			auto & entity = ecs.new_entity();
 			entity.add<TestComponent>(TestComponent{ .value = 1337 });
 			entity.add<TestComponent2>(TestComponent2{ .value = 0.f });
