@@ -11,43 +11,26 @@ namespace test {
 		int value = 0;
 	};
 
+	struct TestSystem : core::ecs::System<2> {
+		TestSystem() {
+			this->signature.set(0, true);
+		}
+		void run(core::ecs::Ecs<TestComponent, TestComponent2> & ecs) {
+			std::cout << this->entities.size() << "\n";
+			for (auto const & entity : this->entities) {
+				std::cout << ecs.get_component<TestComponent>(entity).value << "\n";
+			}
+		}
+	};
+
 	Test::Test() {
-		core::ecs::EntityManager<1> entity_manager;
-		const auto entity1 = entity_manager.new_entity();
-		const auto entity2 = entity_manager.new_entity();
-		const auto entity3 = entity_manager.new_entity();
-		const auto entity4 = entity_manager.new_entity();
-		std::cout 
-			<< entity1 << "\n"
-			<< entity2 << "\n"
-			<< entity3 << "\n"
-			<< entity4 << "\n";
-		entity_manager.delete_entity(entity4);
-		const auto entity = entity_manager.new_entity();
-		std::cout << entity << "\n";
-
-
-		core::ecs::ComponentArray<TestComponent> component_array;
-		component_array.insert(entity1, TestComponent{.value = 42});
-		component_array.insert(entity2, TestComponent{.value = 1337});
-		component_array.insert(entity3, TestComponent{.value = 420});
-		component_array.insert(entity3, TestComponent{.value = 666});
-
-		std::cout 
-			<< component_array.get(entity1).value << "\n"
-			<< component_array.get(entity2).value << "\n"
-			<< component_array.get(entity3).value << "\n";
-
-		core::ecs::ComponentManager<TestComponent, TestComponent2> manager;
-
-		manager.insert(entity1, TestComponent{.value = 42});
-		manager.insert(entity1, TestComponent2{.value = 1337});
-
-		std::cout 
-			<< manager.get<TestComponent>(entity1).value << "\n"
-			<< manager.get<TestComponent2>(entity1).value << "\n";
-
-		manager.on_entity_delete(entity1);
+		core::ecs::Ecs<TestComponent, TestComponent2> ecs;
+		auto test_system = ecs.new_system<TestSystem>();
+		const auto entity1 = ecs.new_entity();
+		ecs.add_component(entity1, TestComponent{.value = 42});
+		const auto entity2 = ecs.new_entity();
+		ecs.add_component(entity2, TestComponent{.value = 1337});
+		test_system->run(ecs);
 	}
 
 

@@ -4,3 +4,4 @@
 #include "ecs/EntityManager.hpp"
 #include "ecs/ComponentArray.hpp"
 #include "ecs/ComponentManager.hpp"
+#include "ecs/Ecs.hpp"

@@ -3,6 +3,9 @@
 #include "ComponentArray.hpp"
 
 namespace core::ecs {
+
+
+
 	template<typename ... Components>
 	class ComponentManager {
 	public:
@@ -17,7 +20,7 @@ namespace core::ecs {
 		}
 
 		template<typename Component>
-		Component get(EntityID entity_id) {
+		Component & get(EntityID entity_id) {
 			return array_for<Component>().get(entity_id);
 		}
 
