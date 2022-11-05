@@ -1,7 +1,7 @@
-#include "core/App.hpp"
+#include "App.hpp"
 
 int main() {
-	core::App app;
+	App app;
 	app.run();
 	return 0;
 }
