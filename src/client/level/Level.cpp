@@ -5,12 +5,13 @@
 namespace client::level {
 	void init_entities(Ecs & ecs) {
 		std::mt19937 rng{42};
-		std::uniform_real_distribution<float> dist{0,256};
+		std::uniform_real_distribution<float> dist_x{0, 960};
+		std::uniform_real_distribution<float> dist_y{0, 540};
 		for(std::size_t i = 0; i < 100; ++i) {
 			auto & entity = ecs.new_entity();
 			entity.add(Sprite{});
 			entity.add(Position{
-				.position = stx::position2f{dist(rng), dist(rng)}
+				.position = stx::position2f{dist_x(rng), dist_y(rng)}
 			});
 		}
 	}

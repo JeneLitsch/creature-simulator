@@ -31,8 +31,8 @@ namespace client {
 	}
 
 	Client::Client() {
-		sf::View view{{128,128}, {256,256}};
-		this->window.create(sf::VideoMode{256,256}, "Creature Simulator");
+		sf::View view{{960/2, 540/2}, {960, 540}};
+		this->window.create(sf::VideoMode{960, 540}, "Creature Simulator");
 		this->window.setView(view);
 		this->state_manager.push(std::make_unique<session::HostSession>());
 	}
