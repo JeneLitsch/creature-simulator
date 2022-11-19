@@ -5,9 +5,11 @@
 
 namespace client::core {
 	struct Closed {};
+	struct WindowResized {};
 
 	using Event = std::variant<
-		Closed
+		Closed,
+		WindowResized
 	>;
 
 	std::optional<Event> fetch_event(sf::Window & window);

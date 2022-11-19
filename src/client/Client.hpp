@@ -10,6 +10,7 @@ namespace client {
 		void run();
 	private:
 		void on_event(const core::Closed & event);
+		void on_event(const core::WindowResized & event);
 		void on_event(auto) {}
 		sf::RenderWindow window;
 		core::StateManager state_manager;

@@ -19,6 +19,7 @@ namespace client::core {
 		void pop();
 	private:
 		virtual void on_event(const Closed &) {}
+		virtual void on_event(const WindowResized &) {}
 		StateManager * state_manager = nullptr;
 	};
 }

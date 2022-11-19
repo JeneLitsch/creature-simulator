@@ -27,9 +27,8 @@ namespace client {
 			std::cout << 1.f / (this->now - this->then).asSeconds() << "\n";
 
 			this->state_manager.update(0.0);
-			this->state_manager.render(this->window);
-
 			this->window.clear(sf::Color::Black);
+			this->state_manager.render(this->window);
 			this->window.display();
 		}
 	}
@@ -38,5 +37,11 @@ namespace client {
 
 	void Client::on_event(const core::Closed &) {
 		this->window.close();
+	}
+
+
+
+	void Client::on_event(const core::WindowResized & event) {
+		// this->
 	}
 }
