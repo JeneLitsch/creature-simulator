@@ -28,17 +28,6 @@ namespace test {
 	}
 
 	Test::Test() {
-
-		// auto & entity1 = ecs.new_entity();
-		// auto & entity2 = ecs.new_entity();
-		// entity1.add<TestComponent>(TestComponent{ .value = 42  });
-		// entity2.add<TestComponent>(TestComponent{ .value = 1337 });
-		// entity1.add<TestComponent2>(TestComponent2{ .value = 0.f });
-		// entity2.add<TestComponent2>(TestComponent2{ .value = 0.f });
-
-		// ecs.run_system(test_system);
-		// ecs.run_system(test_system2);
-
 		for(std::size_t i = 0; i < 200000; ++i) {
 			auto & entity = ecs.new_entity();
 			entity.add<TestComponent>(TestComponent{ .value = 1337 });
