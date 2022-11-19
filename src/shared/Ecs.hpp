@@ -18,12 +18,12 @@ namespace shared::core::ecs {
 		Entity & operator=(const Entity &) = delete;
 		Entity & operator=(Entity &&) = delete;
 
-		Entity(std::size_t id, Ecs<Components...> & ecs) : id {id}, ecs{ecs} {}
+		Entity(std::uint64_t id, Ecs<Components...> & ecs) : id {id}, ecs{ecs} {}
 		~Entity() {
 			ecs.by_id.erase(this->id);
 		}
 
-		std::size_t get_id() const {
+		std::uint64_t get_id() const {
 			return this->id;
 		}
 
@@ -77,7 +77,7 @@ namespace shared::core::ecs {
 	
 		std::tuple<std::unique_ptr<Components>...> components;
 		std::bitset<sizeof...(Components)> signature;
-		std::size_t id;
+		std::uint64_t id;
 		Ecs<Components...> & ecs;
 	};
 
@@ -98,13 +98,13 @@ namespace shared::core::ecs {
 
 
 
-		Entity & get_by_id(std::size_t id) {
+		Entity & get_by_id(std::uint64_t id) {
 			return *this->by_id[id];
 		}
 
 
 
-		bool contains(std::size_t id) {
+		bool contains(std::uint64_t id) {
 			return this->by_id.contains(id);
 		}
 
@@ -135,7 +135,7 @@ namespace shared::core::ecs {
 		}
 	private:
 		std::vector<std::unique_ptr<Entity>> entities;
-		std::unordered_map<std::size_t, Entity *> by_id;
-		std::size_t next_id = 0;
+		std::unordered_map<std::uint64_t, Entity *> by_id;
+		std::uint64_t next_id = 0;
 	};
 }
