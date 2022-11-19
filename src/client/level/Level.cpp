@@ -7,9 +7,13 @@ namespace client::level {
 		std::mt19937 rng{42};
 		std::uniform_real_distribution<float> dist_x{0, 960};
 		std::uniform_real_distribution<float> dist_y{0, 540};
-		for(std::size_t i = 0; i < 100; ++i) {
+		std::uniform_real_distribution<float> dist_rot{0, 360};
+		for(std::size_t i = 0; i < 100000; ++i) {
 			auto & entity = ecs.new_entity();
 			entity.add(Sprite{});
+			entity.add(Rotation{
+				.angle = dist_rot(rng)
+			});
 			entity.add(Position{
 				.position = stx::position2f{dist_x(rng), dist_y(rng)}
 			});
