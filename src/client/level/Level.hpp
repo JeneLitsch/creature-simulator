@@ -13,5 +13,6 @@ namespace client::level {
 		virtual void init() override;
 	private:
 		Ecs ecs;
+		sf::Texture creature_texture;
 	};
 }

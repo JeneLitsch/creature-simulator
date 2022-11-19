@@ -10,7 +10,10 @@ namespace client::level {
 		std::uniform_real_distribution<float> dist_rot{0, 360};
 		for(std::size_t i = 0; i < 100000; ++i) {
 			auto & entity = ecs.new_entity();
-			entity.add(Sprite{});
+			entity.add(Sprite{
+				.tex_position = {0,0},
+				.tex_size = {16,32},
+			});
 			entity.add(Rotation{
 				.angle = dist_rot(rng)
 			});
@@ -24,6 +27,7 @@ namespace client::level {
 
 	Level::Level() {
 		init_entities(this->ecs);
+		creature_texture.loadFromFile("assets/creatures.png");
 	}
 
 
@@ -40,7 +44,12 @@ namespace client::level {
 		this->ecs.run_system([&] (auto & entity) {
 			return render_entity(vertecies, entity);
 		});
-		render_target.draw(vertecies);
+		render_target.draw(vertecies, sf::RenderStates{
+			sf::BlendAlpha,
+			sf::Transform::Identity,
+			&this->creature_texture,
+			nullptr
+		});
 	}
 	
 	
