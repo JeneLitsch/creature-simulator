@@ -6,6 +6,7 @@ add_library(libclient
 
 add_subdirectory(core)
 add_subdirectory(test)
+add_subdirectory(session)
 
 target_link_libraries(libclient
 	"pthread"

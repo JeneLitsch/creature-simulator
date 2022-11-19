@@ -1,11 +1,12 @@
 #include "Client.hpp"
 #include "test/Test.hpp"
+#include "session/HostSession.hpp"
 #include <iostream>
 
 namespace client {
 	Client::Client() {
 		this->window.create(sf::VideoMode{256,256}, "Creature Simulator");
-		this->state_manager.push(std::make_unique<test::Test>());
+		this->state_manager.push(std::make_unique<session::HostSession>());
 	}
 
 
