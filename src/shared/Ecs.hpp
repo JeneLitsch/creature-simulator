@@ -49,9 +49,15 @@ namespace ecs {
 		}
 
 
+		template<typename Component>
+		const Component & get() const {
+			return *this->at<Component>();
+		}
+
+
 
 		template<typename Component>
-		bool has() {
+		bool has() const {
 			return static_cast<bool>(this->at<Component>());
 		}
 
@@ -72,6 +78,11 @@ namespace ecs {
 
 		template<typename Component>
 		std::unique_ptr<Component> & at() {
+			return std::get<std::unique_ptr<Component>>(this->components);
+		}
+
+		template<typename Component>
+		const std::unique_ptr<Component> & at() const {
 			return std::get<std::unique_ptr<Component>>(this->components);
 		}
 	
@@ -124,7 +135,7 @@ namespace ecs {
 
 
 
-		void run_system(auto & system) {
+		void run_system(auto && system) {
 			for(auto & entity : this->entities) {
 				system(*entity);
 			}
