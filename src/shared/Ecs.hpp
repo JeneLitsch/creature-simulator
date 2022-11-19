@@ -3,11 +3,32 @@
 #include <vector>
 #include <tuple>
 #include <bitset>
+#include <unordered_map>
 
 namespace shared::core::ecs {
 	template<typename ... Components>
+	class Ecs;
+
+	template<typename ... Components>
 	class Entity {	
 	public:
+		Entity(const Entity &) = delete;
+		Entity(Entity &&) = delete;
+
+		Entity & operator=(const Entity &) = delete;
+		Entity & operator=(Entity &&) = delete;
+
+		Entity(std::size_t id, Ecs<Components...> & ecs) : id {id}, ecs{ecs} {}
+		~Entity() {
+			ecs.by_id.erase(this->id);
+		}
+
+		std::size_t get_id() const {
+			return this->id;
+		}
+
+
+
 		template<typename Component>
 		void add(Component component) {
 			this->at<Component>() = std::make_unique<Component>(component);
@@ -56,28 +77,48 @@ namespace shared::core::ecs {
 	
 		std::tuple<std::unique_ptr<Components>...> components;
 		std::bitset<sizeof...(Components)> signature;
+		std::size_t id;
+		Ecs<Components...> & ecs;
 	};
 
 
 
 	template<typename ... Components>
 	class Ecs {
+		friend Entity<Components...>;
 	public:
-		using Entity = core::ecs::Entity<Components...>;
+		using Entity = Entity<Components...>;
 
 		Entity & new_entity() {
-			this->entities.push_back(std::make_unique<Entity>());
+			const auto id = next_id++;
+			this->entities.push_back(std::make_unique<Entity>(id, *this));
+			this->by_id[id] = this->entities.back().get();
 			return *this->entities.back();
 		}
 
 
+
+		Entity & get_by_id(std::size_t id) {
+			return *this->by_id[id];
+		}
+
+
+
+		bool contains(std::size_t id) {
+			return this->by_id.contains(id);
+		}
+
+
+
 		void clean_up() {
+			// Move to expired entities to the end of the array
 			auto to_be_deleted = std::remove_if(
 				std::begin(entities),
 				std::end(entities),
 				[] (auto & entity) { return entity->is_marked_delete(); }
 			);
 
+			// Actually destroy entities 
 			this->entities.erase(to_be_deleted, std::end(entities));
 		}
 
@@ -88,7 +129,13 @@ namespace shared::core::ecs {
 				system(*entity);
 			}
 		}
+
+		~Ecs() {
+			this->entities.clear();
+		}
 	private:
 		std::vector<std::unique_ptr<Entity>> entities;
+		std::unordered_map<std::size_t, Entity *> by_id;
+		std::size_t next_id = 0;
 	};
 }

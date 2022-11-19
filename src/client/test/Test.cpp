@@ -34,6 +34,7 @@ namespace client::test {
 			entity.add<TestComponent2>(TestComponent2{ .value = 0.f });
 			entity.add<TestComponent3>(TestComponent3{ .value = 0.f });
 			entity.add<TestComponent4>(TestComponent4{ .value = 0.f });
+			// auto & e = ecs.get_by_id(entity.get_id());
 		}
 	}
 
