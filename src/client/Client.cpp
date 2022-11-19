@@ -1,15 +1,15 @@
-#include "App.hpp"
+#include "Client.hpp"
 #include "test/Test.hpp"
 #include <iostream>
 
-App::App() {
+Client::Client() {
 	this->window.create(sf::VideoMode{256,256}, "Creature Simulator");
 	this->state_manager.push(std::make_unique<test::Test>());
 }
 
 
 
-void App::run() {
+void Client::run() {
 	this->clock.restart();
 	this->now = this->clock.getElapsedTime();
 	while (this->window.isOpen()) {
@@ -34,6 +34,6 @@ void App::run() {
 
 
 
-void App::on_event(const core::Closed &) {
+void Client::on_event(const core::Closed &) {
 	this->window.close();
 }

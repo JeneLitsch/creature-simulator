@@ -1,6 +1,6 @@
 #pragma once
-#include "core/GameState.hpp"
-#include "core/Ecs.hpp"
+#include "shared/Ecs.hpp"
+#include "client/core/GameState.hpp"
 
 namespace test {
 

@@ -1,7 +1,8 @@
-cmake_minimum_required (VERSION 3.8)
+cmake_minimum_required (VERSION 3.13)
 
-add_executable(app main.cpp App.cpp)
-add_subdirectory(core)
-add_subdirectory(test)
-target_link_libraries(app core test)
-target_link_libraries(app "pthread" "sfml-graphics" "sfml-audio" "sfml-network" "sfml-system" "sfml-window")
+# add_subdirectory(shared)
+add_subdirectory(client)
+# add_subdirectory(server)
+
+add_executable(client main_client.cpp)
+target_link_libraries(client libclient)

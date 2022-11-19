@@ -3,9 +3,9 @@
 #include "core/Event.hpp"
 #include "core/StateManager.hpp"
 
-class App {
+class Client {
 public:
-	App();
+	Client();
 	void run();
 private:
 	void on_event(const core::Closed & event);
