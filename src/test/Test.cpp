@@ -13,7 +13,7 @@ namespace test {
 		this->system4 = ecs.new_system<TestSystem4>();
 
 
-		for(std::size_t i = 0; i < 50000; ++i) {
+		for(std::size_t i = 0; i < 200000; ++i) {
 			const auto entity = ecs.new_entity();		
 			ecs.add_component(entity, TestComponent{.value = 42});
 			ecs.add_component(entity, TestComponent2{.value = 0.f});
