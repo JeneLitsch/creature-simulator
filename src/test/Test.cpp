@@ -39,7 +39,7 @@ namespace test {
 
 
 
-	void Test::update(double dt) {
+	void Test::update(double) {
 		this->ecs.clean_up();
 		this->ecs.run_system(test_system);
 		this->ecs.run_system(test_system2);

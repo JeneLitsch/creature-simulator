@@ -12,7 +12,6 @@ App::App() {
 void App::run() {
 	this->clock.restart();
 	this->now = this->clock.getElapsedTime();
-	std::size_t i = 0;
 	while (this->window.isOpen()) {
 		this->state_manager.handle_queue();
 		while (auto event = core::fetch_event(this->window)) {
@@ -30,8 +29,6 @@ void App::run() {
 
 		this->window.clear(sf::Color::Black);
 		this->window.display();
-		// ++i;
-		// if(i > 10) return;
 	}
 }
 

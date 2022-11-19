@@ -16,7 +16,7 @@ namespace core::ecs {
 
 
 		template<typename Component>
-		void remove(Component component) {
+		void remove(Component) {
 			this->at<Component>().reset();
 		}
 

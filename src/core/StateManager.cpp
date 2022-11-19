@@ -51,7 +51,7 @@ namespace core {
 
 
 
-	void StateManager::execute(Pop pop) {
+	void StateManager::execute(Pop) {
 		this->states.pop_back();
 	}
 }
