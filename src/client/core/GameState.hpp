@@ -1,7 +1,7 @@
 #pragma once
 #include "Event.hpp"
 
-namespace core {
+namespace client::core {
 	class StateManager;
 	class GameState {
 	public:

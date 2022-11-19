@@ -4,7 +4,7 @@
 #include <tuple>
 #include <bitset>
 
-namespace core::ecs {
+namespace shared::core::ecs {
 	template<typename ... Components>
 	class Entity {	
 	public:

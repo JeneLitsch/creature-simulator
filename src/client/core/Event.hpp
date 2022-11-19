@@ -3,7 +3,7 @@
 #include <optional>
 #include <SFML/Graphics.hpp>
 
-namespace core {
+namespace client::core {
 	struct Closed {};
 
 	using Event = std::variant<

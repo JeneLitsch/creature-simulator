@@ -1,7 +1,7 @@
 #include "Test.hpp"
 #include <iostream>
 
-namespace test {
+namespace client::test {
 
 	void test_system(TestEcs::Entity & entity) {
 		if(entity.has<TestComponent>()) {

@@ -1,6 +1,6 @@
 #include "StateManager.hpp"
 
-namespace core {
+namespace client::core {
 	void StateManager::push(std::unique_ptr<GameState> state) {
 		this->queue.push(Push{
 			.state = std::move(state)

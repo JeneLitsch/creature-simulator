@@ -1,6 +1,6 @@
 #include "Event.hpp"
 
-namespace core {
+namespace client::core {
 	namespace {
 		Event event_closed(const sf::Event &) {
 			return Closed{};

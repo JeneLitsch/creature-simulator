@@ -1,7 +1,7 @@
 #include "GameState.hpp"
 #include "StateManager.hpp"
 
-namespace core {
+namespace client::core {
 	void GameState::link(StateManager & state_manager) {
 		this->state_manager = &state_manager;
 		this->init();

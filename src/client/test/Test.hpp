@@ -2,7 +2,7 @@
 #include "shared/Ecs.hpp"
 #include "client/core/GameState.hpp"
 
-namespace test {
+namespace client::test {
 
 	struct TestComponent {
 		int value = 0;
@@ -20,7 +20,7 @@ namespace test {
 		float value = 0.f;
 	};
 
-	using TestEcs = core::ecs::Ecs<
+	using TestEcs = shared::core::ecs::Ecs<
 		TestComponent,
 		TestComponent2,
 		TestComponent3,

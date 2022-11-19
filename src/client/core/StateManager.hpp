@@ -2,7 +2,7 @@
 #include <queue>
 #include "GameState.hpp"
 
-namespace core {
+namespace client::core {
 
 	class StateManager {
 	public:
