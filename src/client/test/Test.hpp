@@ -20,7 +20,7 @@ namespace client::test {
 		float value = 0.f;
 	};
 
-	using TestEcs = shared::core::ecs::Ecs<
+	using TestEcs = ecs::Ecs<
 		TestComponent,
 		TestComponent2,
 		TestComponent3,

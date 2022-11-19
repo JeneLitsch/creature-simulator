@@ -1,9 +1,9 @@
 #include "HostSession.hpp"
-#include "client/test/Test.hpp"
+#include "client/level/Level.hpp"
 
 namespace client::session {
 	HostSession::HostSession() {
-		
+
 	}
 
 
@@ -21,6 +21,6 @@ namespace client::session {
 	
 	
 	void HostSession::init() {
-		this->push(std::make_unique<test::Test>());
+		this->push(std::make_unique<level::Level>());
 	}
 }

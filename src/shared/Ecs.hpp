@@ -5,7 +5,7 @@
 #include <bitset>
 #include <unordered_map>
 
-namespace shared::core::ecs {
+namespace ecs {
 	template<typename ... Components>
 	class Ecs;
 
