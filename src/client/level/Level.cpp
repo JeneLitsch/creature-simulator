@@ -8,7 +8,7 @@ namespace client::level {
 		std::uniform_real_distribution<float> dist_x{0, 960};
 		std::uniform_real_distribution<float> dist_y{0, 540};
 		std::uniform_real_distribution<float> dist_rot{0, 360};
-		for(std::size_t i = 0; i < 100000; ++i) {
+		for(std::size_t i = 0; i < 100; ++i) {
 			auto & entity = ecs.new_entity();
 			entity.add(Sprite{
 				.tex_position = {0,0},
