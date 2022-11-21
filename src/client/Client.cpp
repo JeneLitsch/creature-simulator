@@ -55,7 +55,7 @@ namespace client {
 			this->now = this->clock.getElapsedTime();
 
 			const auto dt = (this->now - this->then).asSeconds();
-			std::cout << (1.f / dt) << "\n";
+			// std::cout << (1.f / dt) << "\n";
 
 			this->state_manager.update(dt);
 			this->window.clear(sf::Color::Black);

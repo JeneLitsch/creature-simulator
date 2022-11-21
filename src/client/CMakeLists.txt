@@ -20,3 +20,7 @@ target_link_libraries(libclient
 	"sfml-system"
 	"sfml-window"
 )
+
+target_link_libraries(libclient
+	libshared
+)
