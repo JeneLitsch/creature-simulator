@@ -1,7 +1,7 @@
 #include "render_entity.hpp"
 
 namespace client::level {
-	void render_entity(sf::VertexArray & vertecies, const Ecs::Entity & entity) {
+	void render_entity(const Ecs::Entity & entity, sf::VertexArray & vertecies) {
 		if(!entity.has<Sprite>()) return;
 		if(!entity.has<Position>()) return;
 		if(!entity.has<Rotation>()) return;

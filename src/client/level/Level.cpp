@@ -1,10 +1,9 @@
 #include "Level.hpp"
 #include "render_entity.hpp"
-#include <random>
+#include "move_randomly.hpp"
 
 namespace client::level {
-	void init_entities(Ecs & ecs) {
-		std::mt19937 rng{42};
+	void init_entities(Ecs & ecs, auto & rng) {
 		std::uniform_real_distribution<float> dist_x{0, 960};
 		std::uniform_real_distribution<float> dist_y{0, 540};
 		std::uniform_real_distribution<float> dist_rot{0, 360};
@@ -26,14 +25,17 @@ namespace client::level {
 
 
 	Level::Level() {
-		init_entities(this->ecs);
+		this->rng.seed(42);
+		init_entities(this->ecs, this->rng);
 		creature_texture.loadFromFile("assets/creatures.png");
 	}
 
 
 
 	void Level::update(double dt) {
-
+		this->ecs.run_system([&] (auto & entity) {
+			return move_randomly(entity, dt, this->rng);
+		});
 	}
 	
 	
@@ -42,9 +44,9 @@ namespace client::level {
 		sf::VertexArray vertecies;
 		vertecies.setPrimitiveType(sf::Quads);
 		this->ecs.run_system([&] (auto & entity) {
-			return render_entity(vertecies, entity);
+			return render_entity(entity, vertecies);
 		});
-		render_target.draw(vertecies, sf::RenderStates{
+		render_target.draw(vertecies, sf::RenderStates {
 			sf::BlendAlpha,
 			sf::Transform::Identity,
 			&this->creature_texture,
