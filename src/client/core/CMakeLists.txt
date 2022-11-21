@@ -1,7 +1,8 @@
 cmake_minimum_required (VERSION 3.13)
 
 target_sources(libclient PRIVATE
-	StateManager.cpp
 	GameState.cpp
 	Event.cpp
+	Socket.cpp
+	StateManager.cpp
 )

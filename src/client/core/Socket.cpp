@@ -1,18 +1,18 @@
 #include "Socket.hpp"
 
-namespace client::session {
+namespace client::core {
 	Socket::Socket(net::LocalConnection & connection)
 	: connection{connection} {}
 
 
 
-	std::optional<net::Message> Socket::fetch_message() {
+	std::optional<net::Response> Socket::fetch_response() {
 		return this->connection.client_fetch();
 	}
 
 
 
-	void Socket::send_message(net::Message message) {
+	void Socket::send_request(net::Request message) {
 		this->connection.client_send(std::move(message));
 	}
 }

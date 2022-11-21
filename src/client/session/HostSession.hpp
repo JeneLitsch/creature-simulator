@@ -1,7 +1,7 @@
 #pragma once
 #include <future>
 #include "client/core/GameState.hpp"
-#include "client/session/Socket.hpp"
+#include "client/core/Socket.hpp"
 
 namespace client::session {
 	class HostSession : public core::GameState {
@@ -13,7 +13,7 @@ namespace client::session {
 	protected:
 		virtual void init() override;
 		std::thread server_thread;
-		Socket socket;
+		core::Socket socket;
 		net::LocalConnection local_connection;
 	};
 }

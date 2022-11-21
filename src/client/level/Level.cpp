@@ -24,7 +24,7 @@ namespace client::level {
 
 
 
-	Level::Level() {
+	Level::Level(core::Socket & socket) : socket{socket} {
 		this->rng.seed(42);
 		init_entities(this->ecs, this->rng);
 		creature_texture.loadFromFile("assets/creatures.png");
@@ -36,6 +36,9 @@ namespace client::level {
 		this->ecs.run_system([&] (auto & entity) {
 			return move_randomly(entity, dt, this->rng);
 		});
+		while(auto msg = this->socket.fetch_response()) {
+			std::visit([&] (auto & m) { std::cout << m.str << "\n"; }, *msg);
+		}
 	}
 	
 	

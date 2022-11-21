@@ -21,21 +21,18 @@ namespace client::session {
 	
 	
 	void HostSession::init() {
-		std::promise<void> barrier_p;
-		std::future<void> barrier_f = barrier_p.get_future();
 		this->server_thread = std::thread {[&] {
 			server::Server server;
 			server.connect_local(this->local_connection);
-			barrier_p.set_value();
 			server.run();
 		}};
-		barrier_f.wait();
-		this->push(std::make_unique<level::Level>());
+		this->push(std::make_unique<level::Level>(this->socket));
 	}
 
 
 
 	HostSession::~HostSession() {
+		this->socket.send_request(net::Terminate{});
 		this->server_thread.join();
 	}
 }

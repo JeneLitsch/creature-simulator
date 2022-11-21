@@ -2,12 +2,12 @@
 #include <optional>
 #include "shared/LocalConnection.hpp"
 
-namespace client::session {
+namespace client::core {
 	class Socket {
 	public:
 		Socket(net::LocalConnection & connection);
-		std::optional<net::Message> fetch_message();
-		void send_message(net::Message message); 
+		std::optional<net::Response> fetch_response();
+		void send_request(net::Request message); 
 	private:
 		net::LocalConnection & connection;
 	};

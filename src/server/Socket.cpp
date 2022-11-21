@@ -6,13 +6,13 @@ namespace server {
 
 
 
-	std::optional<net::Message> Socket::fetch_message() {
+	std::optional<net::Request> Socket::fetch_request() {
 		return this->connection.server_fetch();
 	}
 
 
 
-	void Socket::send_message(net::Message message) {
+	void Socket::send_response(net::Response message) {
 		this->connection.server_send(std::move(message));
 	}
 }
