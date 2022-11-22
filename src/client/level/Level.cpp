@@ -17,17 +17,17 @@ namespace client::level {
 			}, *reponse);
 		}
 
-		ecs.run_system([dt] (Ecs::Entity & entity) {
+		ecs.run_system([dt, this] (Ecs::Entity & entity) {
 			if(entity.has<Position>()) {
 				auto & pos = entity.get<Position>();
-				pos.t += dt / 0.1f;
+				pos.t += dt * static_cast<float>(this->tps);
 			}
 		});
 
-		ecs.run_system([dt] (Ecs::Entity & entity) {
+		ecs.run_system([dt, this] (Ecs::Entity & entity) {
 			if(entity.has<Rotation>()) {
 				auto & rot = entity.get<Rotation>();
-				rot.t += dt / 0.1f;
+				rot.t += dt * static_cast<float>(this->tps);
 			}
 		});
 	}
@@ -60,6 +60,7 @@ namespace client::level {
 
 
 	void Level::handle_response(const net::InitState & response) {
+		this->tps = response.tps;
 		for(const auto id : response.entities) {
 			auto & entity = ecs.new_entity();
 			entity.add(Sprite{

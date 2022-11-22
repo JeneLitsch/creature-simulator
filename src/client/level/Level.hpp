@@ -20,6 +20,7 @@ namespace client::level {
 		Ecs ecs;
 		sf::Texture creature_texture;
 		session::Session & session;
+		std::int32_t tps = 10;
 		
 		void handle_response(const net::InitState & response);
 		void handle_response(const net::UpdateState & response);

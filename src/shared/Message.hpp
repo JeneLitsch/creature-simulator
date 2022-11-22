@@ -16,6 +16,7 @@ namespace net {
 
 	struct InitState {
 		std::uint64_t simulation_step;
+		std::int32_t tps;
 		std::vector<std::uint64_t> entities;
 		std::vector<std::tuple<std::uint64_t, stx::position2f>> positions;
 		std::vector<std::tuple<std::uint64_t, float>> rotations;

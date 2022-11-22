@@ -63,6 +63,7 @@ namespace server {
 		std::cout << "New user: " << request.name << "\n";
 		net::InitState response {
 			.simulation_step = this->simulation_step,
+			.tps = this->tps,
 			.entities = {},
 			.positions = {},
 			.rotations = {},
