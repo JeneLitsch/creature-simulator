@@ -14,6 +14,8 @@ namespace server {
 	private:
 		void handle_request(Socket & current, const net::Terminate & request);
 		void handle_request(Socket & current, const net::Register & request);
+		void handle_request(Socket & current, const net::FetchUpdate & request);
+
 		std::vector<std::unique_ptr<Socket>> sockets;
 		bool running = true;
 		std::uint64_t simulation_step = 0;

@@ -33,6 +33,7 @@ namespace server {
 	}
 
 
+
 	void Server::handle_request(Socket & current, const net::Register & request) {
 		std::cout << "New user: " << request.name << "\n";
 		current.send_response(net::InitState{
@@ -42,9 +43,18 @@ namespace server {
 
 
 
-
 	void Server::handle_request(Socket & current, const net::Terminate & request) {
 		this->running = false;
+	}
+
+
+
+	void Server::handle_request(Socket & current, const net::FetchUpdate & request) {
+		if(request.simulation_step < this->simulation_step) {
+			current.send_response(net::UpdateState{
+				.simulation_step = this->simulation_step
+			});
+		}
 	}
 
 

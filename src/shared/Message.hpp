@@ -11,16 +11,26 @@ namespace net {
 		std::string name;
 	};
 
+	struct FetchUpdate {
+		std::uint64_t simulation_step;
+	};
+
 	struct InitState {
+		std::uint64_t simulation_step;
+	};
+
+	struct UpdateState {
 		std::uint64_t simulation_step;
 	};
 
 	using Request = std::variant<
 		Terminate,
-		Register	 
+		Register,
+		FetchUpdate 
 	>;
 
 	using Response = std::variant<
-		InitState
+		InitState,
+		UpdateState
 	>;
 }

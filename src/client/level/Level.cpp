@@ -31,6 +31,9 @@ namespace client::level {
 
 
 	void Level::update(double dt) {
+		this->session.send_request(net::FetchUpdate {
+			.simulation_step = this->simulation_step
+		});
 		this->ecs.run_system([&] (auto & entity) {
 			return move_randomly(entity, dt, this->rng);
 		});
@@ -71,6 +74,12 @@ namespace client::level {
 
 	void Level::handle_response(const net::InitState & response) {
 		std::cout << "Got InitState at step " << response.simulation_step << "\n";
+		this->simulation_step = response.simulation_step;
+	}
+
+
+	void Level::handle_response(const net::UpdateState & response) {
+		std::cout << "Got update at step " << response.simulation_step << "\n";
 		this->simulation_step = response.simulation_step;
 	}
 }

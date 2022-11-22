@@ -25,5 +25,6 @@ namespace client::level {
 		std::uint64_t simulation_step = 0;
 		
 		void handle_response(const net::InitState & response);
+		void handle_response(const net::UpdateState & response);
 	};
 }
