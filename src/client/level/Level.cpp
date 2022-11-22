@@ -1,6 +1,7 @@
 #include "Level.hpp"
 #include "render_entity.hpp"
 #include "move_randomly.hpp"
+#include "client/session/Session.hpp"
 
 namespace client::level {
 	void init_entities(Ecs & ecs, auto & rng) {
@@ -24,10 +25,7 @@ namespace client::level {
 
 
 
-	Level::Level(core::Socket & socket) : socket{socket} {
-		this->rng.seed(42);
-		init_entities(this->ecs, this->rng);
-		creature_texture.loadFromFile("assets/creatures.png");
+	Level::Level(session::Session & session) : session{session} {
 	}
 
 
@@ -36,8 +34,10 @@ namespace client::level {
 		this->ecs.run_system([&] (auto & entity) {
 			return move_randomly(entity, dt, this->rng);
 		});
-		while(auto msg = this->socket.fetch_response()) {
-			std::visit([&] (auto & m) { std::cout << m.str << "\n"; }, *msg);
+		while(auto reponse = this->session.fetch_response()) {
+			std::visit([&] (auto & r) { 
+				this->handle_response(r);
+			}, *reponse);
 		}
 	}
 	
@@ -60,6 +60,17 @@ namespace client::level {
 	
 	
 	void Level::init() {
+		this->rng.seed(42);
+		init_entities(this->ecs, this->rng);
+		creature_texture.loadFromFile("assets/creatures.png");
+		this->session.send_request(net::Register{
+			.name = "Bobby DropTable"
+		});
+	}
 
+
+	void Level::handle_response(const net::InitState & response) {
+		std::cout << "Got InitState at step " << response.simulation_step << "\n";
+		this->simulation_step = response.simulation_step;
 	}
 }

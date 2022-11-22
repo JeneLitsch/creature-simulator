@@ -2,21 +2,25 @@
 #include <cstdint>
 #include <variant>
 #include <string>
+#include <vector>
 
 namespace net {
-	struct HelloWorld {
-		std::string str; 
+	struct Terminate {};
+
+	struct Register {
+		std::string name;
 	};
 
-	struct Terminate {
-
+	struct InitState {
+		std::uint64_t simulation_step;
 	};
 
 	using Request = std::variant<
-		Terminate	 
+		Terminate,
+		Register	 
 	>;
 
 	using Response = std::variant<
-		HelloWorld
+		InitState
 	>;
 }

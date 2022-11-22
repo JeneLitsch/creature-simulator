@@ -2,7 +2,7 @@
 #include <iostream>
 
 namespace server {
-	Server::Server() {
+	Server::Server() : tick{step_time} {
 		std::cout << "Server starting...\n";
 	}
 
@@ -13,11 +13,15 @@ namespace server {
 		while(this->running) {
 			for(const auto & socket : this->sockets) {
 				while(auto request = socket->fetch_request()) {
-					std::visit([this](auto & req) {
-						this->handle_request(req);
+					std::visit([&](auto & req) {
+						this->handle_request(*socket, req);
 					},
 					*request);
 				}
+			}
+			const auto dt = clock();
+			if(tick(dt)) {
+				++this->simulation_step;
 			}
 		}
 	}
@@ -29,8 +33,17 @@ namespace server {
 	}
 
 
+	void Server::handle_request(Socket & current, const net::Register & request) {
+		std::cout << "New user: " << request.name << "\n";
+		current.send_response(net::InitState{
+			.simulation_step = this->simulation_step
+		});
+	}
 
-	void Server::handle_request(const net::Terminate & terminate) {
+
+
+
+	void Server::handle_request(Socket & current, const net::Terminate & request) {
 		this->running = false;
 	}
 

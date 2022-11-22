@@ -3,8 +3,7 @@
 #include "server/Server.hpp"
 
 namespace client::session {
-	HostSession::HostSession()
-	: socket{local_connection} {}
+	HostSession::HostSession() {}
 
 
 
@@ -26,13 +25,25 @@ namespace client::session {
 			server.connect_local(this->local_connection);
 			server.run();
 		}};
-		this->push(std::make_unique<level::Level>(this->socket));
+		this->push(std::make_unique<level::Level>(*this));
 	}
 
 
 
 	HostSession::~HostSession() {
-		this->socket.send_request(net::Terminate{});
+		this->send_request(net::Terminate{});
 		this->server_thread.join();
+	}
+
+
+
+	std::optional<net::Response> HostSession::fetch_response() {
+		return this->local_connection.client_fetch();
+	}
+
+
+
+	void HostSession::send_request(net::Request message) {
+		this->local_connection.client_send(std::move(message));
 	}
 }
