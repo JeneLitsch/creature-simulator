@@ -67,6 +67,7 @@ namespace client {
 
 
 	void Client::on_event(const core::Closed &) {
+		std::cout << "Close window\n";
 		this->window.close();
 	}
 

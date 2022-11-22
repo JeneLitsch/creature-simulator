@@ -1,8 +1,10 @@
 #pragma once
 #include <memory>
-#include "shared/LocalConnection.hpp"
-#include "Socket.hpp"
+#include <random>
 #include "stdxx/chrono.hxx"
+#include "shared/LocalConnection.hpp"
+#include "server/Ecs.hpp"
+#include "Socket.hpp"
 
 namespace server {
 	class Server {
@@ -22,7 +24,10 @@ namespace server {
 		stx::chrono::every tick;
 		stx::chrono::clock_d clock;
 
-		static constexpr auto tps = 1;
+		static constexpr auto tps = 10;
 		static constexpr auto step_time = 1.f / tps;
+
+		Ecs ecs;
+		std::mt19937_64 rng;
 	};
 }

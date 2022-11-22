@@ -1,7 +1,7 @@
 #pragma once
 #include <random>
-#include "Ecs.hpp"
+#include "server/Ecs.hpp"
 
-namespace client::level {
+namespace server {
 	void move_randomly(Ecs::Entity & entity, double dt, std::mt19937_64 & rng);
 }

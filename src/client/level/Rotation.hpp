@@ -2,6 +2,8 @@
 
 namespace client::level {
 	struct Rotation {
-		float angle = 0.f;
+		float prev = 0.f;
+		float next = 0.f;
+		float t = 0.f;
 	};
 }

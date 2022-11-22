@@ -1,4 +1,5 @@
 #include "render_entity.hpp"
+#include "stdxx/math.hxx"
 
 namespace client::level {
 	void render_entity(const Ecs::Entity & entity, sf::VertexArray & vertecies) {
@@ -10,9 +11,12 @@ namespace client::level {
 		auto & position = entity.get<Position>();
 		auto & rotation = entity.get<Rotation>();
 
+		auto pos = stx::lerp(position.prev, position.next, position.t);
+		auto rot = stx::lerp(rotation.prev, rotation.next, rotation.t);
+
 		sf::Transform transform;
-		transform.translate(position.position.x, position.position.y);
-		transform.rotate(rotation.angle);
+		transform.translate(pos.x, pos.y);
+		transform.rotate(rot);
 
 		const int tx1 = sprite.tex_position.x;
 		const int ty1 = sprite.tex_position.y;

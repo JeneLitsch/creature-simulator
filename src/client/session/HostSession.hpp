@@ -18,6 +18,5 @@ namespace client::session {
 	private:
 		std::thread server_thread;
 		net::LocalConnection local_connection;
-		std::uint64_t simulation_step = 0;
 	};
 }

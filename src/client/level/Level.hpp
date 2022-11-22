@@ -1,5 +1,4 @@
 #pragma once
-#include <random>
 #include "client/core/GameState.hpp"
 #include "client/level/Ecs.hpp"
 #include "shared/Message.hpp"
@@ -20,9 +19,7 @@ namespace client::level {
 	private:
 		Ecs ecs;
 		sf::Texture creature_texture;
-		std::mt19937_64 rng;
 		session::Session & session;
-		std::uint64_t simulation_step = 0;
 		
 		void handle_response(const net::InitState & response);
 		void handle_response(const net::UpdateState & response);

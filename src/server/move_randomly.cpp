@@ -1,7 +1,7 @@
 #include "move_randomly.hpp"
 #include "stdxx/math.hxx"
 
-namespace client::level {
+namespace server {
 	void move_randomly(Ecs::Entity & entity, double dt, std::mt19937_64 & rng) {
 		if(!entity.has<Position>()) return;
 		if(!entity.has<Rotation>()) return;
@@ -17,9 +17,9 @@ namespace client::level {
 			stx::position2f{960,540}
 		);
 
-		static constexpr auto delta_angle = 10.0f;
+		static constexpr auto delta_angle = 400.0f;
 		std::uniform_real_distribution<float> dist{-delta_angle, delta_angle};
-		rotation.angle += dist(rng);
-		rotation.angle = std::fmod(rotation.angle, 360.f); 
+		rotation.angle += dist(rng) * dt;
+		rotation.angle = rotation.angle; 
 	}
 }
