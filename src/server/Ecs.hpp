@@ -1,10 +1,10 @@
 #pragma once
-#include "shared/Ecs.hpp"
+#include "nanocomp/nanocomp.hpp"
 #include "server/Position.hpp"
 #include "server/Rotation.hpp"
 
 namespace server {
-	using Ecs =	ecs::Ecs<
+	using Ecs =	nc::Ecs<
 		Position,
 		Rotation
 	>;

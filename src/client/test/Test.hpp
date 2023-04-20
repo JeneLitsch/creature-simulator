@@ -1,5 +1,5 @@
 #pragma once
-#include "shared/Ecs.hpp"
+#include "nanocomp/nanocomp.hpp"
 #include "client/core/GameState.hpp"
 
 namespace client::test {
@@ -20,7 +20,7 @@ namespace client::test {
 		float value = 0.f;
 	};
 
-	using TestEcs = ecs::Ecs<
+	using TestEcs = nc::Ecs<
 		TestComponent,
 		TestComponent2,
 		TestComponent3,

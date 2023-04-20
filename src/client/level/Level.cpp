@@ -69,14 +69,14 @@ namespace client::level {
 			});
 		}
 		for(const auto & [id, position] : response.positions) {
-			ecs.get_by_id(id).add(Position{
+			ecs.get(id).add(Position{
 				.prev = position,
 				.next = position,
 				.t = 0.f
 			});
 		}
 		for(const auto & [id, angle] : response.rotations) {
-			ecs.get_by_id(id).add(Rotation{
+			ecs.get(id).add(Rotation{
 				.prev = 0.f,
 				.next = 0.f,
 				.t = 0.f
@@ -87,13 +87,13 @@ namespace client::level {
 
 	void Level::handle_response(const net::UpdateState & response) {
 		for(const auto & [id, position] : response.positions) {
-			auto & pos = ecs.get_by_id(id).get<Position>();
+			auto & pos = ecs.get(id).get<Position>();
 			pos.prev = pos.next;
 			pos.next = position;
 			pos.t = 0.f;
 		}
 		for(const auto & [id, angle] : response.rotations) {
-			auto & rot = ecs.get_by_id(id).get<Rotation>();
+			auto & rot = ecs.get(id).get<Rotation>();
 			rot.prev = rot.next;
 			rot.next = angle;
 			rot.t = 0.f;

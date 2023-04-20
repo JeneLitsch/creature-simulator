@@ -4,3 +4,6 @@
 [submodule "libs/sfml"]
 	path = libs/sfml
 	url = git@github.com:SFML/SFML.git
+[submodule "libs/nanocomp"]
+	path = libs/nanocomp
+	url = git@github.com:JeneLitsch/nanocomp.git

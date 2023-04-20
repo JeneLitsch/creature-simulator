@@ -4,6 +4,7 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 
 include_directories(./src)
 include_directories(./libs/stdxx)
+include_directories(./libs/nanocomp)
 include_directories(SYSTEM ./libs/sfml/include)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
