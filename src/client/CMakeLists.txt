@@ -10,15 +10,15 @@ add_subdirectory(session)
 add_subdirectory(test)
 
 target_link_libraries(libclient
-	"pthread"
+	pthread
 )
 
 target_link_libraries(libclient
-	"sfml-graphics"
-	"sfml-audio"
-	"sfml-network"
-	"sfml-system"
-	"sfml-window"
+	sfml-graphics
+	sfml-audio
+	sfml-network
+	sfml-system
+	sfml-window
 )
 
 target_link_libraries(libclient

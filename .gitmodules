@@ -1,3 +1,6 @@
 [submodule "libs/stdxx"]
 	path = libs/stdxx
 	url = https://github.com/JeneLitsch/stdxx.git
+[submodule "libs/sfml"]
+	path = libs/sfml
+	url = git@github.com:SFML/SFML.git
