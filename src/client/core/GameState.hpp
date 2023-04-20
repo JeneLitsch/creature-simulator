@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include "Event.hpp"
 
 namespace client::core {

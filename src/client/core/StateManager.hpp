@@ -1,5 +1,6 @@
 #pragma once
 #include <queue>
+#include <memory>
 #include "GameState.hpp"
 
 namespace client::core {
