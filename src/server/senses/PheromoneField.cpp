@@ -3,9 +3,15 @@
 #include "SFML/Graphics.hpp"
 
 namespace server {
-	PheromoneField::PheromoneField(stx::size2f size, stx::size2u resolution)
+	PheromoneField::PheromoneField(
+		stx::size2f size,
+		stx::size2u resolution,
+		double fluidity,
+		double persistence)
 		: size{size}
 		, resolution{resolution}
+		, fluidity{fluidity}
+		, persistence{persistence}
 		, data{resolution, 0.0} {}
 	
 	
@@ -69,7 +75,7 @@ namespace server {
 					}
 				}
 				auto write_point = stx::vector2i{x, y};
-				this->data[write_point] = new_value;
+				this->data[write_point] = new_value * this->persistence;
 			}
 		}
 	}

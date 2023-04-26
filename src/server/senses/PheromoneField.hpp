@@ -7,7 +7,12 @@
 namespace server {
 	class PheromoneField : stx::non_copyable, stx::non_moveable {
 	public:
-		PheromoneField(stx::size2f size, stx::size2u resolution);
+		PheromoneField(
+			stx::size2f size,
+			stx::size2u resolution,
+			double fluidity,
+			double persistence
+		);
 		double sample(const stx::position2f & position) const;
 
 		void fill(double value);
@@ -19,6 +24,8 @@ namespace server {
 	private:
 		stx::size2f size;
 		stx::size2u resolution;
+		double fluidity;
+		double persistence;
 		stx::grid2<double> data;
 	};
 }

@@ -7,7 +7,7 @@
 namespace server {
 	Server::Server() 
 		: tick{step_time}
-		, test_field{{960,540}, {96,54}} {
+		, test_field{{960,540}, {96,54}, 100, 0.9} {
 		std::cout << "Server starting...\n";
 		this->rng.seed(42);
 
@@ -49,15 +49,17 @@ namespace server {
 			}
 			const auto dt = clock();
 			if(tick(dt)) {
-				++this->simulation_step;
 				this->ecs.run_system([&] (auto & entity) {
 					return move_randomly(entity, this->step_time, this->rng);
 				});
 				this->ecs.run_system([&] (auto & entity) {
 					return read_sensors(entity);
 				});
-				this->test_field.save_as_img("tmp/img" + std::to_string(this->simulation_step) + ".png");
+				if(snapshot_rate && (this->simulation_step % snapshot_rate == 0)) {
+					this->test_field.save_as_img("tmp/img" + std::to_string(this->simulation_step) + ".png");
+				}
 				this->test_field.disperse();
+				++this->simulation_step;
 			}
 		}
 	}
