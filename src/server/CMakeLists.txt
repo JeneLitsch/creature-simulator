@@ -1,10 +1,13 @@
 cmake_minimum_required (VERSION 3.13)
 
 add_library(libserver
+	move_randomly.cpp
+	read_sensors.cpp
 	Server.cpp
 	Socket.cpp
-	move_randomly.cpp
 )
+
+add_subdirectory(senses)
 
 target_link_libraries(libserver
 	"pthread"

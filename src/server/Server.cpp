@@ -1,31 +1,37 @@
 #include "Server.hpp"
 #include <iostream>
 #include "move_randomly.hpp"
+#include "read_sensors.hpp"
+#include "senses/PheromoneSensor.hpp"
 
 namespace server {
-	namespace {
-		void init_entities(Ecs & ecs, auto & rng) {
-			std::uniform_real_distribution<float> dist_x{0, 960};
-			std::uniform_real_distribution<float> dist_y{0, 540};
-			std::uniform_real_distribution<float> dist_rot{0, 360};
-			for(std::size_t i = 0; i < 100; ++i) {
-				auto & entity = ecs.new_entity();
-				entity.add(Rotation{
-					.angle = dist_rot(rng)
-				});
-				entity.add(Position{
-					.position = stx::position2f{dist_x(rng), dist_y(rng)}
-				});
-			}
-		}
-	}
-
-
-
-	Server::Server() : tick{step_time} {
+	Server::Server() 
+		: tick{step_time}
+		, test_field{{960,540}, {96,54}} {
 		std::cout << "Server starting...\n";
 		this->rng.seed(42);
-		init_entities(this->ecs, this->rng);
+
+		for(std::int32_t x = 0; x < 480; ++x) {
+			for(std::int32_t y = 0; y < 540; ++y) {
+				this->test_field.set({x,y}, 1.0);
+			}
+		}
+		std::uniform_real_distribution<float> dist_x{0, 960};
+		std::uniform_real_distribution<float> dist_y{0, 540};
+		std::uniform_real_distribution<float> dist_rot{0, 360};
+		for(std::size_t i = 0; i < 1; ++i) {
+			auto & entity = ecs.new_entity();
+			entity.add(Rotation{
+				.angle = dist_rot(rng)
+			});
+			entity.add(Position{
+				.position = stx::position2f{dist_x(rng), dist_y(rng)}
+			});
+			auto & sensors = entity.add(Sensors{
+				.sensors = {}
+			});
+			sensors.sensors.push_back(std::make_unique<PheromoneSensor>(this->test_field));
+		}
 	}
 
 
@@ -47,6 +53,10 @@ namespace server {
 				this->ecs.run_system([&] (auto & entity) {
 					return move_randomly(entity, this->step_time, this->rng);
 				});
+				this->ecs.run_system([&] (auto & entity) {
+					return read_sensors(entity);
+				});
+				this->test_field.disperse();
 			}
 		}
 	}
