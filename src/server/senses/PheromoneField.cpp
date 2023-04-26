@@ -1,5 +1,6 @@
 #include "PheromoneField.hpp"
 #include "stdxx/math.hxx"
+#include "SFML/Graphics.hpp"
 
 namespace server {
 	PheromoneField::PheromoneField(stx::size2f size, stx::size2u resolution)
@@ -72,5 +73,18 @@ namespace server {
 				this->data[write_point] = new_value;
 			}
 		}
+	}
+
+
+
+	void PheromoneField::save_as_img(const std::filesystem::path & path) {
+		sf::Image image;
+		image.create(this->resolution.x, this->resolution.y, sf::Color::Black);
+		for(std::int32_t x = 0; x < this->resolution.x; ++x) {
+			for(std::int32_t y = 0; y < this->resolution.y; ++y) {
+				image.setPixel(x,y, sf::Color{ static_cast<uint8_t>(this->data(x,y) * 255), 0, 0});
+			}
+		}
+		image.saveToFile(path);
 	}
 }

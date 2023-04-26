@@ -33,4 +33,5 @@
 
 .vscode
 /build
+/tmp
 *.kra.bak

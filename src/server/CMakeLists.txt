@@ -14,5 +14,13 @@ target_link_libraries(libserver
 )
 
 target_link_libraries(libserver
+	sfml-graphics
+	sfml-audio
+	sfml-network
+	sfml-system
+	sfml-window
+)
+
+target_link_libraries(libserver
 	libshared
 )
