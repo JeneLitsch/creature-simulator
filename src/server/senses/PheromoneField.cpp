@@ -54,22 +54,21 @@ namespace server {
 			for(std::int32_t y = 0; y < this->resolution.y; ++y) {
 				double new_value = 0.0;				
 				for(std::int32_t dx = -distance_x; dx < distance_x; ++dx) {
-					for(std::int32_t dy = -distance_x; dy < distance_x; ++dy) {
+					for(std::int32_t dy = -distance_y; dy < distance_y; ++dy) {
 						auto sample_point = stx::clamp(
 							stx::vector2i{x + dx, y + dy},
 							stx::vector2i{0},
-							stx::vector2i{this->resolution}
+							stx::vector2i{
+								static_cast<std::int32_t>(this->resolution.x) - 1,
+								static_cast<std::int32_t>(this->resolution.y) - 1,
+							}
 						);
 						if(old.in_range(sample_point)) {
 							new_value += old[sample_point] / static_cast<float>(2 * distance_x * 2 * distance_y);
 						}
 					}
 				}
-				auto write_point = stx::clamp(
-					stx::vector2i{x, y},
-					stx::vector2i{0},
-					stx::vector2i{this->resolution}
-				);
+				auto write_point = stx::vector2i{x, y};
 				this->data[write_point] = new_value;
 			}
 		}
