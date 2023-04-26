@@ -2,6 +2,7 @@
 #include <iostream>
 #include "move_randomly.hpp"
 #include "read_sensors.hpp"
+#include "emit_pheromones.hpp"
 #include "senses/PheromoneSensor.hpp"
 
 namespace server {
@@ -11,11 +12,11 @@ namespace server {
 		std::cout << "Server starting...\n";
 		this->rng.seed(42);
 
-		for(std::int32_t x = 0; x < 48; ++x) {
-			for(std::int32_t y = 0; y < 54; ++y) {
-				this->test_field.set({x,y}, 1.0);
-			}
-		}
+		// for(std::int32_t x = 0; x < 48; ++x) {
+		// 	for(std::int32_t y = 0; y < 54; ++y) {
+		// 		this->test_field.set({x,y}, 1.0);
+		// 	}
+		// }
 		std::uniform_real_distribution<float> dist_x{0, 960};
 		std::uniform_real_distribution<float> dist_y{0, 540};
 		std::uniform_real_distribution<float> dist_rot{0, 360};
@@ -26,6 +27,11 @@ namespace server {
 			});
 			entity.add(Position{
 				.position = stx::position2f{dist_x(rng), dist_y(rng)}
+			});
+			entity.add(PheromoneEmitter{
+				.field = this->test_field,
+				.strenght = 0.1,
+				.radius = 50.0,
 			});
 			auto & sensors = entity.add(Sensors{
 				.sensors = {}
@@ -54,6 +60,9 @@ namespace server {
 				});
 				this->ecs.run_system([&] (auto & entity) {
 					return read_sensors(entity);
+				});
+				this->ecs.run_system([&] (auto & entity) {
+					return emit_pheromones(entity);
 				});
 				if(snapshot_rate && (this->simulation_step % snapshot_rate == 0)) {
 					this->test_field.save_as_img("tmp/img" + std::to_string(this->simulation_step) + ".png");

@@ -16,6 +16,7 @@ namespace server {
 		double sample(const stx::position2f & position) const;
 
 		void fill(double value);
+		void emit(double value, stx::position2f position, double radius);
 		void set(stx::position2i position, double value);
 
 		void disperse();

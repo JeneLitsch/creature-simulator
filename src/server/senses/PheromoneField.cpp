@@ -39,6 +39,38 @@ namespace server {
 
 
 
+	void PheromoneField::emit(double value, stx::position2f position, double radius) {
+		auto normalized_position = position / stx::position2f{this->size};
+		auto local_position = normalized_position * stx::position2f{this->resolution};
+		auto cell = stx::vector2i{local_position};
+
+		std::int32_t distance_x = (radius / this->size.x) * this->resolution.x;
+		std::int32_t distance_y = (radius / this->size.y) * this->resolution.y;
+
+		for(std::int32_t dx = -distance_x; dx < distance_x; ++dx) {
+			for(std::int32_t dy = -distance_y; dy < distance_y; ++dy) {
+				auto sample_point = stx::clamp(
+					stx::vector2i{
+						static_cast<std::int32_t>(cell.x + dx),
+						static_cast<std::int32_t>(cell.y + dy)
+					},
+					stx::vector2i{0},
+					stx::vector2i{
+						static_cast<std::int32_t>(this->resolution.x) - 1,
+						static_cast<std::int32_t>(this->resolution.y) - 1,
+					}
+				);
+				if(this->data.in_range(sample_point)) {
+					this->data[sample_point] = std::clamp(
+						this->data[sample_point] + value, 0.0, 1.0
+					);
+				}
+			}
+		}
+	}
+
+
+
 	void PheromoneField::set(stx::position2i position, double value) {
 		auto normalized_position = stx::vector2f{position} / stx::vector2f{this->size};
 		auto local_position = normalized_position * stx::vector2f{this->resolution};
