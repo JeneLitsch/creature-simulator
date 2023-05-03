@@ -1,8 +1,8 @@
 #include "Server.hpp"
 #include <iostream>
-#include "move_randomly.hpp"
-#include "read_sensors.hpp"
-#include "emit_pheromones.hpp"
+#include "system/move_randomly.hpp"
+#include "system/read_sensors.hpp"
+#include "system/emit_pheromones.hpp"
 #include "senses/PheromoneSensor.hpp"
 #include "senses/MetabolismSensor.hpp"
 
