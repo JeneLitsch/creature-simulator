@@ -5,89 +5,63 @@
 #include <numbers>
 #include <cmath>
 
-
-constexpr auto sigmoid(auto x) {
-	const auto e = std::numbers::e_v<decltype(x)>;
-	return 1 / (1 + std::pow(e, -x)); 
+std::vector<double> vectorMatrixMult(const std::vector<double>& vec, const std::vector<std::vector<double>>& mat){
+	if (vec.size() != mat.size()) {
+		throw std::runtime_error{"Vector and Matrix sizes do not match"};
+	}
+	std::vector<double> out;
+	out.resize(mat.at(0).size(), 0.0);
+	for(int i = 0; i<mat.at(0).size(); i++){
+		for(int j = 0; j<mat.size(); j++){
+			out.at(i) += mat.at(j).at(i) * vec.at(j);
+		}
+	}
+	return out;
 }
 
-
-
-struct Layer {
-	Layer(std::size_t count) {
-		biases.resize(count, 0.0);
-	}
-	std::vector<double> biases;
-
-	std::vector<double> eval(const std::vector<double> & input) const {
-		if (biases.size() != input.size()) {
-			throw std::runtime_error{"Input does not match layer size"};
-		}
-		
-		std::vector<double> output;
-		for(std::size_t i = 0; i < input.size(); ++i) {
-			output.push_back(sigmoid(input[i] + biases[i]));
-		}
-		return output;
-	}
-};
-
-
-
-struct Transition {
-	Transition(std::size_t count) {
-		weights.resize(count, 1.0);
-	}
-	std::vector<double> weights;
-
-	std::vector<double> eval(const std::vector<double> & input) const {
-		std::vector<double> output;
-		const auto i_max = input.size();
-		const auto k_max = weights.size() / i_max;
-		for(std::size_t k = 0; k < k_max; ++k) {
-			double result = 0.0;
-			for(std::size_t i = 0; i < i_max; ++i) {
-				const auto w = weights[i * k_max + k];
-				result += w * input[i];
-			}
-			output.push_back(result);
-		}
-		return output;
-	}
-};
-
-
+constexpr auto sigmoid(double x) {
+	return 1 / (1 + std::exp(-x));
+}
 
 struct NeuralNetwork {
 	NeuralNetwork(
 		std::size_t input_size,
-		const std::vector<std::size_t> & layer_sizes) 
-	: input_size{input_size} {
-		std::size_t last_size = input_size;
-		for (const auto size : layer_sizes) {
-			this->layers.push_back(Layer{size});
-			this->transitions.push_back(Transition{last_size * size});
-			last_size = size;
+		std::size_t output_size) 
+	: input_size{input_size}, output_size{output_size} {
+		inputMatrix.resize(input_size, std::vector<double>{});
+		for(int i = 0; i<input_size; i++){
+			inputMatrix.at(i).resize(input_size, 0.0);
+			inputMatrix.at(i).at(i) = 1.0;
+		}
+		outputMatrix.resize(input_size, std::vector<double>{});
+		for(int i = 0; i<input_size; i++){
+			outputMatrix.at(i).resize(output_size, 0.0);
 		}
 	}
 
+	void addNode(){
+		hidden_size += 1;
+		inputMatrix.resize(input_size + hidden_size, std::vector<double>{});
+		outputMatrix.resize(input_size + hidden_size, std::vector<double>{});
+		outputMatrix.at(input_size + hidden_size - 1).resize(output_size, 0.0);
+	}
 
 	std::vector<double> eval(const std::vector<double> & input) const {
 		if (input.size() != input_size) {
 			throw std::runtime_error{"Input does not match input layer"};
 		}
-
-		std::vector<double> last = input;
-		for(std::size_t i = 0; i < transitions.size(); ++i) {
-			const auto layer_input = transitions[i].eval(last);
-			// std::cout << "Transition " << i << ": " << layer_input.size() << "\n"; 
-			const auto layer_ouput = layers[i].eval(layer_input);
-			last = layer_ouput;
+		std::vector<double> inputWithHidden = input;
+		inputWithHidden.resize(input_size + hidden_size, 0.0);
+		std::vector<double> out = vectorMatrixMult(vectorMatrixMult(inputWithHidden, inputMatrix), outputMatrix);
+		for(double& num : out){
+			num = sigmoid(num);
 		}
-		return last;
+		return out;
 	}
 
-	std::vector<Layer> layers;
-	std::vector<Transition> transitions;
+	std::vector<std::vector<double>> inputMatrix;
+	std::vector<std::vector<double>> outputMatrix;
 	std::size_t input_size;
+	std::size_t hidden_size = 0;
+	std::size_t output_size;
 };
