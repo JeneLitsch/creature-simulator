@@ -1,8 +1,9 @@
 #include "Server.hpp"
 #include <iostream>
+#include "system/emit_pheromones.hpp"
+#include "system/metabolize.hpp"
 #include "system/move_randomly.hpp"
 #include "system/read_sensors.hpp"
-#include "system/emit_pheromones.hpp"
 #include "senses/PheromoneSensor.hpp"
 #include "senses/MetabolismSensor.hpp"
 
@@ -38,9 +39,10 @@ namespace server {
 				.sensors = {}
 			});
 			sensors.sensors.push_back(std::make_unique<PheromoneSensor>(this->test_field));
-			sensors.sensors.push_back(std::make_unique<MetabolismSensor>(this->ecs, entity.get_id(), Nutrient::CARBON));
+			sensors.sensors.push_back(std::make_unique<MetabolismSensor>(this->ecs, entity.get_id(), Substance::CARBON));
+			sensors.sensors.push_back(std::make_unique<MetabolismSensor>(this->ecs, entity.get_id(), Substance::WASTE));
 			auto & metabolism = entity.add(Metabolism{});
-			metabolism.set(Nutrient::CARBON, 0.2);
+			metabolism.set(Substance::CARBON, 0.2);
 		}
 	}
 
@@ -64,6 +66,9 @@ namespace server {
 				});
 				this->ecs.run_system([&] (auto & entity) {
 					return read_sensors(entity);
+				});
+				this->ecs.run_system([&] (auto & entity) {
+					return metabolize(entity);
 				});
 				this->ecs.run_system([&] (auto & entity) {
 					return emit_pheromones(entity);

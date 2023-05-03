@@ -8,12 +8,12 @@
 namespace server {
 	class MetabolismSensor : public Sensor {
 	public:
-		MetabolismSensor(stx::reference<Ecs> ecs, std::uint64_t id, Nutrient nutrient);
+		MetabolismSensor(stx::reference<Ecs> ecs, std::uint64_t id, Substance substance);
 		virtual double sample(const Params &) const override;
 
 	private:
 		stx::reference<Ecs> ecs;
 		std::uint64_t id;
-		Nutrient nutrient;
+		Substance substance;
 	};
 }

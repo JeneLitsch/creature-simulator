@@ -1,22 +1,22 @@
 #include "Metabolism.hpp"
 
 namespace server {
-	double Metabolism::get(Nutrient nutrient) const {
-		if(this->nutrients.contains(nutrient)) {
-			return this->nutrients.at(nutrient);
+	double Metabolism::get(Substance substance) const {
+		if(this->substances.contains(substance)) {
+			return this->substances.at(substance);
 		}
 		return 0.0;
 	}
 
 
 
-	void Metabolism::set(Nutrient nutrient, double value) {
-		this->nutrients[nutrient] = value;
+	void Metabolism::set(Substance substance, double value) {
+		this->substances[substance] = value;
 	}
 
 
 
-	void Metabolism::change(Nutrient nutrient, double d_value) {
-		this->set(nutrient, this->get(nutrient) + d_value);
+	void Metabolism::change(Substance substance, double d_value) {
+		this->set(substance, this->get(substance) + d_value);
 	}
 }

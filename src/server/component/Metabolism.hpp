@@ -2,15 +2,15 @@
 #include <unordered_map>
 
 namespace server {
-	enum class Nutrient {
-		CARBON,
+	enum class Substance {
+		CARBON, WASTE
 	};
 	class Metabolism {
 	public:
-		double get(Nutrient nutrient) const;
-		void set(Nutrient nutrient, double value);
-		void change(Nutrient nutrient, double d_value);
+		double get(Substance substance) const;
+		void set(Substance substance, double value);
+		void change(Substance substance, double d_value);
 	private:
-		std::unordered_map<Nutrient, double> nutrients;
+		std::unordered_map<Substance, double> substances;
 	};
 }
