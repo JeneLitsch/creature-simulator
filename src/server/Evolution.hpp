@@ -6,14 +6,14 @@
 
 struct MutConfig {
 	double mutation_rate_per_weight = 0.05;
-	double chance_for_new_node = 0.05;
+	double chance_for_new_node = 0.01;
 	double weight_min = -1.0;
 	double weight_max = 1.0;
 };
 
 
 
-bool to_be_mutated(double p, std::mt19937_64 rng) {
+bool to_be_mutated(double p, std::mt19937_64& rng) {
 	std::uniform_real_distribution interval { 0.0, 1.0 };
 	return interval(rng) < p;
 }

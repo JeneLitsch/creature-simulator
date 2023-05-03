@@ -40,8 +40,11 @@ struct NeuralNetwork {
 	}
 
 	void addNode(){
-		hidden_size += 1;
+		hidden_size ++;
 		inputMatrix.resize(input_size + hidden_size, std::vector<double>{});
+		for(std::vector<double>& vec: inputMatrix){
+			vec.resize(input_size + hidden_size, 0.0);
+		}
 		outputMatrix.resize(input_size + hidden_size, std::vector<double>{});
 		outputMatrix.at(input_size + hidden_size - 1).resize(output_size, 0.0);
 	}
