@@ -8,7 +8,7 @@ namespace server {
 	class PheromoneSensor : public Sensor {
 	public:
 		PheromoneSensor(stx::reference<PheromoneField> field);
-		virtual double sample(stx::position2f position, double angle) const override;
+		virtual double sample(const Params &) const override;
 	private:
 		stx::reference<PheromoneField> field;
 	};

@@ -11,10 +11,15 @@ namespace server {
 		if(!sensors) return;
 		if(!position) return;
 		if(!rotation) return;
+
+		Sensor::Params params {
+			.position = position->position,
+			.angle = rotation->angle,
+		};
 		
 		std::vector<double> output;
 		for(const auto & sensor : sensors->sensors) {
-			output.push_back(sensor->sample(position->position, rotation->angle));
+			output.push_back(sensor->sample(params));
 		}
 
 		std::cout << stx::whole(output) << "\n";

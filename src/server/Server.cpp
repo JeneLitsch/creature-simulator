@@ -4,6 +4,7 @@
 #include "read_sensors.hpp"
 #include "emit_pheromones.hpp"
 #include "senses/PheromoneSensor.hpp"
+#include "senses/MetabolismSensor.hpp"
 
 namespace server {
 	Server::Server() 
@@ -37,6 +38,9 @@ namespace server {
 				.sensors = {}
 			});
 			sensors.sensors.push_back(std::make_unique<PheromoneSensor>(this->test_field));
+			sensors.sensors.push_back(std::make_unique<MetabolismSensor>(this->ecs, entity.get_id(), Nutrient::CARBON));
+			auto & metabolism = entity.add(Metabolism{});
+			metabolism.set(Nutrient::CARBON, 0.2);
 		}
 	}
 

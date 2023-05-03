@@ -8,6 +8,7 @@ add_library(libserver
 	Socket.cpp
 )
 
+add_subdirectory(component)
 add_subdirectory(senses)
 
 target_link_libraries(libserver

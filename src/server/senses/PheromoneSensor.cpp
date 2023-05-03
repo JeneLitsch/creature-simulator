@@ -6,7 +6,7 @@ namespace server {
 
 
 
-	double PheromoneSensor::sample(stx::position2f position, double angle) const {
-		return this->field->sample(position);
+	double PheromoneSensor::sample(const Params & params) const {
+		return this->field->sample(params.position);
 	}
 }

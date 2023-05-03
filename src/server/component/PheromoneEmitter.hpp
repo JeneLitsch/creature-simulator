@@ -1,5 +1,5 @@
 #pragma once
-#include "senses/PheromoneField.hpp"
+#include "server/senses/PheromoneField.hpp"
 
 namespace server {
 	struct PheromoneEmitter {

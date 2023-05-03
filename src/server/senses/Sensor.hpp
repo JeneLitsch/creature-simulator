@@ -4,7 +4,11 @@
 namespace server {
 	class Sensor {
 	public:
-		virtual double sample(stx::position2f position, double angle) const = 0;
+		struct Params {
+			stx::position2f position;
+			double angle;
+		};
+		virtual double sample(const Params &) const = 0;
 		virtual ~Sensor() = default;
 	};
 }
