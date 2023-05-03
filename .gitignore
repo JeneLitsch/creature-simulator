@@ -34,3 +34,6 @@
 .vscode
 /build
 *.kra.bak
+.vs
+/out
+CMakeSettings.json
