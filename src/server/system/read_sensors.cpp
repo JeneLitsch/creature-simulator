@@ -5,16 +5,14 @@
 namespace server {
 	void read_sensors(Ecs::Entity & entity) {
 		auto sensors = entity.get_if<Sensors>();
-		auto position = entity.get_if<Position>();
-		auto rotation = entity.get_if<Rotation>();
+		auto transform = entity.get_if<Transform>();
 
 		if(!sensors) return;
-		if(!position) return;
-		if(!rotation) return;
+		if(!transform) return;
 
 		Sensor::Params params {
-			.position = position->position,
-			.angle = rotation->angle,
+			.position = transform->position,
+			.angle = transform->angle,
 		};
 		
 		std::vector<double> output;

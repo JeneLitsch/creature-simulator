@@ -4,19 +4,17 @@
 namespace client::level {
 	void render_entity(const Ecs::Entity & entity, sf::VertexArray & vertecies) {
 		if(!entity.has<Sprite>()) return;
-		if(!entity.has<Position>()) return;
-		if(!entity.has<Rotation>()) return;
+		if(!entity.has<Transform>()) return;
 
 		auto & sprite = entity.get<Sprite>();
-		auto & position = entity.get<Position>();
-		auto & rotation = entity.get<Rotation>();
+		auto & transform = entity.get<Transform>();
 
-		auto pos = stx::lerp(position.prev, position.next, position.t);
-		auto rot = stx::lerp(rotation.prev, rotation.next, rotation.t);
+		auto pos = stx::lerp(transform.position_prev, transform.position_next, transform.t);
+		auto rot = stx::lerp(transform.rotation_prev, transform.rotation_next, transform.t);
 
-		sf::Transform transform;
-		transform.translate(pos.x, pos.y);
-		transform.rotate(rot);
+		sf::Transform sf_transform;
+		sf_transform.translate(pos.x, pos.y);
+		sf_transform.rotate(rot);
 
 		const int tx1 = sprite.tex_position.x;
 		const int ty1 = sprite.tex_position.y;
@@ -28,10 +26,10 @@ namespace client::level {
 		const float vy1 = -static_cast<float>(sprite.tex_size.y);
 		const float vy2 = +static_cast<float>(sprite.tex_size.y);
 
-		const auto vertex1 = transform.transformPoint(vx1, vy1);
-		const auto vertex2 = transform.transformPoint(vx2, vy1);
-		const auto vertex3 = transform.transformPoint(vx2, vy2);
-		const auto vertex4 = transform.transformPoint(vx1, vy2);
+		const auto vertex1 = sf_transform.transformPoint(vx1, vy1);
+		const auto vertex2 = sf_transform.transformPoint(vx2, vy1);
+		const auto vertex3 = sf_transform.transformPoint(vx2, vy2);
+		const auto vertex4 = sf_transform.transformPoint(vx1, vy2);
 
 		const sf::Vector2f tex1 {static_cast<float>(tx1), static_cast<float>(ty1)};
 		const sf::Vector2f tex2 {static_cast<float>(tx2), static_cast<float>(ty1)};

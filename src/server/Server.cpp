@@ -24,11 +24,9 @@ namespace server {
 		std::uniform_real_distribution<float> dist_rot{0, 360};
 		for(std::size_t i = 0; i < 1; ++i) {
 			auto & entity = ecs.new_entity();
-			entity.add(Rotation{
-				.angle = dist_rot(rng)
-			});
-			entity.add(Position{
-				.position = stx::position2f{dist_x(rng), dist_y(rng)}
+			entity.add(Transform{
+				.position = stx::position2f{dist_x(rng), dist_y(rng)},
+				.angle = dist_rot(rng),
 			});
 			entity.add(PheromoneEmitter{
 				.field = this->test_field,
@@ -36,7 +34,7 @@ namespace server {
 				.radius = 50.0,
 			});
 			auto & sensors = entity.add(Sensors{
-				.sensors = {}
+				.sensors = {},
 			});
 			sensors.sensors.push_back(std::make_unique<PheromoneSensor>(this->test_field));
 			sensors.sensors.push_back(std::make_unique<MetabolismSensor>(this->ecs, entity.get_id(), Substance::CARBON));
@@ -102,16 +100,14 @@ namespace server {
 		ecs.run_system([&] (Ecs::Entity & entity) {
 			const auto id = entity.get_id();
 			response.entities.push_back(id);
-			if(entity.has<Position>()) {
+			if(entity.has<Transform>()) {
 				response.positions.push_back({
 					id,
-					entity.get<Position>().position
+					entity.get<Transform>().position
 				});
-			}
-			if(entity.has<Rotation>()) {
 				response.rotations.push_back({
 					id,
-					entity.get<Rotation>().angle
+					entity.get<Transform>().angle
 				});
 			}
 		});
@@ -136,16 +132,14 @@ namespace server {
 			};
 			ecs.run_system([&] (Ecs::Entity & entity) {
 				const auto id = entity.get_id();
-				if(entity.has<Position>()) {
+				if(entity.has<Transform>()) {
 					response.positions.push_back({
 						id,
-						entity.get<Position>().position
+						entity.get<Transform>().position
 					});
-				}
-				if(entity.has<Rotation>()) {
 					response.rotations.push_back({
 						id,
-						entity.get<Rotation>().angle
+						entity.get<Transform>().angle
 					});
 				}
 			});

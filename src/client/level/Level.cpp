@@ -18,16 +18,9 @@ namespace client::level {
 		}
 
 		ecs.run_system([dt, this] (Ecs::Entity & entity) {
-			if(entity.has<Position>()) {
-				auto & pos = entity.get<Position>();
-				pos.t += dt * static_cast<float>(this->tps);
-			}
-		});
-
-		ecs.run_system([dt, this] (Ecs::Entity & entity) {
-			if(entity.has<Rotation>()) {
-				auto & rot = entity.get<Rotation>();
-				rot.t += dt * static_cast<float>(this->tps);
+			if(entity.has<Transform>()) {
+				auto & tr = entity.get<Transform>();
+				tr.t += dt * static_cast<float>(this->tps);
 			}
 		});
 	}
@@ -69,16 +62,11 @@ namespace client::level {
 			});
 		}
 		for(const auto & [id, position] : response.positions) {
-			ecs.get(id).add(Position{
-				.prev = position,
-				.next = position,
-				.t = 0.f
-			});
-		}
-		for(const auto & [id, angle] : response.rotations) {
-			ecs.get(id).add(Rotation{
-				.prev = 0.f,
-				.next = 0.f,
+			ecs.get(id).add(Transform{
+				.position_prev = position,
+				.position_next = position,
+				.rotation_prev = 0.f,
+				.rotation_next = 0.f,
 				.t = 0.f
 			});
 		}
@@ -87,15 +75,15 @@ namespace client::level {
 
 	void Level::handle_response(const net::UpdateState & response) {
 		for(const auto & [id, position] : response.positions) {
-			auto & pos = ecs.get(id).get<Position>();
-			pos.prev = pos.next;
-			pos.next = position;
+			auto & pos = ecs.get(id).get<Transform>();
+			pos.position_prev = pos.position_next;
+			pos.position_next = position;
 			pos.t = 0.f;
 		}
 		for(const auto & [id, angle] : response.rotations) {
-			auto & rot = ecs.get(id).get<Rotation>();
-			rot.prev = rot.next;
-			rot.next = angle;
+			auto & rot = ecs.get(id).get<Transform>();
+			rot.rotation_prev = rot.rotation_next;
+			rot.rotation_next = angle;
 			rot.t = 0.f;
 		}
 	}

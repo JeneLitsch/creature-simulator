@@ -2,7 +2,8 @@
 #include "stdxx/vector.hxx"
 
 namespace server {
-	struct Position {
+	struct Transform {
 		stx::position2f position;
+		float angle = 0.f;
 	};
 }
