@@ -55,6 +55,15 @@ struct NeuralNetwork {
 		}
 		std::vector<double> inputWithHidden = input;
 		inputWithHidden.resize(input_size + hidden_size, 0.0);
+		/*
+		// Sigmoid für hidden Nodes
+		std::vector<double> realInput = vectorMatrixMult(inputWithHidden, inputMatrix);
+		for(int i = input_size; i<realInput.size(); i++){
+			realInput.at(i) = sigmoid(realInput.at(i));
+		}
+		std::vector<double> out = vectorMatrixMult(realInput, outputMatrix);
+		*/
+		//kein Sigmoid für hidden Nodes
 		std::vector<double> out = vectorMatrixMult(vectorMatrixMult(inputWithHidden, inputMatrix), outputMatrix);
 		for(double& num : out){
 			num = sigmoid(num);
