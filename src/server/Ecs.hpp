@@ -1,11 +1,15 @@
 #pragma once
 #include "nanocomp/nanocomp.hpp"
-#include "server/Position.hpp"
-#include "server/Rotation.hpp"
+#include "server/component/PheromoneEmitter.hpp"
+#include "server/component/Transform.hpp"
+#include "server/component/Sensors.hpp"
+#include "server/component/Metabolism.hpp"
 
 namespace server {
 	using Ecs =	nc::Ecs<
-		Position,
-		Rotation
+		Transform,
+		Sensors,
+		PheromoneEmitter,
+		Metabolism
 	>;
 }
