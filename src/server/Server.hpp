@@ -4,7 +4,8 @@
 #include "stdxx/chrono.hxx"
 #include "shared/LocalConnection.hpp"
 #include "server/Ecs.hpp"
-#include "Socket.hpp"
+#include "server/Socket.hpp"
+#include "server/senses/PheromoneField.hpp"
 
 namespace server {
 	class Server {
@@ -29,5 +30,9 @@ namespace server {
 
 		Ecs ecs;
 		std::mt19937_64 rng;
+
+		PheromoneField test_field;
+		
+		std::uint64_t snapshot_rate = 10;
 	};
 }
