@@ -18,7 +18,7 @@ add_compile_options(
 	-Wall 
 	-Wextra 
 	-pedantic 
-	-Wpedantic 
+	# -Wpedantic 
 	-pedantic-errors 
 	-Wunused 
 	-Wwrite-strings 

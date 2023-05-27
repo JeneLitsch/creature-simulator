@@ -6,7 +6,7 @@
 
 namespace client::session {
 	class Session;
-};
+}
 
 namespace client::level {
 
