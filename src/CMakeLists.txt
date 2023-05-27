@@ -4,8 +4,5 @@ add_subdirectory(shared)
 add_subdirectory(client)
 add_subdirectory(server)
 
-add_executable(client main_client.cpp)
-target_link_libraries(client libshared libclient libserver)
-
-add_executable(server main_server.cpp)
-target_link_libraries(server libshared libserver)
+add_executable(app main_client.cpp)
+target_link_libraries(app libshared libclient libserver)

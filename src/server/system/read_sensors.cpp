@@ -3,16 +3,13 @@
 #include "stdxx/iterator.hxx"
 
 namespace server {
-	void read_sensors(Ecs::Entity & entity) {
+	void read_sensors(Ecs::Entity & entity, stx::position2i position) {
 		auto sensors = entity.get_if<Sensors>();
-		auto transform = entity.get_if<Transform>();
 
 		if(!sensors) return;
-		if(!transform) return;
 
 		Sensor::Params params {
-			.position = transform->position,
-			.angle = transform->angle,
+			.position = position,
 		};
 		
 		std::vector<double> output;

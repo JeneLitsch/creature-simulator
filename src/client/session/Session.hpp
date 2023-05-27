@@ -1,11 +1,21 @@
 #pragma once
-#include "shared/LocalConnection.hpp"
+#include <future>
+#include "stdxx/chrono.hxx"
+#include "server/Simulation.hpp"
 #include "client/core/GameState.hpp"
 
 namespace client::session {
-	class Session : public core::GameState {
+	class Session : public core::GameState{
 	public:
-		virtual std::optional<net::Response> fetch_response() = 0;
-		virtual void send_request(net::Request message) = 0; 
+		Session ();
+		void update(double dt) override;
+		void render(sf::RenderTarget & render_target) override;
+		virtual ~Session () = default;
+
+	protected:
+		virtual void init() override {}
+	private:
+		server::Simulation simulation;
+		stx::chrono::every tick_timer;
 	};
 }

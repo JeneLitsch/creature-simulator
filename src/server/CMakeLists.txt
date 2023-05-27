@@ -1,12 +1,11 @@
 cmake_minimum_required (VERSION 3.13)
 
 add_library(libserver
-	Server.cpp
-	Socket.cpp
+	Simulation.cpp
 )
 
 add_subdirectory(component)
-add_subdirectory(senses)
+# add_subdirectory(senses)
 add_subdirectory(system)
 
 target_link_libraries(libserver

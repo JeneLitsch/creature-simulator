@@ -1,6 +1,6 @@
 #include "Client.hpp"
 #include "test/Test.hpp"
-#include "session/HostSession.hpp"
+#include "session/Session.hpp"
 #include <iostream>
 
 namespace client {
@@ -35,7 +35,7 @@ namespace client {
 		sf::View view{{960/2, 540/2}, {960, 540}};
 		this->window.create(sf::VideoMode{960, 540}, "Creature Simulator");
 		this->window.setView(view);
-		this->state_manager.push(std::make_unique<session::HostSession>());
+		this->state_manager.push(std::make_unique<session::Session>());
 		this->window.setFramerateLimit(60);
 	}
 
