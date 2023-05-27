@@ -2,15 +2,12 @@
 #include "client/level/Level.hpp"
 
 namespace client::session {
-	Session::Session () 
-		: tick_timer{1.0/10.0} {}
+	Session::Session () {}
 
 
 
 	void Session::update(double dt) {
-		if(this->tick_timer(dt)) {
-			this->simulation.tick();
-		}
+		this->push(std::make_unique<level::Level>(*this, this->simulation));
 	}
 	
 	

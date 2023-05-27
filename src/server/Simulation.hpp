@@ -10,7 +10,7 @@ namespace server {
 		Simulation();
 		void tick();
 		const stx::grid2<std::uint64_t> & get_grid() const;
-		const Ecs & get_ecs() const;
+		Ecs & get_ecs();
 		~Simulation();
 	private:
 		server::Ecs ecs;

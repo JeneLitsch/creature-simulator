@@ -16,6 +16,5 @@ namespace client::session {
 		virtual void init() override {}
 	private:
 		server::Simulation simulation;
-		stx::chrono::every tick_timer;
 	};
 }

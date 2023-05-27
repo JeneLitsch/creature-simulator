@@ -9,9 +9,9 @@
 
 namespace server {
 	constexpr std::uint64_t EMPTY = 0;
-	constexpr std::uint64_t FIRST_CREATURE = 0xff;
+	constexpr std::uint64_t FIRST_CREATURE = 256;
 	constexpr stx::size2u LEVEL_SIZE {256, 144};
-	constexpr double spawn_chance = 0.01;
+	constexpr double spawn_chance = 0.1;
 
 
 
@@ -37,10 +37,7 @@ namespace server {
 
 	
 	
-	void Simulation::tick() {
-		// HACK HACK HACK
-		std::cout << "tick()";
-	}
+	void Simulation::tick() {}
 
 
 
@@ -50,7 +47,7 @@ namespace server {
 
 
 
-	const Ecs & Simulation::get_ecs() const {
+	Ecs & Simulation::get_ecs() {
 		return this->ecs;
 	}
 }
