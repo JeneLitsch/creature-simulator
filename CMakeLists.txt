@@ -18,8 +18,6 @@ add_compile_options(
 	-Wall 
 	-Wextra 
 	-pedantic 
-	# -Wpedantic 
-	-pedantic-errors 
 	-Wunused 
 	-Wwrite-strings 
 	-Wconversion 
