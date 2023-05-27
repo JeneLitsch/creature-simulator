@@ -122,6 +122,6 @@ namespace server {
 				image.setPixel(x,y, sf::Color{ static_cast<uint8_t>(this->data(x,y) * 255), 0, 0});
 			}
 		}
-		image.saveToFile(path);
+		image.saveToFile(path.string());
 	}
 }
