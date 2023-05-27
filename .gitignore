@@ -35,3 +35,6 @@
 /build
 /tmp
 *.kra.bak
+.vs
+/out
+CMakeSettings.json
