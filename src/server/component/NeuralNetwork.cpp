@@ -103,7 +103,7 @@ namespace server{
 	void mutate(NeuralNetwork & net, std::uint64_t seed, const MutConfig & config) {
 		std::mt19937_64 rng;
 		rng.seed(seed);
-		if(to_be_mutated(config.chance_for_new_node, rng)){
+		if(to_be_mutated(config.chance_for_new_node, rng) && net.hidden_size < config.max_hidden_nodes){
 			net.addNode();
 		}
 		std::uniform_real_distribution weight_interval {config.weight_min, config.weight_max};
