@@ -52,8 +52,15 @@ namespace client::level {
 		new_view.setCenter(this->camera_center.to<sf::Vector2f>());
 		new_view.setSize(960.f * this->camera_zoom, 540.f * this->camera_zoom);
 		render_target.setView(new_view);
+		
+		auto & fields = this->simulation->get_pheromone_fields();
+		
+		render_phermones(render_target, fields[0], sf::Color::Red);
+		render_phermones(render_target, fields[1], sf::Color::Green);
+		render_phermones(render_target, fields[2], sf::Color::Blue);
 		render_frame(render_target, this->simulation->get_grid(), this->simulation->get_ecs());
 		render_grid(render_target, this->simulation->get_grid(), this->simulation->get_ecs());
+		
 		render_target.setView(old_view);
 	}
 	

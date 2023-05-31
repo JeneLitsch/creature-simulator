@@ -13,12 +13,17 @@ namespace server {
 	constexpr std::uint64_t EMPTY = 0;
 	constexpr std::uint64_t FIRST_CREATURE = 256;
 	constexpr stx::size2u LEVEL_SIZE {256, 144};
-	constexpr double spawn_chance = 0.1;
+	constexpr double spawn_chance = 0.01;
 
 
 
 	Simulation::Simulation() 
 		: grid{LEVEL_SIZE, EMPTY}
+		, pheromone_fields{
+			stx::grid2<float>{LEVEL_SIZE, 0.f},
+			stx::grid2<float>{LEVEL_SIZE, 0.f},
+			stx::grid2<float>{LEVEL_SIZE, 0.f},
+		}
 		, ecs{FIRST_CREATURE} {
 		this->rng.seed(42);
 
@@ -29,7 +34,13 @@ namespace server {
 					entity.add(Movement{
 						.position = {static_cast<int>(x), static_cast<int>(y)},
 						.direction = {0, 0},
-						.grid = &grid});
+						.grid = &grid}
+					);
+					entity.add(PheromoneEmitter{
+						.field = this->pheromone_fields[rng() % 3],
+						.strenght = 0.1f,
+						.distance = 5,
+					});
 					entity.add(Age{});
 					this->grid(x,y) = entity.get_id();
 				}
@@ -48,12 +59,19 @@ namespace server {
 			if(Movement* movement = entity.get_if<Movement>()) movement -> move();
 			if(Age* age = entity.get_if<Age>()) age -> incrementAge();
 		});
+		ecs.run_system(emit_pheromones);
 	}
 
 
 
 	const stx::grid2<std::uint64_t> & Simulation::get_grid() const {
 		return this->grid;
+	}
+
+
+
+	const std::array<stx::grid2<float>, 3> & Simulation::get_pheromone_fields() const {
+		return this->pheromone_fields;
 	}
 
 
