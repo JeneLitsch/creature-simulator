@@ -31,6 +31,8 @@ namespace client {
 		}
 	}
 
+
+
 	Client::Client() {
 		sf::View view{{960/2, 540/2}, {960, 540}};
 		this->window.create(sf::VideoMode{960, 540}, "Creature Simulator");

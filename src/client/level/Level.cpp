@@ -1,6 +1,6 @@
 #include "Level.hpp"
 #include "client/session/Session.hpp"
-#include "render_grid.hpp"
+#include "render.hpp"
 
 namespace client::level {
 
@@ -55,6 +55,7 @@ namespace client::level {
 		new_view.setCenter(this->camera_center.to<sf::Vector2f>());
 		new_view.setSize(960.f * this->camera_zoom, 540.f * this->camera_zoom);
 		render_target.setView(new_view);
+		render_frame(render_target, this->simulation->get_grid(), this->simulation->get_ecs());
 		render_grid(render_target, this->simulation->get_grid(), this->simulation->get_ecs());
 		render_target.setView(old_view);
 	}
