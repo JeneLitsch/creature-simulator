@@ -6,6 +6,8 @@
 #include "system/read_sensors.hpp"
 #include "senses/PheromoneSensor.hpp"
 #include "senses/MetabolismSensor.hpp"
+#include "component/Movement.hpp"
+#include "component/Age.hpp"
 
 namespace server {
 	constexpr std::uint64_t EMPTY = 0;
@@ -24,6 +26,8 @@ namespace server {
 			for(std::uint64_t y = 0; y < LEVEL_SIZE.y; ++y) {
 				if(stx::flip(rng, spawn_chance)) {
 					auto & entity = this->ecs.new_entity();
+					entity.add(Movement{.position = {x, y}, .direction = {0, 0}, .grid = &grid});
+					entity.add(Age{});
 					this->grid(x,y) = entity.get_id();
 				}
 			}
@@ -36,7 +40,12 @@ namespace server {
 
 	
 	
-	void Simulation::tick() {}
+	void Simulation::tick() {
+		ecs.run_system([](Ecs::Entity& entity) {
+			if(Movement* movement = entity.get_if<Movement>()) movement -> move();
+			if(Age* age = entity.get_if<Age>()) age -> incrementAge();
+		});
+	}
 
 
 
