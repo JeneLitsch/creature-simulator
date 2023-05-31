@@ -18,7 +18,6 @@ namespace server {
 	Simulation::Simulation() 
 		: grid{LEVEL_SIZE, EMPTY}
 		, ecs{FIRST_CREATURE} {
-		std::cout << "Server starting...\n";
 		this->rng.seed(42);
 
 		for(std::uint64_t x = 0; x < LEVEL_SIZE.x; ++x) {
