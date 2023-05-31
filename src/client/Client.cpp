@@ -37,6 +37,7 @@ namespace client {
 		this->window.setView(view);
 		this->state_manager.push(std::make_unique<session::Session>());
 		this->window.setFramerateLimit(60);
+		this->window.setVerticalSyncEnabled(true);
 	}
 
 

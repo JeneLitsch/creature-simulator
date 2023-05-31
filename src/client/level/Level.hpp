@@ -2,6 +2,7 @@
 #include "client/core/GameState.hpp"
 #include "server/Simulation.hpp"
 #include "stdxx/reference.hxx"
+#include "stdxx/math.hxx"
 #include "stdxx/chrono.hxx"
 
 namespace client::session {
@@ -22,5 +23,9 @@ namespace client::level {
 		
 		stx::reference<session::Session> session;
 		stx::reference<server::Simulation> simulation;
+
+		constexpr static inline auto camera_speed = 500.f;
+		float camera_zoom = 1.0;
+		stx::position2f camera_center;
 	};
 }
