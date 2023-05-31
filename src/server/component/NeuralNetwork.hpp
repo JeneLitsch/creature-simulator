@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <cstdint>
 
 namespace server{
 	struct MutConfig {
@@ -8,10 +9,11 @@ namespace server{
 		double weight_min = -1.0;
 		double weight_max = 1.0;
 		bool limit_number_of_mutations = false;
-		int mutation_rolls = 2; // = max_mutations
+		int mutation_rolls = 2; // = max mutations per child
 		double chance_per_roll = 0.5;
 		bool limit_weight_change = false;
 		double max_weight_change = 0.25;
+		int max_hidden_nodes = 5;
 	};
 
 	struct NeuralNetwork {
