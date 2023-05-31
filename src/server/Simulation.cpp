@@ -8,12 +8,13 @@
 #include "senses/MetabolismSensor.hpp"
 #include "component/Movement.hpp"
 #include "component/Age.hpp"
+#include "disperse_pheromones.hpp"
 
 namespace server {
 	constexpr std::uint64_t EMPTY = 0;
 	constexpr std::uint64_t FIRST_CREATURE = 256;
 	constexpr stx::size2u LEVEL_SIZE {256, 144};
-	constexpr double spawn_chance = 0.01;
+	constexpr double spawn_chance = 0.001;
 
 
 
@@ -60,6 +61,9 @@ namespace server {
 			if(Age* age = entity.get_if<Age>()) age -> incrementAge();
 		});
 		ecs.run_system(emit_pheromones);
+		for(auto & field : this->pheromone_fields) {
+			disperse_phermones(field);
+		}
 	}
 
 
