@@ -13,7 +13,9 @@ namespace server {
 			direction.x = rand() % 3 - 1;
 			direction.y = rand() % 3 - 1;
 			std::uint64_t& id = (*grid)[position];
-			stx::vector2i new_position = stx::clamp(position + direction, stx::vector2i{0,0}, stx::vector2i {grid->size().x-1, grid->size().y-1});
+			const stx::vector2i from = stx::vector2i{0,0};
+			const stx::vector2i to = stx::vector2i{grid->size()} - stx::vector2i{-1};
+			const stx::vector2i new_position = stx::clamp(position + direction, from, to);
 			std::uint64_t& other_id = (*grid)[new_position];
 			if(other_id < 256){
 				position = new_position;

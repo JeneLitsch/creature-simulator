@@ -26,7 +26,10 @@ namespace server {
 			for(std::uint64_t y = 0; y < LEVEL_SIZE.y; ++y) {
 				if(stx::flip(rng, spawn_chance)) {
 					auto & entity = this->ecs.new_entity();
-					entity.add(Movement{.position = {x, y}, .direction = {0, 0}, .grid = &grid});
+					entity.add(Movement{
+						.position = {static_cast<int>(x), static_cast<int>(y)},
+						.direction = {0, 0},
+						.grid = &grid});
 					entity.add(Age{});
 					this->grid(x,y) = entity.get_id();
 				}

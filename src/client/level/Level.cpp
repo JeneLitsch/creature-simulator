@@ -3,9 +3,6 @@
 #include "render.hpp"
 
 namespace client::level {
-
-
-
 	Level::Level(session::Session & session, server::Simulation & simulation)
 		: session{session}
 		, simulation{simulation}
