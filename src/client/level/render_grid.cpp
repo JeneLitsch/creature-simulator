@@ -6,7 +6,7 @@ namespace client {
 		float cell_size = 1.f; 
 
 		sf::RectangleShape frame;
-		frame.setSize({size.x, size.y}),
+		frame.setSize({static_cast<float>(size.x), static_cast<float>(size.y)}),
 		frame.setOutlineColor(sf::Color::Red);
 		frame.setFillColor(sf::Color::Transparent);
 		frame.setPosition(0,0);
