@@ -14,9 +14,16 @@ namespace server {
 		const sf::Texture & get_texture() const;
 
 	private:
-		std::array<sf::RenderTexture, 2> double_buffer;
+		sf::RenderTexture buffer_raw;
+		sf::RenderTexture buffer_blur_h;
+		sf::RenderTexture buffer_blur_v;
+		sf::RenderTexture buffer_final;
+
 		sf::Image read_buffer;
-		sf::Shader dispersion;
+
+		sf::Shader shader_blur_h;
+		sf::Shader shader_blur_v;
+		
 		bool toggle = false;
 		double stability = 0.9;
 	};
