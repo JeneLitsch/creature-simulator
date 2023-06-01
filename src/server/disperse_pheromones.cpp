@@ -2,8 +2,8 @@
 
 namespace server {
 	namespace {
-		constexpr std::int64_t radius = 5;
-		constexpr float stability = 0.95f;
+		constexpr std::int64_t radius = 1;
+		constexpr float stability = 0.97f;
 
 		float sample_surounding(stx::grid2<float> & field, auto x, auto y) {
 			float value = 0.f;

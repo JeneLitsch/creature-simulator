@@ -6,7 +6,7 @@ add_library(libserver
 )
 
 add_subdirectory(component)
-# add_subdirectory(senses)
+add_subdirectory(senses)
 add_subdirectory(system)
 
 target_link_libraries(libserver

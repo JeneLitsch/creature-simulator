@@ -7,6 +7,7 @@ namespace server {
 
 
 	double PheromoneSensor::sample(const Params & params) const {
-		return this->field->sample(params.position);
+		// return this->field->sample(params.position);
+		return 0;
 	}
 }

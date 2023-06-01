@@ -1,31 +1,23 @@
 #pragma once
-#include <filesystem>
-#include "stdxx/vector.hxx"
-#include "stdxx/grid.hxx"
-#include "stdxx/oop.hxx"
+#include "SFML/Graphics.hpp"
+#include "stdxx/math.hxx"
 
 namespace server {
-	class PheromoneField : stx::non_copyable, stx::non_moveable {
+	class PheromoneField {
 	public:
-		PheromoneField(
-			stx::size2f size,
-			stx::size2u resolution,
-			double fluidity,
-			double persistence
-		);
-		double sample(const stx::position2i & position) const;
+		PheromoneField(stx::size2u size);
 
-		void fill(double value);
-		void set(stx::position2i position, double value);
+		void swap();
+		void emit(stx::position2i position, int radius, sf::Color composition);
+		void display();
 
-		void disperse();
+		const sf::Texture & get_texture() const;
 
-		void save_as_img(const std::filesystem::path & path);
 	private:
-		stx::size2f size;
-		stx::size2u resolution;
-		double fluidity;
-		double persistence;
-		stx::grid2<double> data;
+		std::array<sf::RenderTexture, 2> double_buffer;
+		sf::Image read_buffer;
+		sf::Shader dispersion;
+		bool toggle = false;
+		double stability = 0.9;
 	};
 }

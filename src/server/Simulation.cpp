@@ -20,13 +20,11 @@ namespace server {
 
 	Simulation::Simulation() 
 		: grid{LEVEL_SIZE, EMPTY}
-		, pheromone_fields{
-			stx::grid2<float>{LEVEL_SIZE, 0.f},
-			stx::grid2<float>{LEVEL_SIZE, 0.f},
-			stx::grid2<float>{LEVEL_SIZE, 0.f},
-		}
+		, pheromone_field{LEVEL_SIZE}
 		, ecs{FIRST_CREATURE} {
 		this->rng.seed(42);
+
+		std::uniform_int_distribution<std::uint8_t> channel {0,64};
 
 		for(std::uint64_t x = 0; x < LEVEL_SIZE.x; ++x) {
 			for(std::uint64_t y = 0; y < LEVEL_SIZE.y; ++y) {
@@ -35,12 +33,12 @@ namespace server {
 					entity.add(Movement{
 						.position = {static_cast<int>(x), static_cast<int>(y)},
 						.direction = {0, 0},
-						.grid = &grid}
-					);
+						.grid = &grid
+					});
 					entity.add(PheromoneEmitter{
-						.field = this->pheromone_fields[rng() % 3],
-						.strenght = 0.1f,
-						.distance = 5,
+						.field = this->pheromone_field,
+						.composition = {channel(rng),channel(rng),channel(rng)},
+						.distance = 2,
 					});
 					entity.add(Age{});
 					this->grid(x,y) = entity.get_id();
@@ -60,10 +58,9 @@ namespace server {
 			if(Movement* movement = entity.get_if<Movement>()) movement -> move();
 			if(Age* age = entity.get_if<Age>()) age -> incrementAge();
 		});
+		this->pheromone_field.swap();
 		ecs.run_system(emit_pheromones);
-		for(auto & field : this->pheromone_fields) {
-			disperse_phermones(field);
-		}
+		this->pheromone_field.display();
 	}
 
 
@@ -74,8 +71,8 @@ namespace server {
 
 
 
-	const std::array<stx::grid2<float>, 3> & Simulation::get_pheromone_fields() const {
-		return this->pheromone_fields;
+	const PheromoneField & Simulation::get_pheromone_field() const {
+		return this->pheromone_field;
 	}
 
 

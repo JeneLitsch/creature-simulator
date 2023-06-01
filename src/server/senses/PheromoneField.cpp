@@ -1,91 +1,61 @@
 #include "PheromoneField.hpp"
-#include "stdxx/math.hxx"
-#include "SFML/Graphics.hpp"
 
 namespace server {
-	PheromoneField::PheromoneField(
-		stx::size2f size,
-		stx::size2u resolution,
-		double fluidity,
-		double persistence)
-		: size{size}
-		, resolution{resolution}
-		, fluidity{fluidity}
-		, persistence{persistence}
-		, data{resolution, 0.0} {}
-	
-	
-	
-	double PheromoneField::sample(const stx::position2i & position) const {
-		if(this->data.in_range(position)) {
-			return this->data[position];
+	PheromoneField::PheromoneField(stx::size2u size) {
+		for(auto & tex : this->double_buffer) {
+			tex.create(size.x, size.y);
+			tex.clear(sf::Color::Black);
+			tex.display();
 		}
-		else {
-			return 0.0;
+		this->dispersion.loadFromMemory("assets/shaders/blur.frag", sf::Shader::Type::Fragment);
+	}
+
+
+
+	void PheromoneField::swap() {
+		this->toggle = !this->toggle;
+	}
+
+
+
+	void PheromoneField::emit(stx::position2i position, int radius, sf::Color composition) {
+		sf::CircleShape circle;
+		circle.setRadius(radius);
+		circle.setOrigin(radius, radius);
+		circle.setPosition(position.x, position.y);
+		circle.setFillColor(composition);
+		auto & source = this->double_buffer[this->toggle];
+		source.draw(circle, sf::BlendAdd);
+	}
+
+
+
+	namespace {
+		void disperse(sf::RenderTexture & target, const sf::Texture & source, double stability) {
+			std::uint8_t fade = static_cast<std::uint8_t>(stability * 255);
+			sf::RectangleShape rect;
+			rect.setSize(sf::Vector2f{target.getSize()});
+			rect.setPosition(0,0);
+			rect.setTexture(&source);
+			rect.setFillColor(sf::Color{fade,fade,fade});
+			target.draw(rect);
 		}
 	}
 
 
 
-	void PheromoneField::fill(double value) {
-		for(auto & cell : this->data) {
-			cell = value;
-		}
+	void PheromoneField::display() {
+		auto & source = this->double_buffer[this->toggle];
+		auto & target = this->double_buffer[!this->toggle];
+		source.display();
+		disperse(target, source.getTexture(), this->stability);
+		target.display();
+		this->read_buffer = target.getTexture().copyToImage();
 	}
 
 
 
-	void PheromoneField::set(stx::position2i position, double value) {
-		auto normalized_position = stx::vector2f{position} / stx::vector2f{this->size};
-		auto local_position = normalized_position * stx::vector2f{this->resolution};
-		auto cell = stx::vector2i{position};
-		// std::cout << cell << "\n";
-		if(this->data.in_range(cell)) {
-			this->data[cell] = value;
-		}
-	}
-
-
-
-	void PheromoneField::disperse() {
-		double fluidity = 100;
-		std::int32_t distance_x = (fluidity / this->size.x) * this->resolution.x;
-		std::int32_t distance_y = (fluidity / this->size.y) * this->resolution.y;
-		stx::grid2<double> old = this->data;
-		for(std::int32_t x = 0; x < this->resolution.x; ++x) {
-			for(std::int32_t y = 0; y < this->resolution.y; ++y) {
-				double new_value = 0.0;				
-				for(std::int32_t dx = -distance_x; dx < distance_x; ++dx) {
-					for(std::int32_t dy = -distance_y; dy < distance_y; ++dy) {
-						auto sample_point = stx::clamp(
-							stx::vector2i{x + dx, y + dy},
-							stx::vector2i{0},
-							stx::vector2i{
-								static_cast<std::int32_t>(this->resolution.x) - 1,
-								static_cast<std::int32_t>(this->resolution.y) - 1,
-							}
-						);
-						if(old.in_range(sample_point)) {
-							new_value += old[sample_point] / static_cast<float>(2 * distance_x * 2 * distance_y);
-						}
-					}
-				}
-				auto write_point = stx::vector2i{x, y};
-				this->data[write_point] = new_value * this->persistence;
-			}
-		}
-	}
-
-
-
-	void PheromoneField::save_as_img(const std::filesystem::path & path) {
-		sf::Image image;
-		image.create(this->resolution.x, this->resolution.y, sf::Color::Black);
-		for(std::int32_t x = 0; x < this->resolution.x; ++x) {
-			for(std::int32_t y = 0; y < this->resolution.y; ++y) {
-				image.setPixel(x,y, sf::Color{ static_cast<uint8_t>(this->data(x,y) * 255), 0, 0});
-			}
-		}
-		image.saveToFile(path.string());
+	const sf::Texture & PheromoneField::get_texture() const {
+		return this->double_buffer[this->toggle].getTexture();
 	}
 }

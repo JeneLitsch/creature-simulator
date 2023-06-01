@@ -5,8 +5,8 @@
 
 namespace server {
 	struct PheromoneEmitter {
-		stx::reference<stx::grid2<float>> field;
-		double strenght = 0.0;
+		stx::reference<PheromoneField> field;
+		sf::Color composition;
 		std::int32_t distance = 0;
 	};
 }

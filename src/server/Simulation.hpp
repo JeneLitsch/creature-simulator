@@ -4,6 +4,7 @@
 #include <array>
 #include "stdxx/grid.hxx"
 #include "server/Ecs.hpp"
+#include "server/senses/PheromoneField.hpp"
 
 namespace server {
 	class Simulation {
@@ -11,13 +12,13 @@ namespace server {
 		Simulation();
 		void tick();
 		const stx::grid2<std::uint64_t> & get_grid() const;
-		const std::array<stx::grid2<float>, 3> & get_pheromone_fields() const;
+		const PheromoneField & get_pheromone_field() const;
 		Ecs & get_ecs();
 		~Simulation();
 	private:
 		server::Ecs ecs;
 		std::mt19937_64 rng;
 		stx::grid2<std::uint64_t> grid;
-		std::array<stx::grid2<float>, 3> pheromone_fields; 
+		PheromoneField pheromone_field; 
 	};
 }
