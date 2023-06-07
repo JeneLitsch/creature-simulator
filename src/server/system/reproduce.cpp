@@ -5,7 +5,6 @@ namespace server{
         auto reproduction_info = entity.get_if<Reproduction>();
 
         if(reproduction_info && (reproduction_info->current_cooldown >= reproduction_info->max_cooldown && reproduction_info->wants_to_reproduce)){
-            std::cerr << "test1";
             const stx::vector2i from = stx::vector2i{0,0};
 			const stx::vector2i to = stx::vector2i{
 				static_cast<int>(grid->size().x - 1),
@@ -43,7 +42,6 @@ namespace server{
 				.food = 1.0,
 			});
 			(*grid)(x,y) = child.get_id();
-            std::cerr << "test2";
         }
     }
 }
