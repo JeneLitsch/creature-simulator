@@ -26,8 +26,8 @@ namespace server {
 
 		std::uniform_int_distribution<std::uint8_t> channel {0,64};
 
-		for(std::uint64_t x = 0; x < LEVEL_SIZE.x; ++x) {
-			for(std::uint64_t y = 0; y < LEVEL_SIZE.y; ++y) {
+		for(int x = 0; x < LEVEL_SIZE.x; ++x) {
+			for(int y = 0; y < LEVEL_SIZE.y; ++y) {
 				if(stx::flip(rng, spawn_chance)) {
 					auto & entity = this->ecs.new_entity();
 					auto& transform = entity.add(Transform{.location = {x, y}});
