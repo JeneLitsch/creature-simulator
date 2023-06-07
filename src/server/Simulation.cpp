@@ -30,11 +30,8 @@ namespace server {
 			for(std::uint64_t y = 0; y < LEVEL_SIZE.y; ++y) {
 				if(stx::flip(rng, spawn_chance)) {
 					auto & entity = this->ecs.new_entity();
-					entity.add(Movement{
-						.position = {static_cast<int>(x), static_cast<int>(y)},
-						.direction = {0, 0},
-						.grid = &grid
-					});
+					auto& transform = entity.add(Transform{.location = {x, y}});
+					entity.add(Movement{&transform, &grid});
 					entity.add(PheromoneEmitter{
 						.field = this->pheromone_field,
 						.composition = {channel(rng),channel(rng),channel(rng)},
