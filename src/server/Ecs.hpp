@@ -7,7 +7,8 @@
 #include "server/component/Movement.hpp"
 #include "server/component/Age.hpp"
 #include "server/component/Edible.hpp"
+#include "server/component/Sprite.hpp"
 
 namespace server {
-	using Ecs =	nc::Ecs<PheromoneEmitter, Sensors, Metabolism, Transform, Movement, Age, Edible>;
+	using Ecs =	nc::Ecs<PheromoneEmitter, Sensors, Metabolism, Transform, Movement, Age, Edible, Sprite>;
 }

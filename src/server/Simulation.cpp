@@ -48,6 +48,10 @@ namespace server {
 					auto& transform = entity.add(Transform{
 						.location = {x, y}
 					});
+					entity.add(Sprite {
+						.color = sf::Color::Green,
+					});
+					entity.add(Edible{});
 					this->grid(x,y) = entity.get_id();
 				} break;
 				default:break;
@@ -70,6 +74,7 @@ namespace server {
 		this->pheromone_field.swap();
 		ecs.run_system(emit_pheromones);
 		this->pheromone_field.display();
+		this->ecs.clean_up();
 	}
 
 

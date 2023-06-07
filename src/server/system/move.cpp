@@ -1,4 +1,5 @@
 #include "move.hpp"
+#include "stdxx/log.hxx"
 
 namespace server {
 	void move(Ecs::Entity & entity, Ecs & ecs) {
@@ -25,7 +26,10 @@ namespace server {
 		else {
 			auto & other_entity = ecs.get(other_id);
 			if(other_entity.has<Edible>()) {
+				stx::log[stx::INFO] << "Entity eaten: " << other_id;
+				transform->location = new_position;
 				other_id = std::exchange(id, 0);
+				other_entity.mark_delete();
 			} 
 		}
 	}
