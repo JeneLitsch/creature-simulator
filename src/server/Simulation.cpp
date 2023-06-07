@@ -4,6 +4,7 @@
 #include "system/emit_pheromones.hpp"
 #include "system/metabolize.hpp"
 #include "system/read_sensors.hpp"
+#include "system/move.hpp"
 #include "senses/PheromoneSensor.hpp"
 #include "senses/MetabolismSensor.hpp"
 #include "component/Movement.hpp"
@@ -25,10 +26,12 @@ namespace server {
 		this->rng.seed(42);
 
 		std::uniform_int_distribution<std::uint8_t> channel {0,64};
+		std::uniform_int_distribution<int> type {0,1000};
 
 		for(int x = 0; x < LEVEL_SIZE.x; ++x) {
 			for(int y = 0; y < LEVEL_SIZE.y; ++y) {
-				if(stx::flip(rng, spawn_chance)) {
+				switch (type(rng)) {
+				case 0: {
 					auto & entity = this->ecs.new_entity();
 					auto& transform = entity.add(Transform{.location = {x, y}});
 					entity.add(Movement{&transform, &grid});
@@ -39,6 +42,15 @@ namespace server {
 					});
 					entity.add(Age{});
 					this->grid(x,y) = entity.get_id();
+				} break;
+				case 1: {
+					auto & entity = this->ecs.new_entity();
+					auto& transform = entity.add(Transform{
+						.location = {x, y}
+					});
+					this->grid(x,y) = entity.get_id();
+				} break;
+				default:break;
 				}
 			}
 		}
@@ -51,8 +63,8 @@ namespace server {
 	
 	
 	void Simulation::tick() {
+		ecs.run_system([&] (Ecs::Entity& entity) { move(entity, ecs); });
 		ecs.run_system([](Ecs::Entity& entity) {
-			if(Movement* movement = entity.get_if<Movement>()) movement -> move();
 			if(Age* age = entity.get_if<Age>()) age -> incrementAge();
 		});
 		this->pheromone_field.swap();
