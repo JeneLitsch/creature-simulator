@@ -4,4 +4,5 @@ target_sources(libserver PRIVATE
 	emit_pheromones.cpp
 	metabolize.cpp
 	read_sensors.cpp
+	reproduce.cpp
 )

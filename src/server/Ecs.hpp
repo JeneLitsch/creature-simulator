@@ -6,7 +6,14 @@
 #include "server/component/Transform.hpp"
 #include "server/component/Movement.hpp"
 #include "server/component/Age.hpp"
+#include "server/component/Reproduction.hpp"
+#include "server/component/NeuralNetwork.hpp"
 
 namespace server {
-	using Ecs =	nc::Ecs<PheromoneEmitter, Sensors, Metabolism, Transform, Movement, Age>;
+	using Ecs =	nc::Ecs<PheromoneEmitter, Sensors, Metabolism, Transform, Movement, Age, Reproduction>;
+
+	struct MutConfig{
+		NeuralNetMutConfig neural_net = NeuralNetMutConfig{};
+		ReproductionMutConfig reproduction = ReproductionMutConfig{};
+	};
 }

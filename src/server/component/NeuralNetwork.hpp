@@ -3,7 +3,7 @@
 #include <cstdint>
 
 namespace server{
-	struct MutConfig {
+	struct NeuralNetMutConfig {
 		double mutation_rate_per_weight = 0.05;
 		double chance_for_new_node = 0.01;
 		double weight_min = -1.0;
@@ -20,7 +20,7 @@ namespace server{
 		NeuralNetwork(std::size_t input_size, std::size_t output_size);
 		void addNode();
 		std::vector<double> eval(const std::vector<double> & input) const;
-		NeuralNetwork createChild(std::uint64_t seed, const MutConfig & config);
+		NeuralNetwork createChild(std::uint64_t seed, const NeuralNetMutConfig & config);
 
 		std::vector<std::vector<double>> inputMatrix;
 		std::vector<std::vector<double>> outputMatrix;
@@ -29,5 +29,5 @@ namespace server{
 		std::size_t output_size;
 	};
 
-	void mutate(NeuralNetwork & net, std::uint64_t seed, const MutConfig & config);
+	void mutate(NeuralNetwork & net, std::uint64_t seed, const NeuralNetMutConfig & config);
 }
