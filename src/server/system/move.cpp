@@ -25,11 +25,14 @@ namespace server {
 		}
 		else {
 			auto & other_entity = ecs.get(other_id);
-			if(other_entity.has<Edible>()) {
+			auto * stomach = entity.get_if<Stomach>();
+			auto * edible = other_entity.get_if<Edible>();
+			if(edible && stomach) {
 				stx::log[stx::INFO] << "Entity eaten: " << other_id;
 				transform->location = new_position;
 				other_id = std::exchange(id, 0);
 				other_entity.mark_delete();
+				stomach->food += edible->value;
 			} 
 		}
 	}

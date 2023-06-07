@@ -2,9 +2,8 @@
 
 namespace server {
 	void metabolize(Ecs::Entity & entity) {
-		auto * metabolism = entity.get_if<Metabolism>();
-		if(!metabolism) return;
-		metabolism->change(Substance::CARBON, -0.1);
-		metabolism->change(Substance::WASTE, 0.1);
+		auto * stomach = entity.get_if<Stomach>();
+		if(!stomach) return;
+		stomach->food = std::max(stomach->food - 0.01, 0.0);
 	}
 }
