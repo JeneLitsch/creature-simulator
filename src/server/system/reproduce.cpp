@@ -35,15 +35,13 @@ namespace server{
                 return;
             }
             Ecs::Entity& child = ecs -> new_entity();
-			auto& transform = entity.add(Transform{.location = {x, y}});
+			auto& transform = child.add(Transform{.location = {x, y}});
 			child.add(Movement{&transform, grid});
-			child.add(PheromoneEmitter{
-				.field = *pheromone_field,
-				.composition = {0, 0, 0},
-				.distance = 2,
-			});
 			child.add(Age{});
             child.add(reproduction_info->createChild(rand(), config.reproduction));
+            child.add(Stomach{
+				.food = 1.0,
+			});
 			(*grid)(x,y) = child.get_id();
             std::cerr << "test2";
         }

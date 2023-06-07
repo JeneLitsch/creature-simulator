@@ -2,6 +2,6 @@
 
 namespace server{
     struct Edible{
-        float value;
+        double value = 0.f;
     };
 }
