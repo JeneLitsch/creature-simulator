@@ -30,7 +30,6 @@ add_compile_options(
 	-Wno-unknown-pragmas 
 )
 
-add_subdirectory(libs)
 add_subdirectory(libs/sfml)
 add_subdirectory(src)
 
