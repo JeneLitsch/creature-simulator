@@ -22,6 +22,6 @@ namespace client::core {
 			case sf::Event::Resized: return event_window_resized(event);
 			}
 		}
-        return std::nullopt;
+		return std::nullopt;
 	}
 }
