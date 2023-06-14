@@ -1,7 +1,7 @@
 // Add this to your imconfig.h
 
-#include <SFML/Graphics/Color.hpp>
-#include <SFML/System/Vector2.hpp>
+#include "SFML/Graphics.hpp"
+#include "SFML/System/Vector2.hpp"
 
 #include <cstdint>
 
