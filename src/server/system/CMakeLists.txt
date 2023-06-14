@@ -5,4 +5,5 @@ target_sources(libserver PRIVATE
 	metabolize.cpp
 	move.cpp
 	read_sensors.cpp
+	reproduce.cpp
 )

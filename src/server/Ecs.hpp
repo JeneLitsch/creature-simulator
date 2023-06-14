@@ -6,9 +6,16 @@
 #include "server/component/Transform.hpp"
 #include "server/component/Movement.hpp"
 #include "server/component/Age.hpp"
+#include "server/component/Reproduction.hpp"
+#include "server/component/NeuralNetwork.hpp"
 #include "server/component/Edible.hpp"
 #include "server/component/Sprite.hpp"
 
 namespace server {
-	using Ecs =	nc::Ecs<PheromoneEmitter, Sensors, Stomach, Transform, Movement, Age, Edible, Sprite>;
+	using Ecs =	nc::Ecs<PheromoneEmitter, Sensors, Stomach, Transform, Movement, Age, Reproduction, Edible, Sprite>;
+
+	struct MutConfig{
+		NeuralNetMutConfig neural_net = NeuralNetMutConfig{};
+		ReproductionMutConfig reproduction = ReproductionMutConfig{};
+	};
 }

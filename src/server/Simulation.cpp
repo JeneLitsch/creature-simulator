@@ -6,6 +6,7 @@
 #include "system/read_sensors.hpp"
 #include "system/move.hpp"
 #include "senses/PheromoneSensor.hpp"
+#include "system/reproduce.hpp"
 #include "component/Movement.hpp"
 #include "component/Age.hpp"
 #include "disperse_pheromones.hpp"
@@ -15,7 +16,6 @@ namespace server {
 	constexpr std::uint64_t FIRST_CREATURE = 256;
 	constexpr stx::size2u LEVEL_SIZE {256, 144};
 	constexpr double spawn_chance = 0.001;
-
 
 
 	Simulation::Simulation() 
@@ -37,6 +37,7 @@ namespace server {
 					});
 					entity.add(Movement{&transform, &grid});
 					entity.add(Age{});
+					entity.add(Reproduction{5});
 					entity.add(Stomach{
 						.food = 1.0,
 					});
@@ -55,6 +56,7 @@ namespace server {
 						.composition = sf::Color{0,255,0},
 						.distance = 2,
 					});
+					entity.add(Age{});
 					entity.add(Edible{
 						.value = 0.1,
 					});
@@ -75,8 +77,10 @@ namespace server {
 	void Simulation::tick() {
 		ecs.run_system([&] (Ecs::Entity& entity) { move(entity, ecs); });
 		ecs.run_system(metabolize);
-		ecs.run_system([](Ecs::Entity& entity) {
+		ecs.run_system([this](Ecs::Entity& entity) {
 			if(Age* age = entity.get_if<Age>()) age -> incrementAge();
+			if(Reproduction* reproduction = entity.get_if<Reproduction>()) reproduction -> incrementCooldown();
+			reproduce(&(this -> grid), &(this -> ecs), &(this -> pheromone_field), entity, MutConfig{});
 		});
 		this->pheromone_field.swap();
 		ecs.run_system(emit_pheromones);

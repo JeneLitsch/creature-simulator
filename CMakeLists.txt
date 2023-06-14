@@ -2,10 +2,11 @@ cmake_minimum_required (VERSION 3.8)
 project (creature_simulator)
 option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 
-include_directories(./src)
-include_directories(./libs/stdxx)
-include_directories(./libs/nanocomp)
-include_directories(SYSTEM ./libs/sfml/include)
+include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR}/libs/stdxx)
+include_directories(${CMAKE_SOURCE_DIR}/libs/nanocomp)
+include_directories(${CMAKE_SOURCE_DIR}/imgui)
+
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)

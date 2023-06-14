@@ -73,7 +73,7 @@ namespace server{
 			return out;
 		}
 
-		NeuralNetwork createChild(std::uint64_t seed, const MutConfig & config){
+		NeuralNetwork createChild(std::uint64_t seed, const NeuralNetMutConfig & config){
 			NeuralNetwork child = *this;
 			mutate(child, seed, config);
 			return child;
@@ -91,7 +91,7 @@ namespace server{
 		return interval(rng) < p;
 	}
 
-	double change_weight(double weight_value, std::mt19937_64& rng, const MutConfig & config, std::uniform_real_distribution<double>& weight_interval){
+	double change_weight(double weight_value, std::mt19937_64& rng, const NeuralNetMutConfig & config, std::uniform_real_distribution<double>& weight_interval){
 		if(config.limit_weight_change){
 			double value = std::clamp(weight_interval(rng), weight_value - config.max_weight_change, weight_value + config.max_weight_change);
 			return std::clamp(value, config.weight_min, config.weight_max);
@@ -100,7 +100,7 @@ namespace server{
 
 	}
 
-	void mutate(NeuralNetwork & net, std::uint64_t seed, const MutConfig & config) {
+	void mutate(NeuralNetwork & net, std::uint64_t seed, const NeuralNetMutConfig & config) {
 		std::mt19937_64 rng;
 		rng.seed(seed);
 		if(to_be_mutated(config.chance_for_new_node, rng) && net.hidden_size < config.max_hidden_nodes){
