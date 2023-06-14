@@ -1,4 +1,5 @@
 #include "Event.hpp"
+#include "imgui-SFML.h"
 
 namespace client::core {
 	namespace {
@@ -14,13 +15,13 @@ namespace client::core {
 
 	std::optional<Event> fetch_event(sf::Window & window) {
 		sf::Event event;
-		if(window.pollEvent(event)) {
+		while(window.pollEvent(event)) {
+            ImGui::SFML::ProcessEvent(event);
 			switch (event.type) {
 			case sf::Event::Closed: return event_closed(event);
 			case sf::Event::Resized: return event_window_resized(event);
-			default: return std::nullopt;
 			}
 		}
-		else return std::nullopt;
+        return std::nullopt;
 	}
 }

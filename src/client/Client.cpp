@@ -1,4 +1,6 @@
 #include "Client.hpp"
+#include "imgui-SFML.h"
+#include "imgui.h"
 #include "test/Test.hpp"
 #include "session/Session.hpp"
 #include <iostream>
@@ -40,6 +42,7 @@ namespace client {
 		this->state_manager.push(std::make_unique<session::Session>());
 		this->window.setFramerateLimit(60);
 		this->window.setVerticalSyncEnabled(true);
+        ImGui::SFML::Init(this->window);
 	}
 
 
@@ -54,17 +57,23 @@ namespace client {
 				this->state_manager.events(*event);
 			}
 
+            ImGui::SFML::Update(this->window, this->now);
 			this->then = this->now;
 			this->now = this->clock.getElapsedTime();
 
 			const auto dt = (this->now - this->then).asSeconds();
 			// std::cout << (1.f / dt) << "\n";
 
+            ImGui::Begin("hello World!");
+            ImGui::Button("Button!");
+            ImGui::End();
 			this->state_manager.update(dt);
 			this->window.clear(sf::Color::Black);
 			this->state_manager.render(this->window);
+            ImGui::SFML::Render(this->window);
 			this->window.display();
 		}
+        ImGui::SFML::Shutdown();
 	}
 
 

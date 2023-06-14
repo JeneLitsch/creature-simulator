@@ -5,7 +5,7 @@ option(BUILD_SHARED_LIBS "Build using shared libraries" OFF)
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/libs/stdxx)
 include_directories(${CMAKE_SOURCE_DIR}/libs/nanocomp)
-include_directories(${CMAKE_SOURCE_DIR}/imgui)
+include_directories(${CMAKE_SOURCE_DIR}/src/shared/imgui)
 
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
