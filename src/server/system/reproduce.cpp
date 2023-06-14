@@ -13,8 +13,8 @@ namespace server{
             Transform* old_transform = entity.get_if<Transform>();
             stx::vector2i new_position;
             bool position_found = false;
-            uint64_t x;
-            uint64_t y;
+            int x;
+            int y;
             for(int i = -1; i <= 1; ++i) {
 			    for(int j = -1; j <= 1; ++j) {
                     new_position = stx::clamp(old_transform -> location + stx::vector2i{i, j}, from, to);
