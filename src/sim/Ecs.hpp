@@ -10,9 +10,23 @@
 #include "sim/component/NeuralNetwork.hpp"
 #include "sim/component/Edible.hpp"
 #include "sim/component/Sprite.hpp"
+#include "sim/component/EntitySensor.hpp"
 
 namespace sim {
-	using Ecs =	nc::Ecs<PheromoneEmitter, Sensors, Stomach, Transform, Movement, Age, Reproduction, Edible, Sprite>;
+	using Ecs =	nc::Ecs<
+		PheromoneEmitter, 
+		Sensors, 
+		Stomach, 
+		Transform, 
+		Movement, 
+		Age, 
+		Reproduction, 
+		Edible, 
+		Sprite, 
+		EntitySensor<Movement, EntitySensorAxis::front_back>, 
+		EntitySensor<Movement, EntitySensorAxis::left_right>, 
+		EntitySensor<Edible, EntitySensorAxis::front_back>, 
+		EntitySensor<Edible, EntitySensorAxis::left_right>>;
 
 	struct MutConfig{
 		NeuralNetMutConfig neural_net = NeuralNetMutConfig{};
