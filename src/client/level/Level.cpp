@@ -3,7 +3,7 @@
 #include "render.hpp"
 
 namespace client::level {
-	Level::Level(session::Session & session, server::Simulation & simulation)
+	Level::Level(session::Session & session, sim::Simulation & simulation)
 		: session{session}
 		, simulation{simulation}
 		, tick_timer{1.0/10.0} {

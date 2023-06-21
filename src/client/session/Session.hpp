@@ -1,7 +1,7 @@
 #pragma once
 #include <future>
 #include "stdxx/chrono.hxx"
-#include "server/Simulation.hpp"
+#include "sim/Simulation.hpp"
 #include "client/core/GameState.hpp"
 
 namespace client::session {
@@ -15,6 +15,6 @@ namespace client::session {
 	protected:
 		virtual void init() override {}
 	private:
-		server::Simulation simulation;
+		sim::Simulation simulation;
 	};
 }
