@@ -1,7 +1,7 @@
 #include "reproduce.hpp"
 
 namespace sim{
-    void reproduce(stx::grid2<std::uint64_t>* grid, Ecs* ecs, PheromoneField* pheromone_field, Ecs::Entity& entity, MutConfig config){
+    void reproduce(stx::grid2<std::uint64_t>* grid, Ecs* ecs, PheromoneField* pheromone_field, Ecs::Entity& entity, Config config){
         auto reproduction_info = entity.get_if<Reproduction>();
 
         if(reproduction_info && (reproduction_info->current_cooldown >= reproduction_info->max_cooldown && reproduction_info->wants_to_reproduce)){

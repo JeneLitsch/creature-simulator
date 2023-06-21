@@ -15,7 +15,8 @@ namespace sim{
     struct EntitySensor{
         Transform* transform;
         int radius;
+        double value;
 
-        EntitySensor(Transform* transform) : transform(transform){}
+        EntitySensor(Transform* transform, int radius) : transform(transform), radius(radius){}
     };
 }

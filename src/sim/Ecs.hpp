@@ -23,13 +23,19 @@ namespace sim {
 		Reproduction, 
 		Edible, 
 		Sprite, 
-		EntitySensor<Movement, EntitySensorAxis::front_back>, 
-		EntitySensor<Movement, EntitySensorAxis::left_right>, 
+		EntitySensor<Stomach, EntitySensorAxis::front_back>, 
+		EntitySensor<Stomach, EntitySensorAxis::left_right>, 
 		EntitySensor<Edible, EntitySensorAxis::front_back>, 
 		EntitySensor<Edible, EntitySensorAxis::left_right>>;
 
-	struct MutConfig{
+	struct EntitySensorConfig{
+        double sensibility = 20.0;
+    };
+
+	struct Config{
 		NeuralNetMutConfig neural_net = NeuralNetMutConfig{};
 		ReproductionMutConfig reproduction = ReproductionMutConfig{};
+		EntitySensorConfig creature_sensor = EntitySensorConfig{};
+		EntitySensorConfig food_sensor = EntitySensorConfig{};
 	};
 }
