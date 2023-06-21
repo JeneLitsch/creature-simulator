@@ -85,7 +85,7 @@ namespace sim {
 		ecs.run_system([this](Ecs::Entity& entity) {
 			if(Age* age = entity.get_if<Age>()) age -> incrementAge();
 			if(Reproduction* reproduction = entity.get_if<Reproduction>()) reproduction -> incrementCooldown();
-			reproduce(&(this -> grid), &(this -> ecs), &(this -> pheromone_field), entity, MutConfig{});
+			reproduce(&(this -> grid), &(this -> ecs), &(this -> pheromone_field), entity, Config{});
 		});
 		this->pheromone_field.swap();
 		ecs.run_system(emit_pheromones);

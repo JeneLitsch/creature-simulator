@@ -17,6 +17,8 @@ namespace sim {
 		auto & entity = create_entity(ecs, position, grid);
 		entity.add(FoodSpawn{
 			.spawn_radius = 5,
+			.spawn_cooldown = 100,
+			.spawn_counter = 0,
 		});
 		entity.add(Sprite{
 			.color = sf::Color::Red,

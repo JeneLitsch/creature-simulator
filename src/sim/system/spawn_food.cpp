@@ -8,6 +8,9 @@ namespace sim {
 		if(!food_spawn) return;
 		if(!transform) return;
 
+		if(food_spawn->spawn_counter++ < food_spawn->spawn_cooldown) return;
+		food_spawn->spawn_counter = 0;
+
 		std::uniform_int_distribution<int> dist{
 			-food_spawn->spawn_radius,
 			+food_spawn->spawn_radius
