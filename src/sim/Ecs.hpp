@@ -10,6 +10,7 @@
 #include "sim/component/NeuralNetwork.hpp"
 #include "sim/component/Edible.hpp"
 #include "sim/component/Sprite.hpp"
+#include "sim/component/FoodSpawn.hxx"
 #include "sim/component/EntitySensor.hpp"
 
 namespace sim {
@@ -22,6 +23,7 @@ namespace sim {
 		Age, 
 		Reproduction, 
 		Edible, 
+		FoodSpawn,
 		Sprite, 
 		EntitySensor<Stomach, EntitySensorAxis::front_back>, 
 		EntitySensor<Stomach, EntitySensorAxis::left_right>, 
