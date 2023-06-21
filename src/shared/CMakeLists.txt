@@ -7,3 +7,10 @@ target_link_libraries(libshared
 	"pthread"
 )
 
+target_link_libraries(libshared
+	sfml-graphics
+	sfml-audio
+	sfml-network
+	sfml-system
+	sfml-window
+)
