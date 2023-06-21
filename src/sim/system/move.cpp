@@ -8,6 +8,7 @@ namespace sim {
 
 		if(!transform) return;
 		if(!movement) return;
+		
 
 		movement->direction.x = rand() % 3 - 1;
 		movement->direction.y = rand() % 3 - 1;
@@ -30,7 +31,8 @@ namespace sim {
 			if(edible && stomach) {
 				stx::log[stx::INFO] << "Entity eaten: " << other_id;
 				transform->location = new_position;
-				other_id = std::exchange(id, 0);
+				other_id = id;
+				id = 0;
 				other_entity.mark_delete();
 				stomach->food += edible->value;
 			} 
