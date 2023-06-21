@@ -36,12 +36,6 @@ namespace sim{
         double sensorVal = std::tanh((sum / sensor->radius) * config.sensibility);
 
         sensor->value = sensorVal;
-        if(axis == EntitySensorAxis::front_back){
-            std::cout << "front_back: " << sensorVal << "\n";
-        }
-        else{
-            std::cout << "left_right: " << sensorVal << "\n";
-        }
     }
 
     void visitNeighborhood(stx::grid2<std::uint64_t>& grid, stx::vector2i loc, int radius, std::function<void(stx::vector2i)> f)
