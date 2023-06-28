@@ -36,8 +36,8 @@ namespace sim {
 		});
 		entity.add(PheromoneEmitter{
 			.field = phero_field,
-			.distance = 5,
 			.composition = sf::Color{0, 4, 0},
+			.distance = 5,
 		});
 		return entity;
 	}
