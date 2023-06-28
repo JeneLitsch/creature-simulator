@@ -14,6 +14,11 @@
 #include "sim/component/EntitySensor.hpp"
 
 namespace sim {
+	using StomachSensorFB = EntitySensor<Stomach, EntitySensorAxis::front_back>;
+	using StomachSensorLR = EntitySensor<Stomach, EntitySensorAxis::left_right>;
+	using EdibleSensorFB = EntitySensor<Edible, EntitySensorAxis::front_back>;
+	using EdibleSensorLR = EntitySensor<Edible, EntitySensorAxis::left_right>;
+
 	using Ecs =	nc::Ecs<
 		PheromoneEmitter, 
 		Sensors, 
@@ -25,10 +30,11 @@ namespace sim {
 		Edible, 
 		FoodSpawn,
 		Sprite, 
-		EntitySensor<Stomach, EntitySensorAxis::front_back>, 
-		EntitySensor<Stomach, EntitySensorAxis::left_right>, 
-		EntitySensor<Edible, EntitySensorAxis::front_back>, 
-		EntitySensor<Edible, EntitySensorAxis::left_right>>;
+		StomachSensorFB, 
+		StomachSensorLR, 
+		EdibleSensorFB, 
+		EdibleSensorLR
+	>;
 
 	struct EntitySensorConfig{
         double sensibility = 20.0;
