@@ -1,7 +1,6 @@
 #pragma once
 #include "nanocomp/nanocomp.hpp"
 #include "sim/component/PheromoneEmitter.hpp"
-#include "sim/component/Sensors.hpp"
 #include "sim/component/Stomach.hpp"
 #include "sim/component/Transform.hpp"
 #include "sim/component/Movement.hpp"
@@ -16,7 +15,6 @@
 namespace sim {
 	using Ecs =	nc::Ecs<
 		PheromoneEmitter, 
-		Sensors, 
 		Stomach, 
 		Transform, 
 		Movement, 
@@ -40,4 +38,10 @@ namespace sim {
 		EntitySensorConfig creature_sensor = EntitySensorConfig{};
 		EntitySensorConfig food_sensor = EntitySensorConfig{};
 	};
+
+
+	using StomachSensorFB = EntitySensor<Stomach, EntitySensorAxis::front_back>;
+	using StomachSensorLR = EntitySensor<Stomach, EntitySensorAxis::left_right>;
+	using EdibleSensorFB = EntitySensor<Edible, EntitySensorAxis::front_back>;
+	using EdibleSensorLR = EntitySensor<Edible, EntitySensorAxis::left_right>;
 }
