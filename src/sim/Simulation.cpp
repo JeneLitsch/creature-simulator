@@ -111,4 +111,10 @@ namespace sim {
 	Ecs & Simulation::get_ecs() {
 		return this->ecs;
 	}
+
+
+
+	const Ecs & Simulation::get_ecs() const {
+		return this->ecs;
+	}
 }

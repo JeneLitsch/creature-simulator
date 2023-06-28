@@ -1,4 +1,6 @@
 #include "export.hxx"
+#include "Simulation.hpp"
+#include "shared/hex.hpp"
 
 namespace sim {
 	namespace {
@@ -87,9 +89,7 @@ namespace sim {
 		stx::json::node node;
 		stx::json::write_iterator json{node};
 		json = stx::json::object;
-
-		json["id"] = entity.get_id();
-
+		
 		export_if<PheromoneEmitter>(entity, json["pheromone_wmitter"]);
 		export_if<Stomach>(entity, json["stomach"]);
 		export_if<Transform>(entity, json["transform"]);
@@ -107,15 +107,43 @@ namespace sim {
 
 
 
-	stx::json::node export_ecs(const Ecs & ecs) {
+	namespace {
+		stx::json::node export_ecs(const Ecs & ecs) {
+			stx::json::node node;
+			stx::json::write_iterator json{node};
+			stx::json::write_iterator entities = json["entities"] = stx::json::array;
+
+			ecs.run_system([&] (const Ecs::Entity & entity) {
+				stx::json::node entity_node;
+				stx::json::write_iterator entity_json{entity_node};
+				entity_json["id"] = entity.get_id();
+				entity_json["entity"] = export_entity(entity);
+				entities.push_back(entity_node);
+			});
+
+			return node;
+		}
+
+
+
+		stx::json::node export_pheromone_field(const PheromoneField & field) {
+			stx::json::node node;
+			stx::json::write_iterator json{node};
+			auto image = field.get_texture().copyToImage();
+			auto begin = image.getPixelsPtr();
+			auto size = image.getSize().x + image.getSize().y * 4;
+			json = hex::encode(begin, size);
+			return node;
+		}
+	}
+
+
+
+	stx::json::node export_sim(const Simulation & sim) {
 		stx::json::node node;
 		stx::json::write_iterator json{node};
-		stx::json::write_iterator entities = json["entities"] = stx::json::array;
-
-		ecs.run_system([&] (const Ecs::Entity & entity) {
-			entities.push_back(export_entity(entity));
-		});
-
+		json["ecs"] = export_ecs(sim.get_ecs());
+		json["pheromones"] = export_pheromone_field(sim.get_pheromone_field());
 		return node;
 	}
 }
