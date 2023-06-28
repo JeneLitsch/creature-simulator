@@ -67,11 +67,16 @@ namespace sim {
 			json["color"].push_back(comp.color.r);
 			json["color"].push_back(comp.color.g);
 			json["color"].push_back(comp.color.b);
-		}	
+		}
 
 
 
-		void export_comp(stx::json::write_iterator, const auto &) {}	
+
+		template<typename SensedComp, EntitySensorAxis axis>
+		void export_comp(stx::json::write_iterator json, const EntitySensor<SensedComp, axis> & comp) {
+			json["radius"] = comp.radius;
+			json["value"] = comp.value;
+		}
 
 
 
@@ -100,7 +105,10 @@ namespace sim {
 		export_if<FoodSpawn>(entity, json["food_spawn"]);
 		export_if<Sprite>(entity, json["sprite"]);
 
-		// TODO: Sensors
+		export_if<StomachSensorFB>(entity, json["stomach_sensor_fb"]);
+		export_if<StomachSensorLR>(entity, json["stomach_sensor_lr"]);
+		export_if<EdibleSensorFB>(entity, json["edible_sensor_fb"]);
+		export_if<EdibleSensorLR>(entity, json["edible_sensor_lr"]);
 	
 		return node;
 	}

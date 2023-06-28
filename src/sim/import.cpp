@@ -144,6 +144,24 @@ namespace sim {
 
 
 
+		template<typename Sensor>
+		Sensor import_entity_sensor(
+			stx::json::iterator json,
+			Ecs::Entity & entity) {
+
+			auto * transform = entity.get_if<Transform>();
+			if(!transform) throw stx::json::format_error { "Cannot add Movement without Transform" };
+
+			auto radius = json["radius"].i32();
+			auto value = json["value"].number();
+			if(!radius) throw stx::json::format_error { "Cannot read EntitySensor<...>::radius" };
+			if(!value) throw stx::json::format_error { "Cannot read EntitySensor<...>::value" };
+
+			return Sensor { transform, *radius };
+		}
+
+
+
 		void import_if(Ecs::Entity & entity, auto json, auto import, auto && ...args) {
 			if(json && !json.null()) {
 				entity.add(import(json, args...));
@@ -168,6 +186,11 @@ namespace sim {
 			import_if(entity, json["edible"], import_edible);
 			import_if(entity, json["food_spawn"], import_food_spawn);
 			import_if(entity, json["sprite"], import_sprite);
+
+			import_if(entity, json["stomach_sensor_fb"], import_entity_sensor<StomachSensorFB>, entity);
+			import_if(entity, json["stomach_sensor_lr"], import_entity_sensor<StomachSensorLR>, entity);
+			import_if(entity, json["edible_sensor_fb"], import_entity_sensor<EdibleSensorFB>, entity);
+			import_if(entity, json["edible_sensor_lr"], import_entity_sensor<EdibleSensorLR>, entity);
 		};
 	}
 
