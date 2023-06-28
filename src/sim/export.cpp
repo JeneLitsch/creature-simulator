@@ -139,7 +139,7 @@ namespace sim {
 			stx::json::write_iterator json{node};
 			auto image = field.get_texture().copyToImage();
 			auto begin = image.getPixelsPtr();
-			auto size = image.getSize().x + image.getSize().y * 4;
+			auto size = (image.getSize().x * image.getSize().y) * 4;
 			json = hex::encode(begin, size);
 			return node;
 		}

@@ -1,6 +1,7 @@
 #include "import.hpp"
 #include "Simulation.hpp"
 #include "stdxx/log.hxx"
+#include "shared/hex.hpp"
 
 namespace sim {
 	namespace {
@@ -204,6 +205,9 @@ namespace sim {
 
 	std::unique_ptr<Simulation> import_simulation(stx::json::iterator json) {
 		auto sim = std::make_unique<Simulation>();
+		auto pheromones = hex::decode(json["pheromones"].force_string());
+		std::cout << std::size(pheromones) << "\n";
+		sim->get_pheromone_field().set_data(pheromones);
 		for(const auto entity : stx::json::to_array(json["entities"])) {
 			auto id = entity["id"].u64();
 			if(!id) throw stx::json::format_error {"Cannot read entity id"};
