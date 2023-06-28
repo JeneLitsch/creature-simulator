@@ -65,7 +65,7 @@ namespace sim {
 
 		void export_comp(stx::json::write_iterator json, const Sprite & comp) {
 			json["color"].push_back(comp.color.r);
-			json["color"].push_back(comp.color.b);
+			json["color"].push_back(comp.color.g);
 			json["color"].push_back(comp.color.b);
 		}	
 

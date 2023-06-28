@@ -1,5 +1,6 @@
 #include "import.hpp"
 #include "Simulation.hpp"
+#include "stdxx/log.hxx"
 
 namespace sim {
 	namespace {
@@ -29,16 +30,16 @@ namespace sim {
 			auto distance = json["distance"].i32();
 			if(!distance) throw stx::json::format_error {"Cannot read PheromoneEmitter::distance"};
 			return PheromoneEmitter {
+				.field = field,
 				.composition = import_color(json["composition"]),
 				.distance = *distance,
-				.field = field,
 			};
 		}
 
 
 
 		Stomach import_stomach(stx::json::iterator json) {
-			auto food = json["value"].number();
+			auto food = json["food"].number();
 			if(!food) throw stx::json::format_error { "Cannot read Stomach::food" };
 			return Stomach {
 				.food = *food,
@@ -47,10 +48,19 @@ namespace sim {
 
 
 
-		Transform import_transform(stx::json::iterator json) {
+		Transform import_transform(
+			stx::json::iterator json,
+			Ecs::Entity & entity,
+			stx::reference<stx::grid2<std::uint64_t>> grid) {
+			
+			auto location = import_vector2i(json["location"]);
+			auto rotation = import_vector2i(json["rotation"]);
+
+			(*grid)[location] = entity.get_id();
+
 			return Transform {
-				.location = import_vector2i(json["location"]), 
-				.rotation = import_vector2i(json["rotation"]),
+				.location = location, 
+				.rotation = rotation,
 			};
 		}
 
@@ -69,7 +79,7 @@ namespace sim {
 
 
 		Age import_age(stx::json::iterator json) {
-			auto age = json["distance"].u64();
+			auto age = json["age"].u64();
 			if(!age) throw stx::json::format_error { "Cannot read Age::age" };
 			return Age {
 				.age = *age,
@@ -87,7 +97,12 @@ namespace sim {
 			if(!max_cooldown) throw stx::json::format_error { "Cannot read Reproduction::max_cooldown" };
 			if(!wants_to_reproduce) throw stx::json::format_error { "Cannot read Reproduction::wants_to_reproduce" };
 			
-			return Reproduction { *current_cooldown, *max_cooldown, *wants_to_reproduce };
+			// std::cout << "\n";
+			// std::cout << *current_cooldown << "\n";
+			// std::cout << *max_cooldown << "\n";
+			// std::cout << *wants_to_reproduce << "\n";
+
+			return Reproduction { *max_cooldown, *current_cooldown, *wants_to_reproduce };
 		}
 
 
@@ -113,9 +128,9 @@ namespace sim {
 			if(!spawn_radius) throw stx::json::format_error { "Cannot read FoodSpawn::spawn_radius" };
 		
 			return FoodSpawn {
+				.spawn_radius = *spawn_radius,
 				.spawn_cooldown = *spawn_cooldown,
 				.spawn_counter = *spawn_counter,
-				.spawn_radius = *spawn_radius,
 			};
 		}
 
@@ -130,7 +145,7 @@ namespace sim {
 
 
 		void import_if(Ecs::Entity & entity, auto json, auto import, auto && ...args) {
-			if(json) {
+			if(json && !json.null()) {
 				entity.add(import(json, args...));
 			}
 		}
@@ -145,7 +160,7 @@ namespace sim {
 			auto & entity = override_id ? ecs.new_entity(*override_id) : ecs.new_entity();
 
 			import_if(entity, json["pheromone_emitter"], import_phero_emitter, phero_field);
-			import_if(entity, json["transform"], import_transform);
+			import_if(entity, json["transform"], import_transform, entity, grid);
 			import_if(entity, json["stomach"], import_stomach);
 			import_if(entity, json["movement"], import_movement, entity, grid);
 			import_if(entity, json["age"], import_age);
@@ -171,5 +186,6 @@ namespace sim {
 			if(!id) throw stx::json::format_error {"Cannot read entity id"};
 			import_entity(entity["entity"], *sim, id);
 		}
+		return sim;
 	}
 }

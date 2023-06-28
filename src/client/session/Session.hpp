@@ -8,6 +8,7 @@ namespace client::session {
 	class Session : public core::GameState{
 	public:
 		Session ();
+		Session (const std::filesystem::path & path);
 		void update(double dt) override;
 		void render(sf::RenderTarget & render_target) override;
 		virtual ~Session () = default;

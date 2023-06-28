@@ -1,10 +1,19 @@
 #include "Session.hpp"
 #include "client/level/Level.hpp"
 #include "sim/export.hxx"
+#include "sim/import.hpp"
+#include <fstream>
 
 namespace client::session {
-	Session::Session () {
+	Session::Session() {
 		this->simulation = std::make_unique<sim::Simulation>();
+	}
+
+
+
+	Session::Session(const std::filesystem::path & path) {
+		stx::json::node json = stx::json::from_file(path);
+		this->simulation = sim::import_simulation(json);
 	}
 
 

@@ -34,6 +34,11 @@ namespace client::level {
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F5)) {
 			this->session->export_sim("tmp/export/sim.json");
 		}
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F9)) {
+			this->pop();
+			this->pop();
+			this->push(std::make_unique<session::Session>("tmp/export/sim.json"));
+		}
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F6)) {
 			this->session->get_sim().get_ecs().run_system([&] (const sim::Ecs::Entity & entity) {
 				auto id = entity.get_id();
