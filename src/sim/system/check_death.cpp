@@ -1,4 +1,4 @@
-#pragma once
+#include "stdxx/log.hxx"
 #include "check_death.hpp"
 #include "sim/Simulation.hpp"
 

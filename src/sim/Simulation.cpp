@@ -45,6 +45,7 @@ namespace sim {
 						.food = 1.0,
 					});
 					entity.add(Health{});
+					this->grid(x,y) = entity.get_id();
 				} break;
 				case 1: {
 					// auto & entity = this->ecs.new_entity();
@@ -116,8 +117,8 @@ namespace sim {
 	}
 
 	void Simulation::kill_entity(Ecs::Entity& entity){
-		Transform* transform = entity.get_if<Transform>();
-		this -> grid[transform->location] = 0;
+		Transform & transform = entity.get<Transform>();
+		this->grid[transform.location] = 0;
 		entity.mark_delete();
 	}
 }
