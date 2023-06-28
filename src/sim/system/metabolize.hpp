@@ -2,5 +2,5 @@
 #include "sim/Ecs.hpp"
 
 namespace sim {
-	void metabolize(Ecs::Entity & entity);
+	void metabolize(Ecs::Entity & entity, const MetabolismConfig& config);
 }

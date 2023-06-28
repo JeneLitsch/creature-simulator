@@ -1,8 +1,9 @@
 #include "move.hpp"
 #include "stdxx/log.hxx"
+#include "sim/Simulation.hpp"
 
 namespace sim {
-	void move(Ecs::Entity & entity, Ecs & ecs) {
+	void move(Ecs::Entity & entity, Ecs & ecs, Simulation& simulation) {
 		auto * transform = entity.get_if<Transform>();
 		auto * movement = entity.get_if<Movement>();
 
@@ -32,8 +33,7 @@ namespace sim {
 				stx::log[stx::INFO] << "Entity eaten: " << other_id;
 				transform->location = new_position;
 				other_id = id;
-				id = 0;
-				other_entity.mark_delete();
+				simulation.kill_entity(other_entity);
 				stomach->food += edible->value;
 			} 
 		}

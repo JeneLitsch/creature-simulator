@@ -2,5 +2,6 @@
 #include "sim/Ecs.hpp"
 
 namespace sim {
-	void move(Ecs::Entity & entity, Ecs & ecs);
+	class Simulation;
+	void move(Ecs::Entity & entity, Ecs & ecs, Simulation& simulation);
 }

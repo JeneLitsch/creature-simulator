@@ -7,4 +7,5 @@ target_sources(libsim PRIVATE
 	read_sensors.cpp
 	reproduce.cpp
 	spawn_food.cpp
+	check_death.cpp
 )

@@ -12,6 +12,7 @@
 #include "sim/component/Sprite.hpp"
 #include "sim/component/FoodSpawn.hxx"
 #include "sim/component/EntitySensor.hpp"
+#include "sim/component/Health.hpp"
 
 namespace sim {
 	using StomachSensorFB = EntitySensor<Stomach, EntitySensorAxis::front_back>;
@@ -33,17 +34,31 @@ namespace sim {
 		StomachSensorFB, 
 		StomachSensorLR, 
 		EdibleSensorFB, 
-		EdibleSensorLR
+		EdibleSensorLR,
+		Health
 	>;
 
 	struct EntitySensorConfig{
         double sensibility = 20.0;
     };
 
+	struct MetabolismConfig{
+		// How much food always gets removed from the Stomach per tick
+		double naturalfoodDecayPerTick = 0.01;
+		// How much Health gets removed per Tick while the Stomach is empty
+		double starvingHealthDecayPerTick = 0.02;
+		// How much Health gets regenerated per Tick, when not starving
+		double healthRegenPerTick = 0.01;
+		// How much food gets used to regenerate Health
+		double foodPerHealthRegenerated = 1.0;
+	};
+
 	struct Config{
+		uint64_t maxAge = 3000;
 		NeuralNetMutConfig neural_net = NeuralNetMutConfig{};
 		ReproductionMutConfig reproduction = ReproductionMutConfig{};
 		EntitySensorConfig creature_sensor = EntitySensorConfig{};
 		EntitySensorConfig food_sensor = EntitySensorConfig{};
+		MetabolismConfig metabolism = MetabolismConfig{};
 	};
 }
