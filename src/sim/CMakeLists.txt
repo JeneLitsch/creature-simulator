@@ -4,6 +4,7 @@ add_library(libsim
 	Simulation.cpp
 	disperse_pheromones.cpp
 	export.cxx
+	import.cpp
 	create.cpp
 )
 

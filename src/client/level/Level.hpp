@@ -13,7 +13,7 @@ namespace client::level {
 
 	class Level : public core::GameState {
 	public:
-		Level(session::Session & session, sim::Simulation & simulation);
+		Level(session::Session & session);
 		virtual void update(double dt) override;
 		virtual void render(sf::RenderTarget & render_target) override;
 	protected:
@@ -22,7 +22,6 @@ namespace client::level {
 		stx::chrono::every tick_timer;
 		
 		stx::reference<session::Session> session;
-		stx::reference<sim::Simulation> simulation;
 
 		constexpr static inline auto camera_speed = 500.f;
 		float camera_zoom = 1.0;

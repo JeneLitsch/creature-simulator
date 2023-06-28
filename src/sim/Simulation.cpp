@@ -95,10 +95,21 @@ namespace sim {
 
 
 
+	stx::grid2<std::uint64_t> & Simulation::get_grid() {
+		return this->grid;
+	}
+
+
+	
 	const stx::grid2<std::uint64_t> & Simulation::get_grid() const {
 		return this->grid;
 	}
 
+
+
+	PheromoneField & Simulation::get_pheromone_field() {
+		return this->pheromone_field;
+	}
 
 
 	const PheromoneField & Simulation::get_pheromone_field() const {

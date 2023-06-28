@@ -15,9 +15,13 @@ namespace client::session {
 		void export_entity(const std::filesystem::path & path, std::uint64_t id) const;
 		void export_sim(const std::filesystem::path & path) const;
 
+		void tick();
+
+		const sim::Simulation & get_sim() const;
+
 	protected:
 		virtual void init() override {}
 	private:
-		sim::Simulation simulation;
+		std::unique_ptr<sim::Simulation> simulation;
 	};
 }

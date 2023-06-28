@@ -1,10 +1,10 @@
 #include "render.hpp"
 
 namespace client {
-	void render_grid(sf::RenderTarget & target, const stx::grid2<std::uint64_t> & grid, sim::Ecs & ecs) {
+	void render_grid(sf::RenderTarget & target, const stx::grid2<std::uint64_t> & grid, const sim::Ecs & ecs) {
 		sf::VertexArray vertecies;
 		vertecies.setPrimitiveType(sf::Quads);
-		ecs.run_system([&] (sim::Ecs::Entity & entity) {
+		ecs.run_system([&] (const sim::Ecs::Entity & entity) {
 			auto * sprite = entity.get_if<sim::Sprite>();
 			const sf::Color color = sprite ? sprite->color : sf::Color::White;
 			constexpr static float cell_size = 1.f; 
@@ -20,7 +20,7 @@ namespace client {
 
 
 
-	void render_frame(sf::RenderTarget & target, const stx::grid2<std::uint64_t> & grid, sim::Ecs & ecs) {
+	void render_frame(sf::RenderTarget & target, const stx::grid2<std::uint64_t> & grid, const sim::Ecs & ecs) {
 		auto size = grid.size();
 		sf::RectangleShape frame;
 		frame.setSize({static_cast<float>(size.x), static_cast<float>(size.y)}),
