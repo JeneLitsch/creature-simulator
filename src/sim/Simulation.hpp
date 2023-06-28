@@ -3,6 +3,7 @@
 #include <random>
 #include <array>
 #include "stdxx/grid.hxx"
+#include "stdxx/json.hxx"
 #include "sim/Ecs.hpp"
 #include "sim/senses/PheromoneField.hpp"
 
@@ -14,6 +15,7 @@ namespace sim {
 		const stx::grid2<std::uint64_t> & get_grid() const;
 		const PheromoneField & get_pheromone_field() const;
 		Ecs & get_ecs();
+
 		~Simulation();
 	private:
 		sim::Ecs ecs;

@@ -1,6 +1,7 @@
 #include "Level.hpp"
 #include "client/session/Session.hpp"
 #include "render.hpp"
+#include "sim/export.hxx"
 
 namespace client::level {
 	Level::Level(session::Session & session, sim::Simulation & simulation)
@@ -31,6 +32,12 @@ namespace client::level {
 		}
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
 			this->camera_zoom += this->camera_zoom * dt;
+		}
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F5)) {
+			std::ofstream ofs{"tmp/export.json"};
+			auto json = sim::export_ecs(simulation->get_ecs());
+			auto formatted = stx::json::format(json, stx::json::pretty);
+			ofs << formatted;
 		}
 
 		this->camera_center = stx::clamp(
