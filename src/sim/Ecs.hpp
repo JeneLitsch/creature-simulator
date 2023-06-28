@@ -44,10 +44,4 @@ namespace sim {
 		EntitySensorConfig creature_sensor = EntitySensorConfig{};
 		EntitySensorConfig food_sensor = EntitySensorConfig{};
 	};
-
-
-	using StomachSensorFB = EntitySensor<Stomach, EntitySensorAxis::front_back>;
-	using StomachSensorLR = EntitySensor<Stomach, EntitySensorAxis::left_right>;
-	using EdibleSensorFB = EntitySensor<Edible, EntitySensorAxis::front_back>;
-	using EdibleSensorLR = EntitySensor<Edible, EntitySensorAxis::left_right>;
 }
