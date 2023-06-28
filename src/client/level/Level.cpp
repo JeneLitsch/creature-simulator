@@ -35,8 +35,11 @@ namespace client::level {
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F5)) {
 			this->session->export_sim("tmp/export/sim.json");
 		}
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F5)) {
-
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F6)) {
+			this->simulation->get_ecs().run_system([&] (const sim::Ecs::Entity & entity) {
+				auto id = entity.get_id();
+				this->session->export_entity("tmp/export/entity/" + std::to_string(id) + ".json",id);
+			});
 		}
 
 		this->camera_center = stx::clamp(
