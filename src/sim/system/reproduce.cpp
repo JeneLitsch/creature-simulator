@@ -1,7 +1,7 @@
 #include "reproduce.hpp"
 
 namespace sim{
-    void reproduce(stx::grid2<std::uint64_t>* grid, Ecs* ecs, PheromoneField* pheromone_field, Ecs::Entity& entity, Config config){
+    void reproduce(stx::grid2<std::uint64_t>* grid, Ecs* ecs, PheromoneField* pheromone_field, Ecs::Entity& entity, const Config& config, std::mt19937_64 & rng){
         auto reproduction_info = entity.get_if<Reproduction>();
 
         if(reproduction_info && (reproduction_info->current_cooldown >= reproduction_info->max_cooldown && reproduction_info->wants_to_reproduce)){
@@ -37,7 +37,7 @@ namespace sim{
 			auto& transform = child.add(Transform{.location = {x, y}});
 			child.add(Movement{&transform, grid});
 			child.add(Age{});
-            child.add(reproduction_info->createChild(rand(), config.reproduction));
+            child.add(reproduction_info->createChild(rng(), config.reproduction));
             child.add(Stomach{
 				.food = 1.0,
 			});
