@@ -64,9 +64,11 @@ namespace client {
 			const auto dt = (this->now - this->then).asSeconds();
 			// std::cout << (1.f / dt) << "\n";
 
-            ImGui::Begin("hello World!");
-            ImGui::Button("Button!");
-            ImGui::End();
+           if (showMenu) {
+                ImGui::Button("Button!");
+                ImGui::Begin("hello World!");
+                ImGui::End();
+            }
 			this->state_manager.update(dt);
 			this->window.clear(sf::Color::Black);
 			this->state_manager.render(this->window);
@@ -90,4 +92,10 @@ namespace client {
 		view.setViewport(calc_view_port(this->window, view));
 		this->window.setView(view);
 	}
+
+    void Client::on_event(const core::ButtonPressed& event) {
+        if (event.code == sf::Keyboard::T) {
+            showMenu = !showMenu;
+        }
+    }
 }

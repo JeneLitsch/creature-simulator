@@ -21,6 +21,7 @@ namespace client::core {
 	private:
 		virtual void on_event(const Closed &) {}
 		virtual void on_event(const WindowResized &) {}
+		virtual void on_event(const ButtonPressed &) {}
 		StateManager * state_manager = nullptr;
 	};
 }
