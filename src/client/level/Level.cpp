@@ -5,7 +5,7 @@
 namespace client::level {
 	Level::Level(session::Session & session)
 		: session{session}
-		, tick_timer{1.0/10.0} {
+		, tick_timer{1.0/100.0} {
 		
 		this->camera_center = stx::position2f{this->session->get_sim().get_grid().size()} / 2.f;
 	}

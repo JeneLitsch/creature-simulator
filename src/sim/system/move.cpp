@@ -1,8 +1,10 @@
 #include "move.hpp"
 #include "stdxx/log.hxx"
+#include "sim/Simulation.hpp"
+#include <iostream>
 
 namespace sim {
-	void move(Ecs::Entity & entity, Ecs & ecs) {
+	void move(Ecs::Entity & entity, Ecs & ecs, Simulation& simulation) {
 		auto * transform = entity.get_if<Transform>();
 		auto * movement = entity.get_if<Movement>();
 
@@ -25,15 +27,16 @@ namespace sim {
 			std::swap(id, other_id);
 		}
 		else {
-			auto & other_entity = ecs.get(other_id);
+			auto * other_entity = ecs.get_if(other_id);
+			if(!other_entity) {
+				throw std::runtime_error{"Tried to move invalid entity!!!11elf"};
+			}
 			auto * stomach = entity.get_if<Stomach>();
-			auto * edible = other_entity.get_if<Edible>();
+			auto * edible = other_entity->get_if<Edible>();
 			if(edible && stomach) {
-				stx::log[stx::INFO] << "Entity eaten: " << other_id;
+				simulation.kill_entity(*other_entity);
 				transform->location = new_position;
-				other_id = id;
-				id = 0;
-				other_entity.mark_delete();
+				std::swap(other_id, id);
 				stomach->food += edible->value;
 			} 
 		}

@@ -6,4 +6,5 @@ target_sources(libsim PRIVATE
 	move.cpp
 	reproduce.cpp
 	spawn_food.cpp
+	check_death.cpp
 )

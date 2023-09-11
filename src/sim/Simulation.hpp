@@ -19,11 +19,13 @@ namespace sim {
 		Ecs & get_ecs();
 		const Ecs & get_ecs() const;
 
+		void kill_entity(Ecs::Entity& entity);
 		~Simulation();
 	private:
 		sim::Ecs ecs;
 		std::mt19937_64 rng;
 		stx::grid2<std::uint64_t> grid;
-		PheromoneField pheromone_field; 
+		PheromoneField pheromone_field;
+		Config config;
 	};
 }
