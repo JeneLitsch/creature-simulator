@@ -3,6 +3,7 @@
 #include "imgui.h"
 #include "test/Test.hpp"
 #include "session/Session.hpp"
+#include "imguiStyle.cpp"
 #include <iostream>
 
 namespace client {
@@ -44,6 +45,8 @@ namespace client {
 		this->window.setFramerateLimit(60);
 		this->window.setVerticalSyncEnabled(true);
         ImGui::SFML::Init(this->window);
+        InitImguiStyle();
+
 	}
 
 
@@ -59,6 +62,7 @@ namespace client {
 			}
 
             ImGui::SFML::Update(this->window, this->now);
+            ImGui::GetFont()->Scale = 2.0f;
 			this->then = this->now;
 			this->now = this->clock.getElapsedTime();
 
