@@ -67,9 +67,11 @@ namespace sim{
 		*/
 		//kein Sigmoid für hidden Nodes
 		std::vector<double> out = vectorMatrixMult(vectorMatrixMult(inputWithHidden, inputMatrix), outputMatrix);
+		/*
 		for(double& num : out){
 			num = std::tanh(num);
 		}
+		*/
 		return out;
 	}
 

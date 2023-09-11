@@ -14,7 +14,7 @@ namespace sim {
 			return;
 
         std::vector<double> input;
-		input.push_back(age->age / config.maxAge);
+		input.push_back(static_cast<double>(age->age) / config.maxAge);
 		input.push_back(stomach->food / config.metabolism.maxStomach);
 		input.push_back(health->currentHealth);
 		input.push_back(sensor1->value);
@@ -36,10 +36,10 @@ namespace sim {
 		double alpha = std::atan2(transform->rotation.y, transform->rotation.x);
 		stx::vector2d direction;
 		direction.x = std::cos(alpha) * output[1]  - std::sin(alpha) * output[2];
-		direction.x = std::sin(alpha) * output[1]  + std::cos(alpha) * output[2];
+		direction.y = std::sin(alpha) * output[1]  + std::cos(alpha) * output[2];
 
 		if(Movement* movement = entity.get_if<Movement>()){
-			if(stx::hypot(direction) > 0.5){
+			if(stx::hypot(direction) > 0.1){
 				double max = 0;
 				for(int i = -1; i<=1; i++){
 					for(int j = -1; j<=1; j++){

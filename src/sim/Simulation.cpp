@@ -82,10 +82,7 @@ namespace sim {
 		});
 		ecs.run_system(eval_neural, config);
 		ecs.run_system(move, ecs, *this, config.metabolism);
-		ecs.run_system([this](Ecs::Entity& entity) {
-			if(Reproduction* reproduction = entity.get_if<Reproduction>()) reproduction -> incrementCooldown();
-			reproduce(&(this -> grid), &(this -> ecs), &(this -> pheromone_field), entity, this->config, this->rng);
-		});
+		ecs.run_system(reproduce, &(this -> grid), &(this -> ecs), &(this -> pheromone_field), this->config, this->rng);
 		this->pheromone_field.swap();
 		ecs.run_system(emit_pheromones);
 		ecs.run_system(spawn_food, this->grid, this->ecs, this->rng, this->pheromone_field);

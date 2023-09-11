@@ -5,7 +5,7 @@ namespace sim {
 		auto & entity = ecs.new_entity();
 		auto & transform = entity.add(Transform{
 			.location = {position},
-			.rotation = {0,0},
+			.rotation = {1,0},
 		});
 		grid[position] = entity.get_id();
 		return entity;
@@ -42,10 +42,10 @@ namespace sim {
 		return entity;
 	}
 
-	Ecs::Entity & create_creature(Ecs & ecs, stx::vector2i position, stx::grid2<std::uint64_t> & grid, Config& config) {
+	Ecs::Entity & create_creature(Ecs & ecs, stx::vector2i position, stx::grid2<std::uint64_t> & grid, const Config& config) {
 		auto & entity = create_entity(ecs, position, grid);
 		entity.add(Age{});
-		entity.add(Stomach{ .food = 1.0f});
+		entity.add(Stomach{ .food = 0.5f});
 		entity.add(Health{});
 		entity.add(Movement{entity.get_if<Transform>(), &grid});
 		entity.add(StomachSensorFB{entity.get_if<Transform>(), config.creature_sensor.range});
@@ -53,7 +53,7 @@ namespace sim {
 		entity.add(EdibleSensorFB{entity.get_if<Transform>(), config.food_sensor.range});
 		entity.add(EdibleSensorLR{entity.get_if<Transform>(), config.food_sensor.range});
 		entity.add(NeuralNetwork{7, 3});
-		entity.add(Reproduction{config.reproduction.max_reproduction_cooldown});
+		entity.add(Reproduction{config.reproduction.default_cooldown});
 		return entity;
 	}
 }

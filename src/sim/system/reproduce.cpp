@@ -38,38 +38,37 @@ namespace sim{
 			Ecs & ecs,
 			stx::vector2i position,
 			stx::grid2<std::uint64_t> & grid,
-			const ReproductionConfig & config,
+			const Config & config,
 			Reproduction & reproduction,
+            NeuralNetwork& neuralNet,
 			std::mt19937_64 & rng) {
 			
-			Ecs::Entity & child = create_entity(ecs, position, grid);
-			child.add(Movement{child.get_if<Transform>(), &grid});
-			child.add(Age{
-				.age = 0,
-			});
-			child.add(reproduction.createChild(rng(), config));
-			child.add(Stomach{
-				.food = 1.0,
-			});
+			Ecs::Entity & child = create_creature(ecs, position, grid, config);
+			child.add(reproduction.createChild(rng(), config.reproduction));
+            child.add(neuralNet.createChild(rng(), config.neural_net));
 		}
 	}
 
 
 
-    void reproduce(stx::grid2<std::uint64_t>* grid, Ecs* ecs, PheromoneField* pheromone_field, Ecs::Entity& entity, const Config& config, std::mt19937_64 & rng){
+    void reproduce(Ecs::Entity& entity, stx::grid2<std::uint64_t>* grid, Ecs* ecs, PheromoneField* pheromone_field, const Config& config, std::mt19937_64 & rng){
         auto * reproduction = entity.get_if<Reproduction>();
 		auto * stomach = entity.get_if<Stomach>();
 		auto * transform = entity.get_if<Transform>();
+        auto * neuralNet = entity.get_if<NeuralNetwork>();
 
 		if(!reproduction) return; 
 		if(!stomach) return;
 		if(!transform) return;
+        if(!neuralNet) return;
+
+        reproduction->incrementCooldown();
 
         if(reproduction->current_cooldown >= reproduction->max_cooldown && reproduction->wants_to_reproduce){
             const auto child_position = find_empty_neighbor(*grid, transform->location);
 			if(child_position) {
 				consume_food(*stomach, config.reproduction);
-				spawn_child(*ecs, *child_position, *grid, config.reproduction, *reproduction, rng);
+				spawn_child(*ecs, *child_position, *grid, config, *reproduction, *neuralNet, rng);
 			}
             else {
 				return;
