@@ -7,4 +7,5 @@ target_sources(libsim PRIVATE
 	reproduce.cpp
 	spawn_food.cpp
 	check_death.cpp
+	eval_neural_net.cpp
 )
