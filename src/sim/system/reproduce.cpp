@@ -3,7 +3,7 @@
 
 namespace sim{
 	namespace {
-		std::optional<stx::vector2i> find_child_position(
+		std::optional<stx::vector2i> find_empty_neighbor(
 			stx::grid2<std::uint64_t> & grid,
 			const stx::vector2i parent_position) {
 
@@ -66,7 +66,7 @@ namespace sim{
 		if(!transform) return;
 
         if(reproduction->current_cooldown >= reproduction->max_cooldown && reproduction->wants_to_reproduce){
-            const auto child_position = find_child_position(*grid, transform->location);
+            const auto child_position = find_empty_neighbor(*grid, transform->location);
 			if(child_position) {
 				consume_food(*stomach, config.reproduction);
 				spawn_child(*ecs, *child_position, *grid, config.reproduction, *reproduction, rng);
