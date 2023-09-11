@@ -5,7 +5,7 @@
 namespace sim{
         Reproduction::Reproduction(uint64_t max_cooldown): max_cooldown(max_cooldown){}
 
-        Reproduction Reproduction::createChild(std::uint64_t seed, const ReproductionMutConfig & config) {
+        Reproduction Reproduction::createChild(std::uint64_t seed, const ReproductionConfig & config) {
 		    std::mt19937_64 rng;
 		    rng.seed(seed);
             std::uniform_int_distribution interval { -config.max_cooldown_difference, config.max_cooldown_difference };

@@ -54,7 +54,7 @@ namespace sim {
 	struct Config{
 		uint64_t maxAge = 300;
 		NeuralNetMutConfig neural_net = NeuralNetMutConfig{};
-		ReproductionMutConfig reproduction = ReproductionMutConfig{};
+		ReproductionConfig reproduction = ReproductionConfig{};
 		EntitySensorConfig creature_sensor = EntitySensorConfig{};
 		EntitySensorConfig food_sensor = EntitySensorConfig{};
 		MetabolismConfig metabolism = MetabolismConfig{};
