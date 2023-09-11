@@ -13,14 +13,16 @@ namespace client::level {
 
 	class Level : public core::GameState {
 	public:
-		Level(session::Session & session);
+		Level(session::Session & session, sim::Simulation & simulation);
 		virtual void update(double dt) override;
 		virtual void render(sf::RenderTarget & render_target) override;
 	protected:
 		virtual void init() override;
 	private:
+		virtual void on_event(const core::ButtonPressed &) override;
 		stx::chrono::every tick_timer;
 		
+		stx::reference<sim::Simulation> simulation;
 		stx::reference<session::Session> session;
 
 		constexpr static inline auto camera_speed = 500.f;

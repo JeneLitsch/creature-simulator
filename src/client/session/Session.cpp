@@ -19,7 +19,7 @@ namespace client::session {
 
 
 	void Session::update(double dt) {
-		this->push(std::make_unique<level::Level>(*this));
+		this->push(std::make_unique<level::Level>(*this, *this->simulation));
 	}
 	
 	

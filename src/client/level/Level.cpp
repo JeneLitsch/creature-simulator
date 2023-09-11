@@ -1,10 +1,16 @@
 #include "Level.hpp"
 #include "client/session/Session.hpp"
+#include "imgui.h"
 #include "render.hpp"
+#include "configMenu.hpp"
 
 namespace client::level {
-	Level::Level(session::Session & session)
+
+    bool showMenu = true;
+
+	Level::Level(session::Session & session, sim::Simulation & simulation)
 		: session{session}
+		, simulation{simulation}
 		, tick_timer{1.0/100.0} {
 		
 		this->camera_center = stx::position2f{this->session->get_sim().get_grid().size()} / 2.f;
@@ -46,6 +52,11 @@ namespace client::level {
 			});
 		}
 
+
+
+
+
+
 		this->camera_center = stx::clamp(
 			this->camera_center,
 			stx::position2f{0,0},
@@ -57,9 +68,14 @@ namespace client::level {
 		}
 	}
 	
-	
+
 	
 	void Level::render(sf::RenderTarget & render_target) {
+
+        if (showMenu){
+            level::Menu(level::Level::simulation->config);
+        }
+
 		auto old_view = render_target.getView();
 		auto new_view = render_target.getView();
 		new_view.setCenter(this->camera_center.to<sf::Vector2f>());
@@ -78,6 +94,11 @@ namespace client::level {
 		render_target.setView(old_view);
 	}
 	
+    void Level::on_event(const core::ButtonPressed& event) {
+        if (event.code == sf::Keyboard::O) {
+            showMenu = !showMenu;
+        }
+    }
 	
 	
 	void Level::init() {

@@ -80,6 +80,36 @@ namespace sim {
 
 
 
+		void export_comp(stx::json::write_iterator json, const NeuralNetwork & comp) {
+			json["input_size"] = comp.input_size;
+			json["hidden_size"] = comp.hidden_size;
+			json["output_size"] = comp.output_size;
+
+			auto json_input_matrix = json["input_matrix"];
+			json_input_matrix = stx::json::array;
+			for(const auto & line : comp.inputMatrix) {
+				stx::json::node node;
+				stx::json::write_iterator json_line = node;
+				for(const auto & elem : line) {
+					json_line.push_back(elem);
+				}
+				json_input_matrix.push_back(node);
+			}
+
+
+			auto json_output_matrix = json["output_matrix"];
+			json_output_matrix = stx::json::array;
+			for(const auto & line : comp.outputMatrix) {
+				stx::json::node node;
+				stx::json::write_iterator json_line = node;
+				for(const auto & elem : line) {
+					json_line.push_back(elem);
+				}
+				json_output_matrix.push_back(node);
+			}
+		}
+
+
 		template<typename Comp>
 		void export_if(const Ecs::Entity & entity, stx::json::write_iterator json) {
 			if(auto * comp = entity.get_if<Comp>()) {
@@ -104,6 +134,7 @@ namespace sim {
 		export_if<Edible>(entity, json["edible"]);
 		export_if<FoodSpawn>(entity, json["food_spawn"]);
 		export_if<Sprite>(entity, json["sprite"]);
+		export_if<NeuralNetwork>(entity, json["neural_network"]);
 
 		export_if<StomachSensorFB>(entity, json["stomach_sensor_fb"]);
 		export_if<StomachSensorLR>(entity, json["stomach_sensor_lr"]);
