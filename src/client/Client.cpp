@@ -62,7 +62,8 @@ namespace client {
 			}
 
             ImGui::SFML::Update(this->window, this->now);
-            ImGui::GetFont()->Scale = 2.0f;
+            if (((static_cast<float>(sf::VideoMode::getFullscreenModes()[0].height)) / 1080.0f) > 1.5)
+                ImGui::GetFont()->Scale = 2;
 			this->then = this->now;
 			this->now = this->clock.getElapsedTime();
 
