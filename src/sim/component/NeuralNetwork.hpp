@@ -25,8 +25,9 @@ namespace sim{
 		std::vector<std::vector<double>> inputMatrix;
 		std::vector<std::vector<double>> outputMatrix;
 		std::size_t input_size;
-		std::size_t hidden_size;
+		std::size_t hidden_size = 0;
 		std::size_t output_size;
+		std::vector<double> lastOutput;
 	};
 
 	void mutate(NeuralNetwork & net, std::uint64_t seed, const NeuralNetMutConfig & config);

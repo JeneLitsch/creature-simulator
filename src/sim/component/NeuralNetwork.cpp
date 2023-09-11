@@ -25,66 +25,59 @@ namespace sim{
 		return 1 / (1 + std::exp(-x));
 	}
 
-	struct NeuralNetwork {
-		NeuralNetwork(
-			std::size_t input_size,
-			std::size_t output_size) 
-		: input_size{input_size}, output_size{output_size} {
-			inputMatrix.resize(input_size, std::vector<double>{});
-			for(int i = 0; i<input_size; i++){
-				inputMatrix.at(i).resize(input_size, 0.0);
-				inputMatrix.at(i).at(i) = 1.0;
-			}
-			outputMatrix.resize(input_size, std::vector<double>{});
-			for(int i = 0; i<input_size; i++){
-				outputMatrix.at(i).resize(output_size, 0.0);
-			}
+	NeuralNetwork::NeuralNetwork(
+		std::size_t input_size,
+		std::size_t output_size) 
+	: input_size{input_size}, output_size{output_size} {
+		inputMatrix.resize(input_size, std::vector<double>{});
+		for(int i = 0; i<input_size; i++){
+			inputMatrix.at(i).resize(input_size, 0.0);
+			inputMatrix.at(i).at(i) = 1.0;
 		}
-
-		void addNode(){
-			hidden_size ++;
-			inputMatrix.resize(input_size + hidden_size, std::vector<double>{});
-			for(std::vector<double>& vec: inputMatrix){
-				vec.resize(input_size + hidden_size, 0.0);
-			}
-			outputMatrix.resize(input_size + hidden_size, std::vector<double>{});
-			outputMatrix.at(input_size + hidden_size - 1).resize(output_size, 0.0);
+		outputMatrix.resize(input_size, std::vector<double>{});
+		for(int i = 0; i<input_size; i++){
+			outputMatrix.at(i).resize(output_size, 0.0);
 		}
+		lastOutput.resize(output_size, 0);
+	}
 
-		std::vector<double> eval(const std::vector<double> & input) const {
-			if (input.size() != input_size) {
-				throw std::runtime_error{"Input does not match input layer"};
-			}
-			std::vector<double> inputWithHidden = input;
-			inputWithHidden.resize(input_size + hidden_size, 0.0);
-			/*
-			// Sigmoid für hidden Nodes
-			std::vector<double> realInput = vectorMatrixMult(inputWithHidden, inputMatrix);
-			for(int i = input_size; i<realInput.size(); i++){
-				realInput.at(i) = sigmoid(realInput.at(i));
-			}
-			std::vector<double> out = vectorMatrixMult(realInput, outputMatrix);
-			*/
-			//kein Sigmoid für hidden Nodes
-			std::vector<double> out = vectorMatrixMult(vectorMatrixMult(inputWithHidden, inputMatrix), outputMatrix);
-			for(double& num : out){
-				num = sigmoid(num);
-			}
-			return out;
+	void NeuralNetwork::addNode(){
+		hidden_size ++;
+		inputMatrix.resize(input_size + hidden_size, std::vector<double>{});
+		for(std::vector<double>& vec: inputMatrix){
+			vec.resize(input_size + hidden_size, 0.0);
 		}
+		outputMatrix.resize(input_size + hidden_size, std::vector<double>{});
+		outputMatrix.at(input_size + hidden_size - 1).resize(output_size, 0.0);
+	}
 
-		NeuralNetwork createChild(std::uint64_t seed, const NeuralNetMutConfig & config){
-			NeuralNetwork child = *this;
-			mutate(child, seed, config);
-			return child;
+	std::vector<double> NeuralNetwork::eval(const std::vector<double> & input) const {
+		if (input.size() != input_size) {
+			throw std::runtime_error{"Input does not match input layer"};
 		}
+		std::vector<double> inputWithHidden = input;
+		inputWithHidden.resize(input_size + hidden_size, 0.0);
+		/*
+		// Sigmoid für hidden Nodes
+		std::vector<double> realInput = vectorMatrixMult(inputWithHidden, inputMatrix);
+		for(int i = input_size; i<realInput.size(); i++){
+			realInput.at(i) = sigmoid(realInput.at(i));
+		}
+		std::vector<double> out = vectorMatrixMult(realInput, outputMatrix);
+		*/
+		//kein Sigmoid für hidden Nodes
+		std::vector<double> out = vectorMatrixMult(vectorMatrixMult(inputWithHidden, inputMatrix), outputMatrix);
+		for(double& num : out){
+			num = std::tanh(num);
+		}
+		return out;
+	}
 
-		std::vector<std::vector<double>> inputMatrix;
-		std::vector<std::vector<double>> outputMatrix;
-		std::size_t input_size;
-		std::size_t hidden_size = 0;
-		std::size_t output_size;
-	};
+	NeuralNetwork NeuralNetwork::createChild(std::uint64_t seed, const NeuralNetMutConfig & config){
+		NeuralNetwork child = *this;
+		mutate(child, seed, config);
+		return child;
+	}
 
 	bool to_be_mutated(double p, std::mt19937_64& rng) {
 		std::uniform_real_distribution interval { 0.0, 1.0 };

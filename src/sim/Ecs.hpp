@@ -35,21 +35,27 @@ namespace sim {
 		StomachSensorLR, 
 		EdibleSensorFB, 
 		EdibleSensorLR,
-		Health
+		Health,
+		NeuralNetwork
 	>;
 
 	struct EntitySensorConfig{
         double sensibility = 20.0;
+		int range = 25;
     };
 
 	struct MetabolismConfig{
+		// Maximum food creatures can hold in their stomach
+		double maxStomach = 5.0;
 		// How much food always gets removed from the Stomach per tick
 		double naturalfoodDecayPerTick = 0.01;
+		// How much food is used when moving
+		double foodDecayPerMove = 0.01;
 		// How much Health gets removed per Tick while the Stomach is empty
 		double starvingHealthDecayPerTick = 0.02;
 		// How much Health gets regenerated per Tick, when not starving
 		double healthRegenPerTick = 0.01;
-		// How much food gets used to regenerate Health
+		// How much food gets used to regenerate Health (ratio)
 		double foodPerHealthRegenerated = 1.0;
 	};
 

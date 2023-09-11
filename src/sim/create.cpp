@@ -41,4 +41,19 @@ namespace sim {
 		});
 		return entity;
 	}
+
+	Ecs::Entity & create_creature(Ecs & ecs, stx::vector2i position, stx::grid2<std::uint64_t> & grid, Config& config) {
+		auto & entity = create_entity(ecs, position, grid);
+		entity.add(Age{});
+		entity.add(Stomach{ .food = 1.0f});
+		entity.add(Health{});
+		entity.add(Movement{entity.get_if<Transform>(), &grid});
+		entity.add(StomachSensorFB{entity.get_if<Transform>(), config.creature_sensor.range});
+		entity.add(StomachSensorLR{entity.get_if<Transform>(), config.creature_sensor.range});
+		entity.add(EdibleSensorFB{entity.get_if<Transform>(), config.food_sensor.range});
+		entity.add(EdibleSensorLR{entity.get_if<Transform>(), config.food_sensor.range});
+		entity.add(NeuralNetwork{7, 3});
+		entity.add(Reproduction{config.reproduction.max_reproduction_cooldown});
+		return entity;
+	}
 }
