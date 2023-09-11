@@ -7,7 +7,6 @@
 #include "system/reproduce.hpp"
 #include "system/spawn_food.hpp"
 #include "component/Movement.hpp"
-#include "senses/PheromoneSensor.hpp"
 #include "component/Age.hpp"
 #include "create.hpp"
 #include "system/check_death.hpp"
