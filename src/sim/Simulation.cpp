@@ -10,7 +10,6 @@
 #include "component/Movement.hpp"
 #include "senses/PheromoneSensor.hpp"
 #include "component/Age.hpp"
-#include "disperse_pheromones.hpp"
 #include "create.hpp"
 #include "system/check_death.hpp"
 
