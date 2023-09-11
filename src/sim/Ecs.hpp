@@ -1,7 +1,6 @@
 #pragma once
 #include "nanocomp/nanocomp.hpp"
 #include "sim/component/PheromoneEmitter.hpp"
-#include "sim/component/Sensors.hpp"
 #include "sim/component/Stomach.hpp"
 #include "sim/component/Transform.hpp"
 #include "sim/component/Movement.hpp"
@@ -22,7 +21,6 @@ namespace sim {
 
 	using Ecs =	nc::Ecs<
 		PheromoneEmitter, 
-		Sensors, 
 		Stomach, 
 		Transform, 
 		Movement, 

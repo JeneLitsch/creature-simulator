@@ -3,7 +3,6 @@
 #include <iostream>
 #include "system/emit_pheromones.hpp"
 #include "system/metabolize.hpp"
-#include "system/read_sensors.hpp"
 #include "system/move.hpp"
 #include "system/reproduce.hpp"
 #include "system/spawn_food.hpp"
