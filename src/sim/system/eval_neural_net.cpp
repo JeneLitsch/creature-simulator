@@ -44,7 +44,7 @@ namespace sim {
 				double max = 0;
 				for(int i = -1; i<=1; i++){
 					for(int j = -1; j<=1; j++){
-						stx::vector2d temp = stx::normalized(stx::vector2d{i, j});
+						stx::vector2d temp = stx::normalized(stx::vector2d{static_cast<double>(i), static_cast<double>(j)});
 						if(stx::dot(temp, direction) > max){
 							max = stx::dot(temp, direction);
 							movement->direction = {i, j};
