@@ -75,9 +75,9 @@ namespace sim{
 		return out;
 	}
 
-	NeuralNetwork NeuralNetwork::createChild(std::uint64_t seed, const NeuralNetMutConfig & config){
+	NeuralNetwork NeuralNetwork::createChild(std::uint64_t seed, const NeuralNetMutConfig & config, double mutationDampener){
 		NeuralNetwork child = *this;
-		mutate(child, seed, config);
+		mutate(child, seed, config, mutationDampener);
 		return child;
 	}
 
@@ -95,7 +95,7 @@ namespace sim{
 
 	}
 
-	void mutate(NeuralNetwork & net, std::uint64_t seed, const NeuralNetMutConfig & config) {
+	void mutate(NeuralNetwork & net, std::uint64_t seed, const NeuralNetMutConfig & config, double mutationDampener) {
 		std::mt19937_64 rng;
 		rng.seed(seed);
 		if(to_be_mutated(config.chance_for_new_node, rng) && net.hidden_size < config.max_hidden_nodes){
@@ -104,7 +104,7 @@ namespace sim{
 		std::uniform_real_distribution weight_interval {config.weight_min, config.weight_max};
 		if(config.limit_number_of_mutations){
 			for(int i = 0; i < config.mutation_rolls; i++){
-				if(!to_be_mutated(config.chance_per_roll, rng)){
+				if(!to_be_mutated(config.chance_per_roll - mutationDampener * config.chance_per_roll, rng)){
 					continue;
 				}
 				int matrix_index = rng() % 2;

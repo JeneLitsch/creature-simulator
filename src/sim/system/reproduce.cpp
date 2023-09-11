@@ -41,11 +41,12 @@ namespace sim{
 			const Config & config,
 			Reproduction & reproduction,
             NeuralNetwork& neuralNet,
+            Age & age,
 			std::mt19937_64 & rng) {
 			
 			Ecs::Entity & child = create_creature(ecs, position, grid, config);
 			child.add(reproduction.createChild(rng(), config.reproduction));
-            child.add(neuralNet.createChild(rng(), config.neural_net));
+            child.add(neuralNet.createChild(rng(), config.neural_net, age.age / config.maxAge));
 		}
 	}
 
@@ -56,11 +57,13 @@ namespace sim{
 		auto * stomach = entity.get_if<Stomach>();
 		auto * transform = entity.get_if<Transform>();
         auto * neuralNet = entity.get_if<NeuralNetwork>();
+        auto * age = entity.get_if<Age>();
 
 		if(!reproduction) return; 
 		if(!stomach) return;
 		if(!transform) return;
         if(!neuralNet) return;
+        if(!age) return;
 
         reproduction->incrementCooldown();
 
@@ -68,7 +71,7 @@ namespace sim{
             const auto child_position = find_empty_neighbor(*grid, transform->location);
 			if(child_position) {
 				consume_food(*stomach, config.reproduction);
-				spawn_child(*ecs, *child_position, *grid, config, *reproduction, *neuralNet, rng);
+				spawn_child(*ecs, *child_position, *grid, config, *reproduction, *neuralNet, *age, rng);
 			}
             else {
 				return;
