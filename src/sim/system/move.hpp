@@ -3,5 +3,5 @@
 
 namespace sim {
 	class Simulation;
-	void move(Ecs::Entity & entity, Ecs & ecs, Simulation& simulation);
+	void move(Ecs::Entity & entity, Ecs & ecs, Simulation& simulation, MetabolismConfig& config);
 }

@@ -3,9 +3,10 @@
 
 namespace sim{
     struct ReproductionConfig{
-        uint64_t min_reproduction_cooldown = 100;
-        uint64_t max_reproduction_cooldown = 1000;
+        uint64_t min_reproduction_cooldown = 50;
+        uint64_t max_reproduction_cooldown = 200;
         uint64_t max_cooldown_difference = 50;
+        uint64_t default_cooldown = 100;
 		double food_cost = 1.0;
     };
 
