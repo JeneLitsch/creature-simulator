@@ -19,6 +19,7 @@ namespace client::level {
 	protected:
 		virtual void init() override;
 	private:
+		virtual void on_event(const core::ButtonPressed &) override;
 		stx::chrono::every tick_timer;
 		
 		stx::reference<session::Session> session;

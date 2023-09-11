@@ -11,9 +11,7 @@ namespace client {
 	private:
 		void on_event(const core::Closed & event);
 		void on_event(const core::WindowResized & event);
-		void on_event(const core::ButtonPressed & event);
 		void on_event(auto) {}
-        bool showMenu = false;
 		sf::RenderWindow window;
 		core::StateManager state_manager;
 		sf::Clock clock;

@@ -12,7 +12,6 @@ namespace client::core {
         bool          control; ///< Is the Control key pressed?
         bool          shift;   ///< Is the Shift key pressed?
         bool          system;  ///< Is the System key pressed?
-
     };
 
 	using Event = std::variant<
