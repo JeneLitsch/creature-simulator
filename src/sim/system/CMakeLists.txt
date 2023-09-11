@@ -4,7 +4,6 @@ target_sources(libsim PRIVATE
 	emit_pheromones.cpp
 	metabolize.cpp
 	move.cpp
-	read_sensors.cpp
 	reproduce.cpp
 	spawn_food.cpp
 	check_death.cpp

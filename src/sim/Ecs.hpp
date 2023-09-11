@@ -1,7 +1,6 @@
 #pragma once
 #include "nanocomp/nanocomp.hpp"
 #include "sim/component/PheromoneEmitter.hpp"
-#include "sim/component/Sensors.hpp"
 #include "sim/component/Stomach.hpp"
 #include "sim/component/Transform.hpp"
 #include "sim/component/Movement.hpp"
@@ -22,7 +21,6 @@ namespace sim {
 
 	using Ecs =	nc::Ecs<
 		PheromoneEmitter, 
-		Sensors, 
 		Stomach, 
 		Transform, 
 		Movement, 
@@ -62,7 +60,7 @@ namespace sim {
 	struct Config{
 		uint64_t maxAge = 300;
 		NeuralNetMutConfig neural_net = NeuralNetMutConfig{};
-		ReproductionMutConfig reproduction = ReproductionMutConfig{};
+		ReproductionConfig reproduction = ReproductionConfig{};
 		EntitySensorConfig creature_sensor = EntitySensorConfig{};
 		EntitySensorConfig food_sensor = EntitySensorConfig{};
 		MetabolismConfig metabolism = MetabolismConfig{};
