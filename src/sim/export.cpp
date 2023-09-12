@@ -115,9 +115,10 @@ namespace sim {
 
 
 		template<typename Comp>
-		void export_if(const Ecs::Entity & entity, stx::json::write_iterator json) {
+		void export_if(const Ecs::Entity & entity, stx::json::write_iterator json, const std::string & name) {
 			if(auto * comp = entity.get_if<Comp>()) {
-				export_comp(json = stx::json::object, *comp);
+				auto json_comp = json[name];
+				export_comp(json_comp = stx::json::object, *comp);
 			}
 		}
 	}
@@ -129,21 +130,21 @@ namespace sim {
 		stx::json::write_iterator json{node};
 		json = stx::json::object;
 		
-		export_if<PheromoneEmitter>(entity, json["pheromone_emitter"]);
-		export_if<Stomach>(entity, json["stomach"]);
-		export_if<Transform>(entity, json["transform"]);
-		export_if<Movement>(entity, json["movement"]);
-		export_if<Age>(entity, json["age"]);
-		export_if<Reproduction>(entity, json["reproduction"]);
-		export_if<Edible>(entity, json["edible"]);
-		export_if<FoodSpawn>(entity, json["food_spawn"]);
-		export_if<Sprite>(entity, json["sprite"]);
-		export_if<NeuralNetwork>(entity, json["neural_network"]);
+		export_if<PheromoneEmitter>(entity, json, "pheromone_emitter");
+		export_if<Stomach>(entity, json, "stomach");
+		export_if<Transform>(entity, json, "transform");
+		export_if<Movement>(entity, json, "movement");
+		export_if<Age>(entity, json, "age");
+		export_if<Reproduction>(entity, json, "reproduction");
+		export_if<Edible>(entity, json, "edible");
+		export_if<FoodSpawn>(entity, json, "food_spawn");
+		export_if<Sprite>(entity, json, "sprite");
+		export_if<NeuralNetwork>(entity, json, "neural_network");
 
-		export_if<StomachSensorFB>(entity, json["stomach_sensor_fb"]);
-		export_if<StomachSensorLR>(entity, json["stomach_sensor_lr"]);
-		export_if<EdibleSensorFB>(entity, json["edible_sensor_fb"]);
-		export_if<EdibleSensorLR>(entity, json["edible_sensor_lr"]);
+		export_if<StomachSensorFB>(entity, json, "stomach_sensor_fb");
+		export_if<StomachSensorLR>(entity, json, "stomach_sensor_lr");
+		export_if<EdibleSensorFB>(entity, json, "edible_sensor_fb");
+		export_if<EdibleSensorLR>(entity, json, "edible_sensor_lr");
 	
 		return node;
 	}
