@@ -68,13 +68,15 @@ namespace sim {
 		
 
 		Movement import_movement(
-			stx::json::iterator,
+			stx::json::iterator json,
 			Ecs::Entity & entity,
 			stx::reference<stx::grid2<std::uint64_t>> grid) {
 			
 			auto * transform = entity.get_if<Transform>();
 			if(!transform) throw stx::json::format_error { "Cannot add Movement without Transform" };
-			return Movement{ transform, &*grid };
+			auto movement = Movement{ transform, &*grid };
+			movement.direction = import_vector2i(json["direction"]);
+			return movement;
 		}
 
 
@@ -98,11 +100,6 @@ namespace sim {
 			if(!max_cooldown) throw stx::json::format_error { "Cannot read Reproduction::max_cooldown" };
 			if(!wants_to_reproduce) throw stx::json::format_error { "Cannot read Reproduction::wants_to_reproduce" };
 			
-			// std::cout << "\n";
-			// std::cout << *current_cooldown << "\n";
-			// std::cout << *max_cooldown << "\n";
-			// std::cout << *wants_to_reproduce << "\n";
-
 			return Reproduction { *max_cooldown, *current_cooldown, *wants_to_reproduce };
 		}
 
@@ -158,7 +155,51 @@ namespace sim {
 			if(!radius) throw stx::json::format_error { "Cannot read EntitySensor<...>::radius" };
 			if(!value) throw stx::json::format_error { "Cannot read EntitySensor<...>::value" };
 
-			return Sensor { transform, *radius };
+			auto sensor = Sensor { transform, *radius };
+			sensor.value = *value;
+
+			return sensor;
+		}
+
+
+
+		namespace {
+			std::vector<std::vector<double>> import_matrix(stx::json::iterator json) {
+				std::vector<std::vector<double>> matrix;
+				for(const auto & line : stx::json::to_array(json)) {
+					matrix.push_back({});
+					for(const auto & elem : stx::json::to_array(line)) {
+						auto num = elem.force_number();
+						std::cout << num << ",";
+						matrix.back().push_back(num);
+					}
+					std::cout << "\n";
+				}
+
+				return matrix;
+			}
+		}
+
+
+
+		NeuralNetwork import_neural_network(stx::json::iterator json) {
+			NeuralNetwork neural_network{0,0};
+			const auto input_size = json["input_size"].u64();
+			const auto hidden_size = json["hidden_size"].u64();
+			const auto output_size = json["output_size"].u64();
+
+			if(!input_size) throw stx::json::format_error{"Cannot import NeuralNetwork::input_size"};
+			if(!hidden_size) throw stx::json::format_error{"Cannot import NeuralNetwork::hidden_size"};
+			if(!output_size) throw stx::json::format_error{"Cannot import NeuralNetwork::output_size"};
+			
+			neural_network.input_size = *input_size; 
+			neural_network.hidden_size = *hidden_size; 
+			neural_network.output_size = *output_size;
+
+			neural_network.inputMatrix = import_matrix(json["input_matrix"]);
+			neural_network.outputMatrix = import_matrix(json["output_matrix"]);
+			
+			return neural_network;
 		}
 
 
@@ -192,6 +233,8 @@ namespace sim {
 			import_if(entity, json["stomach_sensor_lr"], import_entity_sensor<StomachSensorLR>, entity);
 			import_if(entity, json["edible_sensor_fb"], import_entity_sensor<EdibleSensorFB>, entity);
 			import_if(entity, json["edible_sensor_lr"], import_entity_sensor<EdibleSensorLR>, entity);
+			
+			import_if(entity, json["neural_network"], import_neural_network);
 		};
 	}
 

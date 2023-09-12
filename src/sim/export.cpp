@@ -79,6 +79,10 @@ namespace sim {
 		}
 
 
+		namespace {
+		}
+
+
 
 		void export_comp(stx::json::write_iterator json, const NeuralNetwork & comp) {
 			json["input_size"] = comp.input_size;
