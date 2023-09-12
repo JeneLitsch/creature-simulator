@@ -47,6 +47,7 @@ namespace sim {
 		entity.add(Age{});
 		entity.add(Stomach{ .food = initial_food_value});
 		entity.add(Health{});
+		entity.add(Sprite{});
 		entity.add(Movement{entity.get_if<Transform>(), &grid});
 		entity.add(StomachSensorFB{entity.get_if<Transform>(), config.creature_sensor.range});
 		entity.add(StomachSensorLR{entity.get_if<Transform>(), config.creature_sensor.range});

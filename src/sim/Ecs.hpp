@@ -12,6 +12,7 @@
 #include "sim/component/FoodSpawn.hxx"
 #include "sim/component/EntitySensor.hpp"
 #include "sim/component/Health.hpp"
+#include "sim/component/Sprite.hpp"
 
 namespace sim {
 	using StomachSensorFB = EntitySensor<Stomach, EntitySensorAxis::front_back>;
@@ -46,7 +47,7 @@ namespace sim {
 		// Maximum food creatures can hold in their stomach
 		double maxStomach = 5.0;
 		// How much food always gets removed from the Stomach per tick
-		double naturalfoodDecayPerTick = 0.001;
+		double naturalfoodDecayPerTick = 0.0005;
 		// How much food is used when moving
 		double foodDecayPerMove = 0.0005;
 		// How much Health gets removed per Tick while the Stomach is empty
