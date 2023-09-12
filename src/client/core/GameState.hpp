@@ -18,6 +18,7 @@ namespace client::core {
 
 		void push(std::unique_ptr<GameState> state);
 		void pop();
+		void clear();
 	private:
 		virtual void on_event(const Closed &) {}
 		virtual void on_event(const WindowResized &) {}

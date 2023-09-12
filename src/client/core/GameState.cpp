@@ -24,4 +24,10 @@ namespace client::core {
 	void GameState::pop() {
 		this->state_manager->pop();
 	}
+
+
+
+	void GameState::clear() {
+		this->state_manager->clear();
+	}
 }

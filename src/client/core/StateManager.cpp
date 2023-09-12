@@ -16,6 +16,12 @@ namespace client::core {
 
 
 
+	void StateManager::clear() {
+		this->queue.push(Clear{});
+	}
+
+
+
 	void StateManager::handle_queue() {
 		while(!this->queue.empty()) {
 			auto & command = this->queue.front();
@@ -25,6 +31,12 @@ namespace client::core {
 			}, command);
 			queue.pop();
 		}
+	}
+
+
+
+	bool StateManager::terminated() const {
+		return std::empty(this->states);
 	}
 
 
@@ -57,5 +69,11 @@ namespace client::core {
 
 	void StateManager::execute(Pop) {
 		this->states.pop_back();
+	}
+
+
+
+	void StateManager::execute(Clear) {
+		this->states.clear();
 	}
 }

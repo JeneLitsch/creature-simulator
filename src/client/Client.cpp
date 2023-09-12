@@ -3,6 +3,7 @@
 #include "imgui.h"
 #include "test/Test.hpp"
 #include "session/Session.hpp"
+#include "start/Start.hpp"
 #include "imguiStyle.cpp"
 #include <iostream>
 
@@ -41,7 +42,8 @@ namespace client {
 		sf::View view{{960/2, 540/2}, {960, 540}};
 		this->window.create(sf::VideoMode{960, 540}, "Creature Simulator");
 		this->window.setView(view);
-		this->state_manager.push(std::make_unique<session::Session>());
+		// this->state_manager.push(std::make_unique<session::Session>());
+		this->state_manager.push(std::make_unique<start::Start>());
 		this->window.setFramerateLimit(60);
 		this->window.setVerticalSyncEnabled(true);
         ImGui::SFML::Init(this->window);
@@ -56,6 +58,10 @@ namespace client {
 		this->now = this->clock.getElapsedTime();
 		while (this->window.isOpen()) {
 			this->state_manager.handle_queue();
+			if(this->state_manager.terminated()) {
+				this->on_event(core::Closed{});
+				continue;
+			}
 			while (auto event = core::fetch_event(this->window)) {
 				std::visit([this] (const auto & e) { this->on_event(e); }, *event);
 				this->state_manager.events(*event);
