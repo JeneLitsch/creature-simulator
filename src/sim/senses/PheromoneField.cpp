@@ -24,6 +24,24 @@ namespace sim {
 	}
 
 
+	void PheromoneField::set_data( const std::vector<std::uint8_t> & bytes) {
+		sf::Image image;
+		sf::Texture texture;
+		texture.create(this->buffer_raw.getSize().x, this->buffer_raw.getSize().y);
+		texture.update(std::data(bytes));
+
+		this->buffer_raw.clear(sf::Color::Black);
+
+		sf::RectangleShape rect;
+		rect.setSize(sf::Vector2f{texture.getSize()});
+		rect.setPosition(0,0);
+		rect.setTexture(&texture);
+		rect.setFillColor(sf::Color::White);
+		this->buffer_raw.draw(rect);
+
+		this->buffer_raw.display();
+	}
+
 
 	void PheromoneField::swap() {
 		this->toggle = !this->toggle;

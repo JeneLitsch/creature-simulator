@@ -13,6 +13,8 @@ namespace sim {
 
 		const sf::Texture & get_texture() const;
 
+		void set_data( const std::vector<std::uint8_t> & bytes);
+
 	private:
 		sf::RenderTexture buffer_raw;
 		sf::RenderTexture buffer_blur_h;

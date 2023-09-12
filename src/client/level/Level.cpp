@@ -13,7 +13,7 @@ namespace client::level {
 		, simulation{simulation}
 		, tick_timer{1.0/100.0} {
 		
-		this->camera_center = stx::position2f{this->simulation->get_grid().size()} / 2.f;
+		this->camera_center = stx::position2f{this->session->get_sim().get_grid().size()} / 2.f;
 	}
 
 
@@ -37,6 +37,20 @@ namespace client::level {
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
 			this->camera_zoom += this->camera_zoom * dt;
 		}
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F5)) {
+			this->session->export_sim("tmp/export/sim.json");
+		}
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F9)) {
+			this->pop();
+			this->pop();
+			this->push(std::make_unique<session::Session>("tmp/export/sim.json"));
+		}
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F6)) {
+			this->session->get_sim().get_ecs().run_system([&] (const sim::Ecs::Entity & entity) {
+				auto id = entity.get_id();
+				this->session->export_entity("tmp/export/entity/" + std::to_string(id) + ".json",id);
+			});
+		}
 
 
 
@@ -46,11 +60,11 @@ namespace client::level {
 		this->camera_center = stx::clamp(
 			this->camera_center,
 			stx::position2f{0,0},
-			stx::position2f{this->simulation->get_grid().size()}
+			stx::position2f{this->session->get_sim().get_grid().size()}
 		);
 		
 		if(this->tick_timer(dt)) {
-			this->simulation->tick();
+			this->session->tick();
 		}
 	}
 	
@@ -67,10 +81,15 @@ namespace client::level {
 		new_view.setCenter(this->camera_center.to<sf::Vector2f>());
 		new_view.setSize(960.f * this->camera_zoom, 540.f * this->camera_zoom);
 		render_target.setView(new_view);
+
+		auto & sim = this->session->get_sim();
+		auto & grid = sim.get_grid();
+		auto & ecs = sim.get_ecs();
+		auto & field = sim.get_pheromone_field();
 		
-		render_phermones(render_target, this->simulation->get_pheromone_field());
-		render_frame(render_target, this->simulation->get_grid(), this->simulation->get_ecs());
-		render_grid(render_target, this->simulation->get_grid(), this->simulation->get_ecs());
+		render_phermones(render_target, field);
+		render_frame(render_target, grid, ecs);
+		render_grid(render_target, grid, ecs);
 		
 		render_target.setView(old_view);
 	}

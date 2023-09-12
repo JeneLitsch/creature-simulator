@@ -2,6 +2,8 @@ cmake_minimum_required (VERSION 3.13)
 
 add_library(libsim
 	Simulation.cpp
+	export.cpp
+	import.cpp
 	create.cpp
 )
 

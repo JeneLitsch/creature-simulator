@@ -93,10 +93,21 @@ namespace sim {
 
 
 
+	stx::grid2<std::uint64_t> & Simulation::get_grid() {
+		return this->grid;
+	}
+
+
+	
 	const stx::grid2<std::uint64_t> & Simulation::get_grid() const {
 		return this->grid;
 	}
 
+
+
+	PheromoneField & Simulation::get_pheromone_field() {
+		return this->pheromone_field;
+	}
 
 
 	const PheromoneField & Simulation::get_pheromone_field() const {
@@ -109,6 +120,14 @@ namespace sim {
 		return this->ecs;
 	}
 
+
+
+	const Ecs & Simulation::get_ecs() const {
+		return this->ecs;
+	}
+
+
+	
 	void Simulation::kill_entity(Ecs::Entity& entity){
 		Transform & transform = entity.get<Transform>();
 		this->grid[transform.location] = 0;

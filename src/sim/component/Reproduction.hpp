@@ -17,6 +17,7 @@ namespace sim{
         bool wants_to_reproduce = true;
 
         Reproduction(uint64_t max_cooldown);
+        Reproduction(uint64_t max_cooldown, std::uint64_t current_cooldown, bool wants_to_reproduce);
 
         Reproduction createChild(std::uint64_t seed, const ReproductionConfig & config, double mutationDampener);
         void incrementCooldown();

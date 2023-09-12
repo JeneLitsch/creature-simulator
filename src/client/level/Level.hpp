@@ -22,8 +22,8 @@ namespace client::level {
 		virtual void on_event(const core::ButtonPressed &) override;
 		stx::chrono::every tick_timer;
 		
-		stx::reference<session::Session> session;
 		stx::reference<sim::Simulation> simulation;
+		stx::reference<session::Session> session;
 
 		constexpr static inline auto camera_speed = 500.f;
 		float camera_zoom = 1.0;
