@@ -33,7 +33,7 @@ namespace sim {
 			for(int y = 0; y < LEVEL_SIZE.y; ++y) {
 				switch (type(rng)) {
 				case 0: {
-					auto & entity = create_creature(ecs, {x, y}, grid, config);
+					auto & entity = create_creature(ecs, {x, y}, grid, config, 5.0);
 					this->grid(x,y) = entity.get_id();
 				} break;
 				case 1: {

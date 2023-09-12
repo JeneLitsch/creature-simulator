@@ -46,11 +46,11 @@ namespace sim {
 		// Maximum food creatures can hold in their stomach
 		double maxStomach = 5.0;
 		// How much food always gets removed from the Stomach per tick
-		double naturalfoodDecayPerTick = 0.02;
+		double naturalfoodDecayPerTick = 0.001;
 		// How much food is used when moving
-		double foodDecayPerMove = 0.01;
+		double foodDecayPerMove = 0.0005;
 		// How much Health gets removed per Tick while the Stomach is empty
-		double starvingHealthDecayPerTick = 0.01;
+		double starvingHealthDecayPerTick = 0.02;
 		// How much Health gets regenerated per Tick, when not starving
 		double healthRegenPerTick = 0.05;
 		// How much food gets used to regenerate Health (ratio)

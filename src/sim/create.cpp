@@ -30,7 +30,7 @@ namespace sim {
 
 	Ecs::Entity & create_food(Ecs & ecs, stx::vector2i position, stx::grid2<std::uint64_t> & grid, PheromoneField & phero_field) {
 		auto & entity = create_entity(ecs, position, grid);
-		entity.add(Edible{ .value = 0.1f});
+		entity.add(Edible{ .value = 1.0f});
 		entity.add(Sprite{
 			.color = sf::Color::Green,
 		});
@@ -42,10 +42,10 @@ namespace sim {
 		return entity;
 	}
 
-	Ecs::Entity & create_creature(Ecs & ecs, stx::vector2i position, stx::grid2<std::uint64_t> & grid, const Config& config) {
+	Ecs::Entity & create_creature(Ecs & ecs, stx::vector2i position, stx::grid2<std::uint64_t> & grid, const Config& config, double initial_food_value) {
 		auto & entity = create_entity(ecs, position, grid);
 		entity.add(Age{});
-		entity.add(Stomach{ .food = 0.5f});
+		entity.add(Stomach{ .food = initial_food_value});
 		entity.add(Health{});
 		entity.add(Movement{entity.get_if<Transform>(), &grid});
 		entity.add(StomachSensorFB{entity.get_if<Transform>(), config.creature_sensor.range});
