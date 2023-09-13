@@ -3,6 +3,7 @@
 #include "imgui.h"
 #include "render.hpp"
 #include "configMenu.hpp"
+#include "sim/create.hpp"
 
 namespace client::level {
 
@@ -53,7 +54,26 @@ namespace client::level {
 		}
 
 
+		if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+			auto & ecs = this->session->get_sim().ecs;
+			auto & grid = this->session->get_sim().grid;
+			if(grid.in_range(this->cursor_position) && grid[this->cursor_position] == 0) {
+				sim::create_barrier(ecs, stx::vector2i{this->cursor_position}, grid);
+			}
+		}
 
+		if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right)) {
+			auto & ecs = this->session->get_sim().ecs;
+			auto & grid = this->session->get_sim().grid;
+			if(grid.in_range(this->cursor_position)) {
+				const std::uint64_t id = grid[this->cursor_position];
+				if(auto * entity = ecs.get_if(id)) {
+					ecs.get(id).mark_delete();
+					grid[this->cursor_position] = 0;
+					ecs.clean_up();
+				}
+			}
+		}
 
 
 
@@ -77,10 +97,9 @@ namespace client::level {
         }
 
 		auto old_view = render_target.getView();
-		auto new_view = render_target.getView();
-		new_view.setCenter(this->camera_center.to<sf::Vector2f>());
-		new_view.setSize(960.f * this->camera_zoom, 540.f * this->camera_zoom);
-		render_target.setView(new_view);
+		camera.setCenter(this->camera_center.to<sf::Vector2f>());
+		camera.setSize(960.f * this->camera_zoom, 540.f * this->camera_zoom);
+		render_target.setView(camera);
 
 		auto & sim = this->session->get_sim();
 		auto & grid = sim.get_grid();
@@ -90,16 +109,27 @@ namespace client::level {
 		render_phermones(render_target, field);
 		render_frame(render_target, grid, ecs);
 		render_grid(render_target, grid, ecs);
+		render_cursor(render_target, this->cursor_position);
 		
 		render_target.setView(old_view);
 	}
+
+
+
+	void Level::on_event(const core::MouseMoved & event)  {
+		auto x = event.window->mapPixelToCoords(event.position.to<sf::Vector2i>(), this->camera);
+		this->cursor_position = stx::position2i{stx::floor(stx::position2f::from(x))};
+	}
+
+
 	
-    void Level::on_event(const core::ButtonPressed& event) {
+    void Level::on_event(const core::KeyPressed& event) {
         if (event.code == sf::Keyboard::O) {
             showMenu = !showMenu;
         }
     }
-	
+
+
 	
 	void Level::init() {
 

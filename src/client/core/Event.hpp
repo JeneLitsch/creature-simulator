@@ -2,11 +2,12 @@
 #include <variant>
 #include <optional>
 #include <SFML/Graphics.hpp>
+#include "stdxx/vector.hxx"
 
 namespace client::core {
 	struct Closed {};
 	struct WindowResized {};
-	struct ButtonPressed {
+	struct KeyPressed {
         sf::Keyboard::Key code;    ///< Code of the key that has been pressed
         bool          alt;     ///< Is the Alt key pressed?
         bool          control; ///< Is the Control key pressed?
@@ -14,11 +15,22 @@ namespace client::core {
         bool          system;  ///< Is the System key pressed?
     };
 
+	struct MouseMoved {
+		stx::vector2i position;
+		sf::RenderWindow * window;
+	};
+
+	struct MouseButtonPressed {
+		sf::Mouse::Button button;
+	};
+
 	using Event = std::variant<
 		Closed,
 		WindowResized,
-        ButtonPressed
+        KeyPressed,
+		MouseMoved,
+		MouseButtonPressed
 	>;
 
-	std::optional<Event> fetch_event(sf::Window & window);
+	std::optional<Event> fetch_event(sf::RenderWindow & window);
 }

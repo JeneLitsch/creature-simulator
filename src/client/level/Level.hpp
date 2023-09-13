@@ -20,7 +20,8 @@ namespace client::level {
 	protected:
 		virtual void init() override;
 	private:
-		virtual void on_event(const core::ButtonPressed &) override;
+		virtual void on_event(const core::KeyPressed &) override;
+		virtual void on_event(const core::MouseMoved &) override;
 		stx::chrono::every tick_timer;
 		
 		stx::reference<sim::Simulation> simulation;
@@ -29,5 +30,9 @@ namespace client::level {
 		constexpr static inline auto camera_speed = 500.f;
 		float camera_zoom = 1.0;
 		stx::position2f camera_center;
+
+		sf::View camera;
+
+		stx::position2i cursor_position;
 	};
 }

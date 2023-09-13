@@ -104,4 +104,9 @@ namespace client {
 		this->window.setView(view);
 	}
 
+
+
+	void Client::on_event(const core::MouseMoved & event) {
+
+	}
 }
