@@ -188,6 +188,7 @@ namespace sim {
 		stx::json::write_iterator json{node};
 		json["entities"] = export_ecs(sim.get_ecs());
 		json["pheromones"] = export_pheromone_field(sim.get_pheromone_field());
+		json["tick_counter"] = sim.tickCounter;
 		return node;
 	}
 }

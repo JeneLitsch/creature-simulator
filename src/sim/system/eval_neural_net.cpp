@@ -1,7 +1,7 @@
 #include "eval_neural_net.hpp"
 
 namespace sim {
-	void eval_neural(Ecs::Entity & entity, const Config& config){
+	void eval_neural(Ecs::Entity & entity, const Config& config, double oscilatorShort, double oscilatorLong){
 		Age* age = entity.get_if<Age>();
 		Stomach* stomach = entity.get_if<Stomach>();
 		Health* health = entity.get_if<Health>();
@@ -14,6 +14,8 @@ namespace sim {
 			return;
 
         std::vector<double> input;
+		input.push_back(oscilatorShort);
+		input.push_back(oscilatorLong);
 		input.push_back(static_cast<double>(age->age) / config.maxAge);
 		input.push_back(stomach->food / config.metabolism.maxStomach);
 		input.push_back(health->currentHealth);
@@ -31,7 +33,7 @@ namespace sim {
 
 		Reproduction* reproduction = entity.get_if<Reproduction>();
 		if(reproduction)
-			reproduction->wants_to_reproduce = true; //output[0] >= 0.0;
+			reproduction->wants_to_reproduce = output[0] >= -0.5;
         Transform* transform = entity.get_if<Transform>();
 		double alpha = std::atan2(transform->rotation.y, transform->rotation.x);
 		stx::vector2d direction;
@@ -56,6 +58,7 @@ namespace sim {
 				movement->direction = 0;
 			}
 		}
-		
+
+		stomach->shareFood = output[3] >= 0.0;
     }
 }

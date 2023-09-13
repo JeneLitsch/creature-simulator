@@ -248,6 +248,7 @@ namespace sim {
 
 	std::unique_ptr<Simulation> import_simulation(stx::json::iterator json) {
 		auto sim = std::make_unique<Simulation>();
+		sim->tickCounter = json["tick_counter"].u64().value_or(0);
 		auto pheromones = hex::decode(json["pheromones"].force_string());
 		std::cout << std::size(pheromones) << "\n";
 		sim->get_pheromone_field().set_data(pheromones);
