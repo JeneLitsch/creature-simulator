@@ -192,6 +192,7 @@ namespace sim {
 		json["size"].push_back(sim.get_grid().size().x);
 		json["size"].push_back(sim.get_grid().size().y);
 
+		json["tick_counter"] = sim.tickCounter;
 		return node;
 	}
 }

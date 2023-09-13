@@ -22,6 +22,7 @@ namespace sim {
 
 		void kill_entity(Ecs::Entity& entity);
 		Config config;
+		uint64_t tickCounter = 0;
 		~Simulation();
 
 		static std::unique_ptr<Simulation> generate(const WorldPreset & preset);

@@ -45,7 +45,7 @@ namespace sim {
 
 	struct MetabolismConfig{
 		// Maximum food creatures can hold in their stomach
-		double maxStomach = 5.0;
+		double maxStomach = 10.0;
 		// How much food always gets removed from the Stomach per tick
 		double naturalfoodDecayPerTick = 0.0005;
 		// How much food is used when moving
@@ -56,10 +56,16 @@ namespace sim {
 		double healthRegenPerTick = 0.05;
 		// How much food gets used to regenerate Health (ratio)
 		double foodPerHealthRegenerated = 1.0;
+		// Should food sharing be enabled
+		bool enableFoodSharing = true;
+		// How much food can be given per tick per neighbour
+		double foodShared = 0.005;
 	};
 
 	struct Config{
 		uint16_t maxAge = 1000;
+		bool enable_short_oscilator = false;
+		bool enable_long_oscilator = false;
 		NeuralNetMutConfig neural_net = NeuralNetMutConfig{};
 		ReproductionConfig reproduction = ReproductionConfig{};
 		EntitySensorConfig creature_sensor = EntitySensorConfig{};

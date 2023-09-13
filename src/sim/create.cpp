@@ -53,7 +53,7 @@ namespace sim {
 		entity.add(StomachSensorLR{entity.get_if<Transform>(), config.creature_sensor.range});
 		entity.add(EdibleSensorFB{entity.get_if<Transform>(), config.food_sensor.range});
 		entity.add(EdibleSensorLR{entity.get_if<Transform>(), config.food_sensor.range});
-		entity.add(NeuralNetwork{7, 3});
+		entity.add(NeuralNetwork{9, 4});
 		entity.add(Reproduction{config.reproduction.default_cooldown});
 		return entity;
 	}

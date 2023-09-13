@@ -16,7 +16,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_compile_options(
 	-W 
-	-g 
+	-O3
 	-Wall 
 	-Wextra 
 	-pedantic 

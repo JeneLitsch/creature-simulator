@@ -12,6 +12,7 @@
 #include "system/eval_neural_net.hpp"
 #include "system/update_sensors.hpp"
 #include "generate.hpp"
+#include "system/share_food.hpp"
 
 namespace sim {
 	constexpr std::uint64_t EMPTY = 0;
@@ -23,9 +24,7 @@ namespace sim {
 		: grid{size, EMPTY}
 		, pheromone_field{size}
 		, ecs{FIRST_CREATURE} {
-
 	}
-
 
 
 	Simulation::~Simulation() {}
@@ -33,6 +32,7 @@ namespace sim {
 	
 	
 	void Simulation::tick() {
+		tickCounter++;
 		ecs.run_system(metabolize, this->config.metabolism);
 		ecs.run_system([this](Ecs::Entity& entity) {
 			if(Age* age = entity.get_if<Age>()) age -> incrementAge();
@@ -41,7 +41,18 @@ namespace sim {
 			if(EdibleSensorFB* sensor = entity.get_if<EdibleSensorFB>()) update_entity_sensor(grid, ecs, sensor, config.food_sensor);
 			if(EdibleSensorLR* sensor = entity.get_if<EdibleSensorLR>()) update_entity_sensor(grid, ecs, sensor, config.food_sensor);
 		});
-		ecs.run_system(eval_neural, config);
+		double oscilatorShort = 0;
+		if(config.enable_short_oscilator){
+			oscilatorShort = std::sin(static_cast<double>(tickCounter)/10.0);
+		}
+		double oscilatorLong = 0;
+		if(config.enable_long_oscilator){
+			oscilatorLong = std::sin(static_cast<double>(tickCounter)/200.0);
+		}
+		ecs.run_system(eval_neural, config, oscilatorShort, oscilatorLong);
+		if(config.metabolism.enableFoodSharing){
+			ecs.run_system(share_food, grid, &ecs, config);
+		}
 		ecs.run_system(move, ecs, *this, config.metabolism);
 		ecs.run_system(reproduce, &(this -> grid), &(this -> ecs), &(this -> pheromone_field), this->config, this->rng);
 		this->pheromone_field.swap();
