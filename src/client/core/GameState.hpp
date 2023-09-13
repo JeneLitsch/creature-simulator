@@ -15,6 +15,8 @@ namespace client::core {
 		virtual void render(sf::RenderTarget & render_target) = 0;
 
 		virtual ~GameState() = default;
+
+		virtual const char * name() { return "<UNKNOWN>"; }
 	protected:
 		virtual void init() = 0;
 

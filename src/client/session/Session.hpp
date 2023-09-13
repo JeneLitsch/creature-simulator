@@ -19,6 +19,8 @@ namespace client::session {
 		void tick();
 
 		const sim::Simulation & get_sim() const;
+		
+		virtual const char * name() { return "Session"; }
 
 	protected:
 		virtual void init() override {}

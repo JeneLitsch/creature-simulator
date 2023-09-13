@@ -11,6 +11,7 @@ namespace client::main_menu {
 
 		virtual void update(double dt) override;
 		virtual void render(sf::RenderTarget & render_target) override;
+		virtual const char * name() { return "New"; }
 
 	protected:
 		virtual void init() override {}

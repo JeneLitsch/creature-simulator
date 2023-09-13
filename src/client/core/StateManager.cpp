@@ -1,5 +1,6 @@
 #include "StateManager.hpp"
 #include "stdxx/log.hxx"
+#include <sstream>
 
 namespace client::core {
 	void StateManager::push(std::unique_ptr<GameState> state) {
@@ -23,14 +24,21 @@ namespace client::core {
 
 
 	void StateManager::handle_queue() {
+		if(std::empty(this->queue)) {
+			return;
+		}
 		while(!this->queue.empty()) {
 			auto & command = this->queue.front();
 			std::visit([this] (auto & c) {
 				this->execute(std::move(c));
-				stx::log[stx::INFO] << "Updated states: " << this->queue.size();
 			}, command);
 			queue.pop();
 		}
+		std::ostringstream oss;
+		for(const auto & state : states) {
+			oss << "[" << state->name() << "]";
+		}
+		stx::log[stx::INFO] << "Updated states: " << oss.str();
 	}
 
 
