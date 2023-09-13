@@ -51,6 +51,12 @@ namespace client::core {
 	void StateManager::update(double dt) {
 		if(!this->states.empty()) this->states.back()->update(dt);
 	}
+
+
+
+	void StateManager::ui(stx::vector2f window_size) {
+		if(!this->states.empty()) this->states.back()->ui(window_size);
+	}
 	
 	
 	

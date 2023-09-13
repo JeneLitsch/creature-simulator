@@ -22,6 +22,7 @@ namespace client::core {
 		void handle_queue();
 		void events(const Event & event);
 		void update(double dt);
+		void ui(stx::vector2f window_size);
 		void render(sf::RenderTarget & render_target);
 
 		bool terminated() const;

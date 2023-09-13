@@ -3,7 +3,7 @@
 #include "imgui.h"
 #include "test/Test.hpp"
 #include "session/Session.hpp"
-#include "start/Start.hpp"
+#include "main_menu/Main.hpp"
 #include "imguiStyle.cpp"
 #include <iostream>
 
@@ -43,7 +43,7 @@ namespace client {
 		this->window.create(sf::VideoMode{960, 540}, "Creature Simulator");
 		this->window.setView(view);
 		// this->state_manager.push(std::make_unique<session::Session>());
-		this->state_manager.push(std::make_unique<start::Start>());
+		this->state_manager.push(std::make_unique<main_menu::Main>());
 		this->window.setFramerateLimit(60);
 		this->window.setVerticalSyncEnabled(true);
         ImGui::SFML::Init(this->window);
@@ -67,7 +67,7 @@ namespace client {
 				this->state_manager.events(*event);
 			}
 
-            ImGui::SFML::Update(this->window, this->now);
+            ImGui::SFML::Update(this->window, this->now - this->then);
             if (((static_cast<float>(sf::VideoMode::getFullscreenModes()[0].height)) / 1080.0f) > 1.5)
                 ImGui::GetFont()->Scale = 2;
 			this->then = this->now;
@@ -77,6 +77,10 @@ namespace client {
 			// std::cout << (1.f / dt) << "\n";
 
 			this->state_manager.update(dt);
+			this->state_manager.ui({
+				static_cast<float>(this->window.getSize().x),
+				static_cast<float>(this->window.getSize().y)
+			});
 			this->window.clear(sf::Color::Black);
 			this->state_manager.render(this->window);
             ImGui::SFML::Render(this->window);
