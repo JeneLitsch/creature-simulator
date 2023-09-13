@@ -6,7 +6,7 @@
 namespace client::main_menu {
 	struct DefaultSize {
 		const char * name;
-		stx::size2u size;
+		stx::size2u32 size;
 	};
 
 	const auto default_sizes = std::array{
@@ -38,26 +38,25 @@ namespace client::main_menu {
 		if(ImGui::Button("Randomize")) { 
 			this->preset.seed = rng();
 		}
-		if(ImGui::InputUInt64("Height", &this->preset.height, 1, 16)) {
-			this->preset.height = std::clamp<std::uint64_t>(this->preset.height, 8, 1024);
+		if(ImGui::InputUInt32("Width", &this->preset.size.x, 1, 16)) {
+			this->preset.size.x = std::clamp<std::uint32_t>(this->preset.size.x, 8, 1024);
 		}
-		if(ImGui::InputUInt64("Width", &this->preset.width, 1, 16)) {
-			this->preset.width = std::clamp<std::uint64_t>(this->preset.width, 8, 1024);
+		if(ImGui::InputUInt32("Height", &this->preset.size.y, 1, 16)) {
+			this->preset.size.x = std::clamp<std::uint32_t>(this->preset.size.y, 8, 1024);
 		}
 
 		ImGui::BeginGroup();
 
 		for(const auto & default_size : default_sizes) {
 			if(ImGui::Button(default_size.name)) {
-				this->preset.width = default_size.size.x;
-				this->preset.height = default_size.size.y;
+				this->preset.size = default_size.size;
 			}
 			ImGui::SameLine();
 		}
 
 		ImGui::EndGroup();
 
-		ImGui::Text("Total Cells %lld", this->preset.height * this->preset.width);
+		ImGui::Text("Total Cells %lld", this->preset.size.x * this->preset.size.y);
 
 		ImGui::NewLine();
 
@@ -66,7 +65,7 @@ namespace client::main_menu {
 		if(ImGui::Button("Generate")) {
 			this->generate();
 		}
-		
+
 		ImGui::SetWindowFontScale(1);
 	}
 
@@ -75,7 +74,7 @@ namespace client::main_menu {
 	void New::generate() {
 		this->pop();
 		this->pop();
-		this->push(std::make_unique<session::Session>());
+		this->push(std::make_unique<session::Session>(this->preset));
 	}
 
 

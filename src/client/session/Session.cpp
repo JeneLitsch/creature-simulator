@@ -5,8 +5,8 @@
 #include <fstream>
 
 namespace client::session {
-	Session::Session() {
-		this->simulation = std::make_unique<sim::Simulation>();
+	Session::Session(const sim::WorldPreset & preset) {
+		this->simulation = std::make_unique<sim::Simulation>(preset);
 	}
 
 

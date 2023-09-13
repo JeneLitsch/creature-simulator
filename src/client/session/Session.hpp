@@ -7,7 +7,7 @@
 namespace client::session {
 	class Session : public core::GameState{
 	public:
-		Session ();
+		Session (const sim::WorldPreset & preset);
 		Session (const std::filesystem::path & path);
 		void update(double dt) override;
 		void render(sf::RenderTarget & render_target) override;
@@ -19,7 +19,7 @@ namespace client::session {
 		void tick();
 
 		const sim::Simulation & get_sim() const;
-		
+
 		virtual const char * name() { return "Session"; }
 
 	protected:

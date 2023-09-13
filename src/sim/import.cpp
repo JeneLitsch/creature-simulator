@@ -247,7 +247,7 @@ namespace sim {
 
 
 	std::unique_ptr<Simulation> import_simulation(stx::json::iterator json) {
-		auto sim = std::make_unique<Simulation>();
+		auto sim = std::make_unique<Simulation>(sim::WorldPreset{});
 		auto pheromones = hex::decode(json["pheromones"].force_string());
 		std::cout << std::size(pheromones) << "\n";
 		sim->get_pheromone_field().set_data(pheromones);

@@ -7,11 +7,12 @@
 #include "sim/Ecs.hpp"
 #include "stdxx/grid.hxx"
 #include "sim/senses/PheromoneField.hpp"
+#include "WorldPreset.hxx"
 
 namespace sim {
 	class Simulation {
 	public:
-		Simulation();
+		Simulation(const WorldPreset & preset);
 		void tick();
 		const stx::grid2<std::uint64_t> & get_grid() const;
 		stx::grid2<std::uint64_t> & get_grid();
@@ -28,5 +29,6 @@ namespace sim {
 		std::mt19937_64 rng;
 		stx::grid2<std::uint64_t> grid;
 		PheromoneField pheromone_field;
+		WorldPreset preset;
 	};
 }

@@ -16,21 +16,21 @@
 namespace sim {
 	constexpr std::uint64_t EMPTY = 0;
 	constexpr std::uint64_t FIRST_CREATURE = 256;
-	constexpr stx::size2u LEVEL_SIZE {256, 144};
 	constexpr double spawn_chance = 0.001;
 
 
-	Simulation::Simulation() 
-		: grid{LEVEL_SIZE, EMPTY}
-		, pheromone_field{LEVEL_SIZE}
-		, ecs{FIRST_CREATURE} {
+	Simulation::Simulation(const WorldPreset & preset) 
+		: grid{preset.size, EMPTY}
+		, pheromone_field{preset.size}
+		, ecs{FIRST_CREATURE}
+		, preset{preset} {
 		this->rng.seed(42);
 
 		std::uniform_int_distribution<std::uint8_t> channel {0,64};
 		std::uniform_int_distribution<int> type {0,1000};
 
-		for(int x = 0; x < LEVEL_SIZE.x; ++x) {
-			for(int y = 0; y < LEVEL_SIZE.y; ++y) {
+		for(int x = 0; x < preset.size.x; ++x) {
+			for(int y = 0; y < preset.size.y; ++y) {
 				switch (type(rng)) {
 				case 0: {
 					auto & entity = create_creature(ecs, {x, y}, grid, config, 5.0);
