@@ -22,5 +22,7 @@ namespace client::main_menu {
 		sim::WorldPreset preset;
 
 		std::mt19937_64 rng;
+
+		int radio_index = 0;
 	};
 }

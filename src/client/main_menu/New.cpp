@@ -2,21 +2,9 @@
 #include "Main.hpp"
 #include "imgui.h"
 #include "client/session/Session.hpp"
+#include "ui.hpp"
 
 namespace client::main_menu {
-	struct DefaultSize {
-		const char * name;
-		stx::size2u32 size;
-	};
-
-	const auto default_sizes = std::array{
-		DefaultSize{ "16 x 16", {16, 16}, },
-		DefaultSize{ "32 x 32", {32, 32}, },
-		DefaultSize{ "64 x 64", {64, 64}, },
-		DefaultSize{ "128 x 128",  {128, 128} },
-		DefaultSize{ "256 x 256",  {256, 256} },
-		DefaultSize{ "512 x 512",  {512, 512} },
-	};
 
 
 	New::New(stx::reference<Main> main)
@@ -33,47 +21,12 @@ namespace client::main_menu {
 
 
 	void New::ui_content() {
-		ImGui::SeparatorText("Environement");
-
-		ImGui::InputUInt64("Seed", &this->preset.seed, 1, 100, ImGuiInputTextFlags_CharsHexadecimal);
-		if(ImGui::Button("Randomize")) { 
-			this->preset.seed = rng();
-		}
-
-		ImGui::BeginGroup();
-
-		if(ImGui::InputUInt32("Width", &this->preset.size.x, 1, 16)) {
-			this->preset.size.x = std::clamp<std::uint32_t>(this->preset.size.x, 8, 1024);
-		}
-
-		if(ImGui::InputUInt32("Height", &this->preset.size.y, 1, 16)) {
-			this->preset.size.x = std::clamp<std::uint32_t>(this->preset.size.y, 8, 1024);
-		}
-
-		ImGui::EndGroup();
-
-		ImGui::BeginGroup();
-
-		for(const auto & default_size : default_sizes) {
-			if(ImGui::Button(default_size.name)) {
-				this->preset.size = default_size.size;
-			}
-			ImGui::SameLine();
-		}
-
-		ImGui::EndGroup();
-
-		ImGui::Text("Total Cells %lld", this->preset.size.x * this->preset.size.y);
-
+		ui_world(this->preset, this->rng);
 		ImGui::NewLine();
-		ImGui::SeparatorText("Entities");
+		ui_entities(this->preset);
+		ImGui::NewLine();
+		ui_obstacles(this->preset.obstacles, this->radio_index);
 
-		if(ImGui::InputUInt64("Food Spawners", &this->preset.entities.food_spawners, 1, 16)) {
-			this->preset.entities.food_spawners = std::clamp<std::uint32_t>(this->preset.entities.food_spawners, 8, 1024);
-		}
-		if(ImGui::InputUInt64("Empty Creatures", &this->preset.entities.empty_creatures, 1, 16)) {
-			this->preset.entities.empty_creatures = std::clamp<std::uint32_t>(this->preset.entities.food_spawners, 8, 1024);
-		}
 
 		ImGui::NewLine();
 		ImGui::SetWindowFontScale(2);

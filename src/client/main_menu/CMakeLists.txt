@@ -4,4 +4,5 @@ target_sources(libclient PRIVATE
 	Main.cpp
 	New.cpp
 	Sub.cpp
+	ui.cpp
 )
