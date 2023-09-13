@@ -60,7 +60,7 @@ namespace sim {
 
 
 
-	Ecs::Entity & create_wall(Ecs & ecs, stx::vector2i position, stx::grid2<std::uint64_t> & grid) {
+	Ecs::Entity & create_barrier(Ecs & ecs, stx::vector2i position, stx::grid2<std::uint64_t> & grid) {
 		auto & entity = create_entity(ecs, position, grid);
 		entity.add(Sprite{
 			.color = sf::Color{64,64,64}

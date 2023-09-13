@@ -31,11 +31,11 @@ namespace sim {
 			}
 		}
 
-		for(std::uint64_t i = 0; i < preset.walls; i++) {
+		for(std::uint64_t i = 0; i < preset.barriers; i++) {
 			const auto x = dist_x(sim->rng);
 			const auto y = dist_y(sim->rng);
 			if(sim->grid(x,y) == 0) {
-				create_wall(sim->ecs, stx::vector2i{x,y}, sim->grid);
+				create_barrier(sim->ecs, stx::vector2i{x,y}, sim->grid);
 			}
 		}
 
