@@ -5,6 +5,7 @@ add_library(libsim
 	export.cpp
 	import.cpp
 	create.cpp
+	generate.cpp
 )
 
 add_subdirectory(component)

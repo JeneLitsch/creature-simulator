@@ -3,8 +3,16 @@
 #include "stdxx/vector.hxx"
 
 namespace sim {
+
 	struct WorldPreset {
 		std::uint64_t seed = 42;
 		stx::size2u32 size = {16,16};
+
+		std::uint64_t walls = 5;
+
+		struct {
+			std::uint64_t food_spawners = 5;
+			std::uint64_t empty_creatures = 5;
+		} entities;
 	};
 }

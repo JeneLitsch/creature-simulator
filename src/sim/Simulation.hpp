@@ -7,12 +7,11 @@
 #include "sim/Ecs.hpp"
 #include "stdxx/grid.hxx"
 #include "sim/senses/PheromoneField.hpp"
-#include "WorldPreset.hxx"
+#include "WorldPreset.hpp"
 
 namespace sim {
 	class Simulation {
 	public:
-		Simulation(const WorldPreset & preset);
 		void tick();
 		const stx::grid2<std::uint64_t> & get_grid() const;
 		stx::grid2<std::uint64_t> & get_grid();
@@ -24,11 +23,15 @@ namespace sim {
 		void kill_entity(Ecs::Entity& entity);
 		Config config;
 		~Simulation();
-	private:
+
+		static std::unique_ptr<Simulation> generate(const WorldPreset & preset);
+		static std::unique_ptr<Simulation> empty(stx::size2u32 size);
+
 		sim::Ecs ecs;
 		std::mt19937_64 rng;
 		stx::grid2<std::uint64_t> grid;
 		PheromoneField pheromone_field;
-		WorldPreset preset;
+	private:
+		Simulation(stx::size2u32 size);
 	};
 }

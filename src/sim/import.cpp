@@ -5,6 +5,14 @@
 
 namespace sim {
 	namespace {
+		stx::vector2u32 import_vector2u32(stx::json::iterator json) {
+			auto x = json[0].u32();
+			auto y = json[1].u32();
+			if(!x) throw stx::json::format_error {"Cannot read stx::vector2u32::x"};
+			if(!y) throw stx::json::format_error {"Cannot read stx::vector2u32::y"};
+			return stx::vector2u32 { *x, *y };
+		}
+
 		stx::vector2i import_vector2i(stx::json::iterator json) {
 			auto x = json[0].i32();
 			auto y = json[1].i32();
@@ -247,7 +255,8 @@ namespace sim {
 
 
 	std::unique_ptr<Simulation> import_simulation(stx::json::iterator json) {
-		auto sim = std::make_unique<Simulation>(sim::WorldPreset{});
+		auto size = stx::size2u32{import_vector2u32(json["size"])};
+		auto sim = Simulation::empty(size);
 		auto pheromones = hex::decode(json["pheromones"].force_string());
 		std::cout << std::size(pheromones) << "\n";
 		sim->get_pheromone_field().set_data(pheromones);

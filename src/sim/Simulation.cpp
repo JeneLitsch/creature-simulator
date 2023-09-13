@@ -8,10 +8,10 @@
 #include "system/spawn_food.hpp"
 #include "component/Movement.hpp"
 #include "component/Age.hpp"
-#include "create.hpp"
 #include "system/check_death.hpp"
 #include "system/eval_neural_net.hpp"
 #include "system/update_sensors.hpp"
+#include "generate.hpp"
 
 namespace sim {
 	constexpr std::uint64_t EMPTY = 0;
@@ -19,50 +19,11 @@ namespace sim {
 	constexpr double spawn_chance = 0.001;
 
 
-	Simulation::Simulation(const WorldPreset & preset) 
-		: grid{preset.size, EMPTY}
-		, pheromone_field{preset.size}
-		, ecs{FIRST_CREATURE}
-		, preset{preset} {
-		this->rng.seed(42);
+	Simulation::Simulation(stx::size2u32 size) 
+		: grid{size, EMPTY}
+		, pheromone_field{size}
+		, ecs{FIRST_CREATURE} {
 
-		std::uniform_int_distribution<std::uint8_t> channel {0,64};
-		std::uniform_int_distribution<int> type {0,1000};
-
-		for(int x = 0; x < preset.size.x; ++x) {
-			for(int y = 0; y < preset.size.y; ++y) {
-				switch (type(rng)) {
-				case 0: {
-					auto & entity = create_creature(ecs, {x, y}, grid, config, 5.0);
-					this->grid(x,y) = entity.get_id();
-				} break;
-				case 1: {
-					// auto & entity = this->ecs.new_entity();
-					// auto& transform = entity.add(Transform{
-					// 	.location = {x, y}
-					// });
-					// entity.add(Sprite {
-					// 	.color = sf::Color::Green,
-					// });
-					// entity.add(PheromoneEmitter{
-					// 	.field = this->pheromone_field,
-					// 	.composition = sf::Color{0,255,0},
-					// 	.distance = 2,
-					// });
-					// entity.add(Age{});
-					// entity.add(Edible{
-					// 	.value = 0.1,
-					// });
-					// this->grid(x,y) = entity.get_id();
-				} break;
-				case 50: {
-					create_food_spawner(ecs, {x,y}, grid);
-				}
-				default:break;
-				}
-
-			}
-		}
 	}
 
 
@@ -132,5 +93,17 @@ namespace sim {
 		Transform & transform = entity.get<Transform>();
 		this->grid[transform.location] = 0;
 		entity.mark_delete();
+	}
+
+
+
+	std::unique_ptr<Simulation> Simulation::generate(const WorldPreset & preset) {
+		return sim::generate(preset);
+	}
+
+
+
+	std::unique_ptr<Simulation> Simulation::empty(stx::size2u32 size) {
+		return std::unique_ptr<Simulation>{new Simulation{size}};
 	}
 }

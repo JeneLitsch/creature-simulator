@@ -6,7 +6,7 @@
 
 namespace client::session {
 	Session::Session(const sim::WorldPreset & preset) {
-		this->simulation = std::make_unique<sim::Simulation>(preset);
+		this->simulation = sim::Simulation::generate(preset);
 	}
 
 

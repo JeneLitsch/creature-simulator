@@ -32,18 +32,25 @@ namespace client::main_menu {
 
 
 
-
 	void New::ui_content() {
+		ImGui::SeparatorText("Environement");
+
 		ImGui::InputUInt64("Seed", &this->preset.seed, 1, 100, ImGuiInputTextFlags_CharsHexadecimal);
 		if(ImGui::Button("Randomize")) { 
 			this->preset.seed = rng();
 		}
+
+		ImGui::BeginGroup();
+
 		if(ImGui::InputUInt32("Width", &this->preset.size.x, 1, 16)) {
 			this->preset.size.x = std::clamp<std::uint32_t>(this->preset.size.x, 8, 1024);
 		}
+
 		if(ImGui::InputUInt32("Height", &this->preset.size.y, 1, 16)) {
 			this->preset.size.x = std::clamp<std::uint32_t>(this->preset.size.y, 8, 1024);
 		}
+
+		ImGui::EndGroup();
 
 		ImGui::BeginGroup();
 
@@ -59,13 +66,20 @@ namespace client::main_menu {
 		ImGui::Text("Total Cells %lld", this->preset.size.x * this->preset.size.y);
 
 		ImGui::NewLine();
+		ImGui::SeparatorText("Entities");
 
+		if(ImGui::InputUInt64("Food Spawners", &this->preset.entities.food_spawners, 1, 16)) {
+			this->preset.entities.food_spawners = std::clamp<std::uint32_t>(this->preset.entities.food_spawners, 8, 1024);
+		}
+		if(ImGui::InputUInt64("Empty Creatures", &this->preset.entities.empty_creatures, 1, 16)) {
+			this->preset.entities.empty_creatures = std::clamp<std::uint32_t>(this->preset.entities.food_spawners, 8, 1024);
+		}
+
+		ImGui::NewLine();
 		ImGui::SetWindowFontScale(2);
-
 		if(ImGui::Button("Generate")) {
 			this->generate();
 		}
-
 		ImGui::SetWindowFontScale(1);
 	}
 

@@ -20,10 +20,10 @@ namespace client::main_menu {
 		ImGui::SetWindowPos(panel_position.to<ImVec2>(), 0);
 		ImGui::SetWindowSize(panel_size.to<ImVec2>(), 0);
 		ImGui::SetWindowFontScale(2);
-		if(ImGui::Button("New Simulation")) {
+		if(ImGui::Button("New Simulation", {ImGui::GetContentRegionAvail().x, 0})) {
 			this->push(std::make_unique<New>(*this));
 		}
-		if(ImGui::Button("QUIT")) {
+		if(ImGui::Button("Quit", {ImGui::GetContentRegionAvail().x, 0})) {
 			this->clear();
 		}
         ImGui::End();
