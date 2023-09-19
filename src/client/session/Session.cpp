@@ -59,4 +59,10 @@ namespace client::session {
 	const sim::Simulation & Session::get_sim() const {
 		return *this->simulation;
 	}
+
+
+	
+	sim::Simulation & Session::get_sim() {
+		return *this->simulation;
+	}
 }

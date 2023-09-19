@@ -15,12 +15,14 @@ namespace client::level {
 	public:
 		Level(session::Session & session, sim::Simulation & simulation);
 		virtual void update(double dt) override;
+		void update_camera(double dt);
 		virtual void render(sf::RenderTarget & render_target) override;
 		virtual const char * name() { return "Level"; }
 	protected:
 		virtual void init() override;
 	private:
-		virtual void on_event(const core::ButtonPressed &) override;
+		virtual void on_event(const core::KeyPressed &) override;
+		virtual void on_event(const core::MouseMoved &) override;
 		stx::chrono::every tick_timer;
 		
 		stx::reference<sim::Simulation> simulation;
@@ -29,5 +31,9 @@ namespace client::level {
 		constexpr static inline auto camera_speed = 500.f;
 		float camera_zoom = 1.0;
 		stx::position2f camera_center;
+
+		sf::View camera;
+
+		stx::position2i cursor_position;
 	};
 }
