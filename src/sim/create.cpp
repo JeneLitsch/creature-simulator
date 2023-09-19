@@ -49,10 +49,10 @@ namespace sim {
 		entity.add(Health{});
 		entity.add(Sprite{});
 		entity.add(Movement{entity.get_if<Transform>(), &grid});
-		entity.add(StomachSensorFB{entity.get_if<Transform>(), config.creature_sensor.range});
-		entity.add(StomachSensorLR{entity.get_if<Transform>(), config.creature_sensor.range});
-		entity.add(EdibleSensorFB{entity.get_if<Transform>(), config.food_sensor.range});
-		entity.add(EdibleSensorLR{entity.get_if<Transform>(), config.food_sensor.range});
+		entity.add(StomachSensorFB{entity.get_if<Transform>(), config.sensors.radius});
+		entity.add(StomachSensorLR{entity.get_if<Transform>(), config.sensors.radius});
+		entity.add(EdibleSensorFB{entity.get_if<Transform>(), config.sensors.radius});
+		entity.add(EdibleSensorLR{entity.get_if<Transform>(), config.sensors.radius});
 		entity.add(NeuralNetwork{9, 4});
 		entity.add(Reproduction{config.reproduction.default_cooldown});
 		return entity;
