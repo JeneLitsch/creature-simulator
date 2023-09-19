@@ -4,6 +4,7 @@
 #include "render.hpp"
 #include "configMenu.hpp"
 #include "sim/create.hpp"
+#include "Edit.hpp"
 
 namespace client::level {
 
@@ -15,6 +16,20 @@ namespace client::level {
 		, tick_timer{1.0/100.0} {
 		
 		this->camera_center = stx::position2f{this->session->get_sim().get_grid().size()} / 2.f;
+	}
+
+
+
+	void Level::ui(stx::vector2f window_size) {
+        if (showMenu){
+			this->ui_config();
+        }
+	}
+
+
+
+	void Level::ui_config() {
+		level::Menu(simulation->config);
 	}
 
 
@@ -36,36 +51,6 @@ namespace client::level {
 				this->session->export_entity("tmp/export/entity/" + std::to_string(id) + ".json",id);
 			});
 		}
-
-
-		if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-			auto & ecs = this->session->get_sim().ecs;
-			auto & grid = this->session->get_sim().grid;
-			if(grid.in_range(this->cursor_position) && grid[this->cursor_position] == 0) {
-				sim::create_barrier(ecs, stx::vector2i{this->cursor_position}, grid);
-			}
-		}
-
-		if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right)) {
-			auto & ecs = this->session->get_sim().ecs;
-			auto & grid = this->session->get_sim().grid;
-			if(grid.in_range(this->cursor_position)) {
-				const std::uint64_t id = grid[this->cursor_position];
-				if(auto * entity = ecs.get_if(id)) {
-					ecs.get(id).mark_delete();
-					grid[this->cursor_position] = 0;
-					ecs.clean_up();
-				}
-			}
-		}
-
-
-
-		this->camera_center = stx::clamp(
-			this->camera_center,
-			stx::position2f{0,0},
-			stx::position2f{this->session->get_sim().get_grid().size()}
-		);
 		
 		if(this->tick_timer(dt)) {
 			this->session->tick();
@@ -93,15 +78,17 @@ namespace client::level {
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
 			this->camera_zoom += this->camera_zoom * dt;
 		}
+
+		this->camera_center = stx::clamp(
+			this->camera_center,
+			stx::position2f{0,0},
+			stx::position2f{this->session->get_sim().get_grid().size()}
+		);
 	}
 	
 
 	
 	void Level::render(sf::RenderTarget & render_target) {
-
-        if (showMenu){
-            level::Menu(level::Level::simulation->config);
-        }
 
 		auto old_view = render_target.getView();
 		camera.setCenter(this->camera_center.to<sf::Vector2f>());
@@ -116,16 +103,8 @@ namespace client::level {
 		render_phermones(render_target, field);
 		render_frame(render_target, grid, ecs);
 		render_grid(render_target, grid, ecs);
-		render_cursor(render_target, this->cursor_position);
 		
 		render_target.setView(old_view);
-	}
-
-
-
-	void Level::on_event(const core::MouseMoved & event)  {
-		auto x = event.window->mapPixelToCoords(event.position.to<sf::Vector2i>(), this->camera);
-		this->cursor_position = stx::position2i{stx::floor(stx::position2f::from(x))};
 	}
 
 
@@ -134,6 +113,10 @@ namespace client::level {
         if (event.code == sf::Keyboard::O) {
             showMenu = !showMenu;
         }
+
+		if(event.code == sf::Keyboard::Space) {
+			this->push(std::make_unique<level::Edit>(*this));
+		}
     }
 
 
