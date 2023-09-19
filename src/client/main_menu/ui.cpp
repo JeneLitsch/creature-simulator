@@ -61,7 +61,7 @@ namespace client::main_menu {
 			preset.entities.food_spawners = std::clamp<std::uint32_t>(preset.entities.food_spawners, 8, 1024);
 		}
 		if(ImGui::InputUInt32("Empty Creatures", &preset.entities.empty_creatures, 1, 16)) {
-			preset.entities.empty_creatures = std::clamp<std::uint32_t>(preset.entities.food_spawners, 8, 1024);
+			preset.entities.empty_creatures = std::clamp<std::uint32_t>(preset.entities.empty_creatures, 8, 1024);
 		}
 	}
 
