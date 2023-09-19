@@ -9,6 +9,8 @@ namespace sim {
 		StomachSensorLR* sensor2 = entity.get_if<StomachSensorLR>();
 		EdibleSensorFB* sensor3 = entity.get_if<EdibleSensorFB>();
 		EdibleSensorLR* sensor4 = entity.get_if<EdibleSensorLR>();
+		BarrierSensorFB* sensor5 = entity.get_if<BarrierSensorFB>();
+		BarrierSensorLR* sensor6 = entity.get_if<BarrierSensorLR>();
 
 		if(!age || !stomach|| !health|| !sensor1|| !sensor2|| !sensor3|| !sensor4)
 			return;
@@ -19,10 +21,30 @@ namespace sim {
 		input.push_back(static_cast<double>(age->age) / config.maxAge);
 		input.push_back(stomach->food / config.metabolism.maxStomach);
 		input.push_back(health->currentHealth);
-		input.push_back(sensor1->value);
-		input.push_back(sensor2->value);
-		input.push_back(sensor3->value);
-		input.push_back(sensor4->value);
+		if(config.sensors.enable_stomach_sensor){
+			input.push_back(sensor1->value);
+			input.push_back(sensor2->value);
+		}
+		else{
+			input.push_back(0.0);
+			input.push_back(0.0);
+		}
+		if(config.sensors.enable_food_sensor){
+			input.push_back(sensor3->value);
+			input.push_back(sensor4->value);
+		}
+		else{
+			input.push_back(0.0);
+			input.push_back(0.0);
+		}
+		if(config.sensors.enable_barrier_sensor){
+			input.push_back(sensor5->value);
+			input.push_back(sensor6->value);
+		}
+		else{
+			input.push_back(0.0);
+			input.push_back(0.0);
+		}
 
         NeuralNetwork* neuralNetwork = entity.get_if<NeuralNetwork>();
 

@@ -74,7 +74,6 @@ namespace sim {
 
 		template<typename SensedComp, EntitySensorAxis axis>
 		void export_comp(stx::json::write_iterator json, const EntitySensor<SensedComp, axis> & comp) {
-			json["radius"] = comp.radius;
 			json["value"] = comp.value;
 		}
 
@@ -145,6 +144,8 @@ namespace sim {
 		export_if<StomachSensorLR>(entity, json, "stomach_sensor_lr");
 		export_if<EdibleSensorFB>(entity, json, "edible_sensor_fb");
 		export_if<EdibleSensorLR>(entity, json, "edible_sensor_lr");
+		export_if<BarrierSensorFB>(entity, json, "barrier_sensor_fb");
+		export_if<BarrierSensorLR>(entity, json, "barrier_sensor_lr");
 	
 		return node;
 	}

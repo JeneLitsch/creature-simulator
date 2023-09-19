@@ -158,12 +158,10 @@ namespace sim {
 			auto * transform = entity.get_if<Transform>();
 			if(!transform) throw stx::json::format_error { "Cannot add Movement without Transform" };
 
-			auto radius = json["radius"].i32();
 			auto value = json["value"].number();
-			if(!radius) throw stx::json::format_error { "Cannot read EntitySensor<...>::radius" };
 			if(!value) throw stx::json::format_error { "Cannot read EntitySensor<...>::value" };
 
-			auto sensor = Sensor { transform, *radius };
+			auto sensor = Sensor { transform };
 			sensor.value = *value;
 
 			return sensor;
@@ -241,6 +239,8 @@ namespace sim {
 			import_if(entity, json["stomach_sensor_lr"], import_entity_sensor<StomachSensorLR>, entity);
 			import_if(entity, json["edible_sensor_fb"], import_entity_sensor<EdibleSensorFB>, entity);
 			import_if(entity, json["edible_sensor_lr"], import_entity_sensor<EdibleSensorLR>, entity);
+			import_if(entity, json["barrier_sensor_fb"], import_entity_sensor<BarrierSensorFB>, entity);
+			import_if(entity, json["barrier_sensor_lr"], import_entity_sensor<BarrierSensorLR>, entity);
 			
 			import_if(entity, json["neural_network"], import_neural_network);
 		};
