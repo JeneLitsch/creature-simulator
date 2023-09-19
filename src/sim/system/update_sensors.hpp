@@ -33,7 +33,7 @@ namespace sim{
         }
 
         // convert to -1.0..1.0
-        double sensorVal = std::tanh((sum / sensor->radius) * config.sensibility);
+        double sensorVal = std::tanh((sum / config.radius) * config.sensibility);
 
         sensor->value = sensorVal;
     }

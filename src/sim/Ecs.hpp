@@ -12,13 +12,15 @@
 #include "sim/component/FoodSpawn.hpp"
 #include "sim/component/EntitySensor.hpp"
 #include "sim/component/Health.hpp"
-#include "sim/component/Sprite.hpp"
+#include "sim/component/Barrier.hpp"
 
 namespace sim {
 	using StomachSensorFB = EntitySensor<Stomach, EntitySensorAxis::front_back>;
 	using StomachSensorLR = EntitySensor<Stomach, EntitySensorAxis::left_right>;
 	using EdibleSensorFB = EntitySensor<Edible, EntitySensorAxis::front_back>;
 	using EdibleSensorLR = EntitySensor<Edible, EntitySensorAxis::left_right>;
+	using BarrierSensorFB = EntitySensor<Barrier, EntitySensorAxis::front_back>;
+	using BarrierSensorLR = EntitySensor<Barrier, EntitySensorAxis::left_right>;
 
 	using Ecs =	nc::Ecs<
 		PheromoneEmitter, 
@@ -34,8 +36,11 @@ namespace sim {
 		StomachSensorLR, 
 		EdibleSensorFB, 
 		EdibleSensorLR,
+		BarrierSensorFB, 
+		BarrierSensorLR,
 		Health,
-		NeuralNetwork
+		NeuralNetwork,
+		Barrier
 	>;
 
 	struct EntitySensorConfig{

@@ -14,9 +14,8 @@ namespace sim{
     template <typename SensedComponent, EntitySensorAxis axis>
     struct EntitySensor{
         Transform* transform;
-        int radius;
         double value;
 
-        EntitySensor(Transform* transform, int radius) : transform(transform), radius(radius){}
+        EntitySensor(Transform* transform) : transform(transform){}
     };
 }
