@@ -1,4 +1,5 @@
 #include "NeuralNetwork.hpp"
+#include "shared/random/xoshiro256.h"
 #include <iostream>
 #include <numeric>
 #include <numbers>
@@ -81,12 +82,12 @@ namespace sim{
 		return child;
 	}
 
-	bool to_be_mutated(double p, std::mt19937_64& rng) {
+	bool to_be_mutated(double p, Xoshiro::Xoshiro256PP& rng) {
 		std::uniform_real_distribution interval { 0.0, 1.0 };
 		return interval(rng) < p;
 	}
 
-	double change_weight(double weight_value, std::mt19937_64& rng, const NeuralNetMutConfig & config, std::uniform_real_distribution<double>& weight_interval){
+	double change_weight(double weight_value, Xoshiro::Xoshiro256PP& rng, const NeuralNetMutConfig & config, std::uniform_real_distribution<double>& weight_interval){
 		if(config.limit_weight_change){
 			double value = std::clamp(weight_interval(rng), weight_value - config.max_weight_change, weight_value + config.max_weight_change);
 			return std::clamp(value, config.weight_min, config.weight_max);
@@ -96,7 +97,7 @@ namespace sim{
 	}
 
 	void mutate(NeuralNetwork & net, std::uint64_t seed, const NeuralNetMutConfig & config, double mutationDampener) {
-		std::mt19937_64 rng;
+		Xoshiro::Xoshiro256PP rng;
 		rng.seed(seed);
 		if(to_be_mutated(config.chance_for_new_node - mutationDampener * config.chance_for_new_node, rng) && net.hidden_size < config.max_hidden_nodes){
 			net.addNode();

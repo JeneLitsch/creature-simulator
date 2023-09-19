@@ -18,7 +18,7 @@ namespace client::main_menu {
 
 
 
-	void ui_world(sim::WorldPreset & preset, std::mt19937_64 & rng) {
+	void ui_world(sim::WorldPreset & preset, Xoshiro::Xoshiro256PP & rng) {
 		ImGui::SeparatorText("World");
 		
 		ImGui::InputUInt64("Seed", &preset.seed, 1, 100, ImGuiInputTextFlags_CharsHexadecimal);

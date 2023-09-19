@@ -1,5 +1,6 @@
 #include "Reproduction.hpp"
 #include <algorithm>
+#include "shared/random/xoshiro256.h"
 #include "stdxx/vector.hxx"
 
 namespace sim{
@@ -11,7 +12,7 @@ namespace sim{
 		, wants_to_reproduce{wants_to_reproduce} {}
 
     Reproduction Reproduction::createChild(std::uint64_t seed, const ReproductionConfig & config, double mutationDampener) {
-        std::mt19937_64 rng;
+        Xoshiro::Xoshiro256PP rng;
         rng.seed(seed);
         std::uniform_int_distribution interval { -config.max_cooldown_difference, config.max_cooldown_difference };
         int difference = interval(rng);
