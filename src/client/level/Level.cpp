@@ -20,24 +20,8 @@ namespace client::level {
 
 
 	void Level::update(double dt) {
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-			this->camera_center.x -= (dt * camera_speed) * this->camera_zoom;
-		}
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-			this->camera_center.x += dt * camera_speed * this->camera_zoom;
-		}
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-			this->camera_center.y -= dt * camera_speed * this->camera_zoom;
-		}
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-			this->camera_center.y += dt * camera_speed * this->camera_zoom;
-		}
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-			this->camera_zoom -= this->camera_zoom * dt;
-		}
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
-			this->camera_zoom += this->camera_zoom * dt;
-		}
+		this->update_camera(dt);
+
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F5)) {
 			this->session->export_sim("tmp/export/sim.json");
 		}
@@ -85,6 +69,29 @@ namespace client::level {
 		
 		if(this->tick_timer(dt)) {
 			this->session->tick();
+		}
+	}
+
+
+
+	void Level::update_camera(double dt) {
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+			this->camera_center.x -= (dt * camera_speed) * this->camera_zoom;
+		}
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+			this->camera_center.x += dt * camera_speed * this->camera_zoom;
+		}
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+			this->camera_center.y -= dt * camera_speed * this->camera_zoom;
+		}
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+			this->camera_center.y += dt * camera_speed * this->camera_zoom;
+		}
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+			this->camera_zoom -= this->camera_zoom * dt;
+		}
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
+			this->camera_zoom += this->camera_zoom * dt;
 		}
 	}
 	

@@ -15,6 +15,7 @@ namespace client::level {
 	public:
 		Level(session::Session & session, sim::Simulation & simulation);
 		virtual void update(double dt) override;
+		void update_camera(double dt);
 		virtual void render(sf::RenderTarget & render_target) override;
 		virtual const char * name() { return "Level"; }
 	protected:
