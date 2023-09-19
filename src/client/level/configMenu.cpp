@@ -6,7 +6,8 @@ namespace client::level {
         if (ImGui::CollapsingHeader("Neural_Net")){
             ImGui::Checkbox("limit number of mutations", &config.limit_number_of_mutations);
             ImGui::SameLine();ImGui::Checkbox("limit weight change", &config.limit_weight_change);
-            ImGui::SliderDouble("Mutation Rate per weight", &config.mutation_rate_per_weight, 0.0f, 1.0f);
+            ImGui::SliderDouble("Mutation Rate per weight", &config.mutation_rate_per_weight, 0.0, 1.0);
+            ImGui::SameLine();ImGui::InputDouble("mutRate", &config.mutation_rate_per_weight, 0.0, 1.0);
             ImGui::SliderDouble("Chance for new node", &config.chance_for_new_node, 0.0f, 1.0f);
             ImGui::SliderDouble("Weight minimum", &config.weight_min, 0.0f, 1.0f);
             ImGui::SliderDouble("Weight maximum", &config.weight_max, 0.0f, 1.0f);
@@ -39,12 +40,11 @@ namespace client::level {
         ImGui::Begin("config");
         ImGui::SliderUInt16("Age", &config.maxAge, 100, 10000, "%d", ImGuiSliderFlags_Logarithmic);
         ImGui::SliderDouble("sensors", &config.sensors.sensibility, 0.0f, 200.0f);
+        ImGui::Checkbox("limit number of mutations", &config.enable_long_oscilator);
+        ImGui::SameLine();ImGui::Checkbox("limit weight change", &config.enable_short_oscilator);
         nnConfig(config.neural_net);
         reproductionConfig(config.reproduction);
         metabolismConfig(config.metabolism);
         ImGui::End();
     }
-
-
-
 }
