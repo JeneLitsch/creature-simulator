@@ -46,6 +46,9 @@ namespace sim {
 	struct EntitySensorConfig{
         double sensibility = 20.0;
 		int radius = 25;
+		bool enable_food_sensor = true;
+		bool enable_stomach_sensor = true;
+		bool enable_barrier_sensor = true;
     };
 
 	struct MetabolismConfig{

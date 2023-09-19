@@ -44,15 +44,17 @@ namespace sim {
 			BarrierSensorFB* sensor5 = entity.get_if<BarrierSensorFB>();
 			BarrierSensorLR* sensor6 = entity.get_if<BarrierSensorLR>();
 			std::vector<Ecs::Entity*> neighbourhood;
-			if(sensor1 || sensor2 || sensor3 || sensor4 || sensor5 || sensor6){
+			if((config.sensors.enable_stomach_sensor && (sensor1 || sensor2))
+			|| (config.sensors.enable_food_sensor && (sensor3 || sensor4))
+			|| (config.sensors.enable_barrier_sensor && (sensor5 || sensor6))){
 				neighbourhood = visitNeighborhood(entity, grid, ecs, config.sensors);
 			}
-			if(sensor1) update_entity_sensor(sensor1, neighbourhood, config.sensors);
-			if(sensor2) update_entity_sensor(sensor2, neighbourhood, config.sensors);
-			if(sensor3) update_entity_sensor(sensor3, neighbourhood, config.sensors);
-			if(sensor4) update_entity_sensor(sensor4, neighbourhood, config.sensors);
-			if(sensor5) update_entity_sensor(sensor5, neighbourhood, config.sensors);
-			if(sensor6) update_entity_sensor(sensor6, neighbourhood, config.sensors);
+			if(config.sensors.enable_stomach_sensor && sensor1) update_entity_sensor(sensor1, neighbourhood, config.sensors);
+			if(config.sensors.enable_stomach_sensor && sensor2) update_entity_sensor(sensor2, neighbourhood, config.sensors);
+			if(config.sensors.enable_food_sensor && sensor3) update_entity_sensor(sensor3, neighbourhood, config.sensors);
+			if(config.sensors.enable_food_sensor && sensor4) update_entity_sensor(sensor4, neighbourhood, config.sensors);
+			if(config.sensors.enable_barrier_sensor && sensor5) update_entity_sensor(sensor5, neighbourhood, config.sensors);
+			if(config.sensors.enable_barrier_sensor && sensor6) update_entity_sensor(sensor6, neighbourhood, config.sensors);
 		});
 		double oscilatorShort = 0;
 		if(config.enable_short_oscilator){
