@@ -2,11 +2,12 @@
 #include "create.hpp"
 #include <queue>
 #include "stdxx/random.hxx"
+#include "shared/random/xoshiro256.h"
 
 namespace sim {
 	namespace {
 		struct State {
-			std::mt19937_64 rng;
+            Xoshiro::Xoshiro256PP rng;
 			std::uniform_int_distribution<std::int32_t> dist_x;
 			std::uniform_int_distribution<std::int32_t> dist_y;
 			std::uniform_int_distribution<std::int32_t> dist_offset_x;
@@ -69,7 +70,7 @@ namespace sim {
 		sim->rng.seed(42);
 
 		State state {
-			.rng = std::mt19937_64{sim->rng()},
+            .rng = Xoshiro::Xoshiro256PP(sim->rng()),
 			.dist_x = std::uniform_int_distribution<std::int32_t> {0, static_cast<std::int32_t>(preset.size.x) - 1},
 			.dist_y = std::uniform_int_distribution<std::int32_t> {0, static_cast<std::int32_t>(preset.size.y) - 1},
 			.dist_offset_x = std::uniform_int_distribution<std::int32_t> {-1, +1},
