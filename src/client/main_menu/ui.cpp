@@ -33,7 +33,7 @@ namespace client::main_menu {
 		}
 
 		if(ImGui::InputUInt32("Height", &preset.size.y, 1, 16)) {
-			preset.size.x = std::clamp<std::uint32_t>(preset.size.y, 8, 1024);
+			preset.size.y = std::clamp<std::uint32_t>(preset.size.y, 8, 1024);
 		}
 
 		ImGui::EndGroup();
@@ -58,10 +58,10 @@ namespace client::main_menu {
 		ImGui::SeparatorText("Entities");
 
 		if(ImGui::InputUInt32("Food Spawners", &preset.entities.food_spawners, 1, 16)) {
-			preset.entities.food_spawners = std::clamp<std::uint32_t>(preset.entities.food_spawners, 8, 1024);
+			preset.entities.food_spawners = std::clamp<std::uint32_t>(preset.entities.food_spawners, 1, 1024);
 		}
 		if(ImGui::InputUInt32("Empty Creatures", &preset.entities.empty_creatures, 1, 16)) {
-			preset.entities.empty_creatures = std::clamp<std::uint32_t>(preset.entities.empty_creatures, 8, 1024);
+			preset.entities.empty_creatures = std::clamp<std::uint32_t>(preset.entities.empty_creatures, 1, 1024);
 		}
 	}
 
