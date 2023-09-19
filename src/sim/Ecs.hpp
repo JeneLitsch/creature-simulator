@@ -40,7 +40,7 @@ namespace sim {
 
 	struct EntitySensorConfig{
         double sensibility = 20.0;
-		int range = 25;
+		int radius = 25;
     };
 
 	struct MetabolismConfig{
@@ -68,8 +68,7 @@ namespace sim {
 		bool enable_long_oscilator = false;
 		NeuralNetMutConfig neural_net = NeuralNetMutConfig{};
 		ReproductionConfig reproduction = ReproductionConfig{};
-		EntitySensorConfig creature_sensor = EntitySensorConfig{};
-		EntitySensorConfig food_sensor = EntitySensorConfig{};
+		EntitySensorConfig sensors = EntitySensorConfig{};
 		MetabolismConfig metabolism = MetabolismConfig{};
 	};
 }

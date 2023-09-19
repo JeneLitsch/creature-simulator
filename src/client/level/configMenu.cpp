@@ -38,8 +38,7 @@ namespace client::level {
     void Menu(sim::Config& config) {
         ImGui::Begin("config");
         ImGui::SliderUInt16("Age", &config.maxAge, 100, 10000, "%d", ImGuiSliderFlags_Logarithmic);
-        ImGui::SliderDouble("food_sensor", &config.food_sensor.sensibility, 0.0f, 200.0f);
-        ImGui::SliderDouble("creature_sensor", &config.creature_sensor.sensibility, 0.0f, 200.0f);
+        ImGui::SliderDouble("sensors", &config.sensors.sensibility, 0.0f, 200.0f);
         nnConfig(config.neural_net);
         reproductionConfig(config.reproduction);
         metabolismConfig(config.metabolism);
