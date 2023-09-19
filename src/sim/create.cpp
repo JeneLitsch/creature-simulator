@@ -57,7 +57,7 @@ namespace sim {
 		entity.add(BarrierSensorFB{entity.get_if<Transform>()});
 		entity.add(BarrierSensorLR{entity.get_if<Transform>()});
 		entity.add(NeuralNetwork{11, 4});
-		entity.add(Reproduction{config.reproduction.default_cooldown});
+		entity.add(Reproduction{config.reproduction.cooldown});
 		return entity;
 	}
 
