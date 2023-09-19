@@ -4,7 +4,7 @@
 #include "render.hpp"
 #include "configMenu.hpp"
 #include "sim/create.hpp"
-#include "Edit.hpp"
+#include "client/edit/Edit.hpp"
 
 namespace client::level {
 
@@ -115,7 +115,7 @@ namespace client::level {
         }
 
 		if(event.code == sf::Keyboard::Space) {
-			this->push(std::make_unique<level::Edit>(*this));
+			this->push(std::make_unique<edit::Edit>(*this));
 		}
     }
 

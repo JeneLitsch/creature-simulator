@@ -41,19 +41,4 @@ namespace client {
 		rect.setTexture(&tex);
 		target.draw(rect);
 	}
-
-
-
-	void render_cursor(sf::RenderTarget & target, stx::position2i position) {
-		sf::VertexArray vertecies;
-
-		vertecies.append(sf::Vertex{{cell_size * (position.x+0), cell_size * (position.y+0)}, sf::Color::White});
-		vertecies.append(sf::Vertex{{cell_size * (position.x+1), cell_size * (position.y+0)}, sf::Color::White});
-		vertecies.append(sf::Vertex{{cell_size * (position.x+1), cell_size * (position.y+1)}, sf::Color::White});
-		vertecies.append(sf::Vertex{{cell_size * (position.x+0), cell_size * (position.y+1)}, sf::Color::White});
-		vertecies.append(sf::Vertex{{cell_size * (position.x+0), cell_size * (position.y+0)}, sf::Color::White});
-		
-		vertecies.setPrimitiveType(sf::LineStrip);
-		target.draw(vertecies);
-	}
 }

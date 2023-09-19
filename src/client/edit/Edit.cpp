@@ -1,13 +1,12 @@
 #include "Edit.hpp"
-#include "Level.hpp"
+#include "client/level/Level.hpp"
 #include "client/session/Session.hpp"
 #include "imgui.h"
-#include "configMenu.hpp"
 #include "sim/create.hpp"
-#include "render.hpp"
+#include "ui_tool.hpp"
 
-namespace client::level {
-	Edit::Edit(stx::reference<Level> level) 
+namespace client::edit {
+	Edit::Edit(stx::reference<level::Level> level) 
 		: level{level}
 		, session{level->session} {}
 
@@ -18,7 +17,9 @@ namespace client::level {
 			, ImGuiWindowFlags_NoBackground
 			| ImGuiWindowFlags_NoTitleBar
 			| ImGuiWindowFlags_NoResize
-			| ImGuiWindowFlags_NoMove);
+			| ImGuiWindowFlags_NoMove
+			| ImGuiWindowFlags_NoNavFocus
+			| ImGuiWindowFlags_NoBringToFrontOnFocus);
 
 
 		ImGui::SetWindowSize(window_size.to<ImVec2>());
@@ -33,6 +34,7 @@ namespace client::level {
 		ImGui::SetWindowFontScale(1);
 
 		ImGui::End();
+		ui_tool(this->toolbox);
 		this->level->ui_config();
 	}
 
@@ -42,23 +44,8 @@ namespace client::level {
 		this->level->update_camera(dt);
 
 		if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-			auto & ecs = this->session->get_sim().ecs;
-			auto & grid = this->session->get_sim().grid;
-			if(grid.in_range(this->cursor_position) && grid[this->cursor_position] == 0) {
-				sim::create_barrier(ecs, stx::vector2i{this->cursor_position}, grid);
-			}
-		}
-
-		if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Right)) {
-			auto & ecs = this->session->get_sim().ecs;
-			auto & grid = this->session->get_sim().grid;
-			if(grid.in_range(this->cursor_position)) {
-				const std::uint64_t id = grid[this->cursor_position];
-				if(auto * entity = ecs.get_if(id)) {
-					ecs.get(id).mark_delete();
-					grid[this->cursor_position] = 0;
-					ecs.clean_up();
-				}
+			if(this->toolbox.current) {
+				this->toolbox.current->apply(session->get_sim(), this->cursor_position);
 			}
 		}
 	}
@@ -67,7 +54,13 @@ namespace client::level {
 	
 	void Edit::render(sf::RenderTarget & render_target) {
 		this->level->render(render_target);
-		render_cursor(render_target, this->cursor_position);
+
+		auto old_view = render_target.getView();
+		render_target.setView(level->get_camera());
+		if(this->toolbox.current) {
+			this->toolbox.current->render(render_target, this->cursor_position);
+		}
+		render_target.setView(old_view);
 	}
 
 

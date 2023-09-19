@@ -9,5 +9,4 @@ namespace client {
 	void render_frame(sf::RenderTarget & target, const stx::grid2<std::uint64_t> & grid, const sim::Ecs & ecs);
 	void render_grid(sf::RenderTarget & target, const stx::grid2<std::uint64_t> & grid, const sim::Ecs & ecs);
 	void render_phermones(sf::RenderTarget & target, const sim::PheromoneField & field);
-	void render_cursor(sf::RenderTarget & target, stx::position2i position);
 }
