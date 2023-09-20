@@ -1,7 +1,8 @@
 #pragma once
+#include <vector>
 #include "stdxx/reference.hxx"
 #include "client/core/GameState.hpp"
-#include "tool/ToolBox.hpp"
+#include "tool/Tool.hpp"
 
 namespace client::session {
 	class Session;
@@ -27,6 +28,7 @@ namespace client::edit {
 		stx::reference<session::Session> session;
 		stx::position2i cursor_position;
 
-		ToolBox toolbox;
+		std::vector<Tool> tools;
+		stx::optref<Tool> current_tool;
 	};
 }

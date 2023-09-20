@@ -2,22 +2,24 @@
 #include "imgui.h"
 
 namespace client::edit {
-	void ui_tool(ToolBox & toolbox) {
+	stx::optref<Tool> ui_tool(std::vector<Tool> & tools, stx::optref<Tool> current_tool) {
 		ImGui::Begin("Tools");
 
-		for(auto & tool : toolbox.tools) {
+		for(auto & tool : tools) {
 			if(ImGui::Button(tool.name.c_str())) {
-				toolbox.current = tool;
+				current_tool = tool;
 			}
 		}
 
-		if(toolbox.current) {
-			toolbox.current->ui();
+		if(current_tool) {
+			current_tool->ui();
 		}
 		else {
 			ImGui::Text("- None -");
 		}
 
 		ImGui::End();
+
+		return current_tool;
 	}
 }

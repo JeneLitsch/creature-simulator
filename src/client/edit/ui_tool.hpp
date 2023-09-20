@@ -1,6 +1,8 @@
 #pragma once
-#include "tool/ToolBox.hpp"
+#include <vector>
+#include "stdxx/reference.hxx"
+#include "tool/Tool.hpp"
 
 namespace client::edit {
-	void ui_tool(ToolBox & toolbox);
+	stx::optref<Tool> ui_tool(std::vector<Tool> & tools, stx::optref<Tool>);
 } 

@@ -8,7 +8,12 @@
 namespace client::edit {
 	Edit::Edit(stx::reference<level::Level> level) 
 		: level{level}
-		, session{level->session} {}
+		, session{level->session} {
+		
+		this->tools.push_back(Tool::eraser());
+		this->tools.push_back(Tool::barrier());
+		this->tools.push_back(Tool::place_entity());
+	}
 
 
 
@@ -34,7 +39,7 @@ namespace client::edit {
 		ImGui::SetWindowFontScale(1);
 
 		ImGui::End();
-		ui_tool(this->toolbox);
+		this->current_tool = ui_tool(this->tools, this->current_tool);
 		this->level->ui_config();
 	}
 
@@ -44,8 +49,8 @@ namespace client::edit {
 		this->level->update_camera(dt);
 
 		if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-			if(this->toolbox.current) {
-				this->toolbox.current->draw(session->get_sim(), this->cursor_position);
+			if(this->current_tool) {
+				this->current_tool->draw(session->get_sim(), this->cursor_position);
 			}
 		}
 	}
@@ -57,8 +62,8 @@ namespace client::edit {
 
 		auto old_view = render_target.getView();
 		render_target.setView(level->get_camera());
-		if(this->toolbox.current) {
-			this->toolbox.current->render(render_target, this->cursor_position);
+		if(this->current_tool) {
+			this->current_tool->render(render_target, this->cursor_position);
 		}
 		render_target.setView(old_view);
 	}
