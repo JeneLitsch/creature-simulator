@@ -8,14 +8,9 @@
 
 namespace client::level {
 
-    bool showMenu = true;
-
-    uint16_t tick_speed = 100.0;
-
 	Level::Level(session::Session & session, sim::Simulation & simulation)
 		: session{session}
-		, simulation{simulation}
-		, tick_timer{tick_speed} {
+		, simulation{simulation} {
 		
 		this->camera_center = stx::position2f{this->session->get_sim().get_grid().size()} / 2.f;
 	}
