@@ -31,7 +31,7 @@ namespace client::level {
 
 
 	void Level::ui_config() {
-		level::Menu(simulation->config);
+		level::Menu(tick_speed, simulation->config);
 	}
 
 
@@ -76,10 +76,6 @@ namespace client::level {
 
 	
 	void Level::render(sf::RenderTarget & render_target) {
-
-        if (showMenu){
-            level::Menu(tick_speed, level::Level::simulation->config);
-        }
 
 		auto old_view = render_target.getView();
 		camera.setCenter(this->camera_center.to<sf::Vector2f>());
