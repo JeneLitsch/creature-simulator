@@ -5,7 +5,7 @@
 #include "shape/Point.hpp"
 
 #include "effect/Erase.hpp"
-#include "effect/PlaceEntity.hpp"
+#include "effect/EmptyEntity.hpp"
 #include "effect/Barrier.hpp"
 
 namespace client::edit {
@@ -53,9 +53,9 @@ namespace client::edit {
 
 	Tool Tool::place_entity() {
 		return Tool {
-			.name = "Place Entity",
+			.name = "Empty Entity",
 			.shape = std::make_unique<Point>(),
-			.effect = std::make_unique<PlaceEntity>(),
+			.effect = std::make_unique<EmptyEntity>(),
 		};
 	}	
 }
