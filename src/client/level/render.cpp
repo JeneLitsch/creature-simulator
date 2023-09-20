@@ -31,14 +31,4 @@ namespace client {
 		frame.setOutlineThickness(1.f);
 		target.draw(frame);
 	}
-
-
-
-	void render_phermones(sf::RenderTarget & target, const sim::PheromoneField & field) {
-		sf::RectangleShape rect;
-		const sf::Texture & tex = field.get_texture(); 
-		rect.setSize(sf::Vector2f{tex.getSize()});
-		rect.setTexture(&tex);
-		target.draw(rect);
-	}
 }

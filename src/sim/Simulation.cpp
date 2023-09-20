@@ -1,7 +1,6 @@
 #include "Simulation.hpp"
 #include "stdxx/random.hxx"
 #include <iostream>
-#include "system/emit_pheromones.hpp"
 #include "system/metabolize.hpp"
 #include "system/move.hpp"
 #include "system/reproduce.hpp"
@@ -23,7 +22,6 @@ namespace sim {
 
 	Simulation::Simulation(stx::size2u32 size) 
 		: grid{size, EMPTY}
-		, pheromone_field{size}
 		, ecs{FIRST_CREATURE} {
 	}
 
@@ -69,12 +67,9 @@ namespace sim {
 			ecs.run_system(share_food, grid, &ecs, config);
 		}
 		ecs.run_system(move, ecs, *this, config.metabolism);
-		ecs.run_system(reproduce, &(this -> grid), &(this -> ecs), &(this -> pheromone_field), this->config, this->rng);
-		this->pheromone_field.swap();
-		ecs.run_system(emit_pheromones);
-		ecs.run_system(spawn_food, this->grid, this->ecs, this->rng, this->pheromone_field);
+		ecs.run_system(reproduce, &(this -> grid), &(this -> ecs), this->config, this->rng);
+		ecs.run_system(spawn_food, this->grid, this->ecs, this->rng);
 		ecs.run_system(check_death, *this, this->config);
-		this->pheromone_field.display();
 		this->ecs.clean_up();
 	}
 
@@ -88,17 +83,6 @@ namespace sim {
 	
 	const stx::grid2<std::uint64_t> & Simulation::get_grid() const {
 		return this->grid;
-	}
-
-
-
-	PheromoneField & Simulation::get_pheromone_field() {
-		return this->pheromone_field;
-	}
-
-
-	const PheromoneField & Simulation::get_pheromone_field() const {
-		return this->pheromone_field;
 	}
 
 

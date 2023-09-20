@@ -10,7 +10,8 @@ namespace client::level {
 
 	Level::Level(session::Session & session, sim::Simulation & simulation)
 		: session{session}
-		, simulation{simulation} {
+		, simulation{simulation}
+		, tick_timer{tick_speed} {
 		
 		this->camera_center = stx::position2f{this->session->get_sim().get_grid().size()} / 2.f;
 	}
@@ -34,8 +35,12 @@ namespace client::level {
 	void Level::update(double dt) {
 		this->update_camera(dt);
 
-		if(this->tick_timer(dt)) {
+		this->lag += dt;
+
+		const double tick_dt = 1.0 / static_cast<double>(tick_speed);
+		while(this->lag >= tick_dt) {
 			this->session->tick();
+			this->lag -= tick_dt;
 		}
 	}
 
@@ -80,9 +85,7 @@ namespace client::level {
 		auto & sim = this->session->get_sim();
 		auto & grid = sim.get_grid();
 		auto & ecs = sim.get_ecs();
-		auto & field = sim.get_pheromone_field();
 		
-		render_phermones(render_target, field);
 		render_frame(render_target, grid, ecs);
 		render_grid(render_target, grid, ecs);
 		

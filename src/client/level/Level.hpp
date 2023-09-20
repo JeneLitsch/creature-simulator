@@ -28,10 +28,11 @@ namespace client::level {
 
 	private:
 		virtual void on_event(const core::KeyPressed &) override;
-		Timer tick_timer = {tick_speed};
-        
         bool showMenu = true;
         uint16_t tick_speed = 100.0;
+		Timer tick_timer;
+
+		double lag = 0.0;
 		
 		stx::reference<sim::Simulation> simulation;
 

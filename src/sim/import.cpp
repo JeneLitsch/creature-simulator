@@ -35,18 +35,6 @@ namespace sim {
 
 
 
-		PheromoneEmitter import_phero_emitter(stx::json::iterator json, stx::reference<PheromoneField> field) {
-			auto distance = json["distance"].i32();
-			if(!distance) throw stx::json::format_error {"Cannot read PheromoneEmitter::distance"};
-			return PheromoneEmitter {
-				.field = field,
-				.composition = import_color(json["composition"]),
-				.distance = *distance,
-			};
-		}
-
-
-
 		Stomach import_stomach(stx::json::iterator json) {
 			auto food = json["food"].number();
 			if(!food) throw stx::json::format_error { "Cannot read Stomach::food" };
@@ -222,11 +210,9 @@ namespace sim {
 		void import_entity(stx::json::iterator json, Simulation & sim, std::optional<std::uint64_t> override_id = std::nullopt) {
 			auto & ecs = sim.get_ecs();
 			auto & grid = sim.get_grid();
-			auto & phero_field = sim.get_pheromone_field();
 
 			auto & entity = override_id ? ecs.new_entity(*override_id) : ecs.new_entity();
 
-			import_if(entity, json["pheromone_emitter"], import_phero_emitter, phero_field);
 			import_if(entity, json["transform"], import_transform, entity, grid);
 			import_if(entity, json["stomach"], import_stomach);
 			import_if(entity, json["movement"], import_movement, entity, grid);
@@ -261,7 +247,6 @@ namespace sim {
 		sim->tickCounter = json["tick_counter"].u64().value_or(0);
 		auto pheromones = hex::decode(json["pheromones"].force_string());
 		std::cout << std::size(pheromones) << "\n";
-		sim->get_pheromone_field().set_data(pheromones);
 		for(const auto entity : stx::json::to_array(json["entities"])) {
 			auto id = entity["id"].u64();
 			if(!id) throw stx::json::format_error {"Cannot read entity id"};

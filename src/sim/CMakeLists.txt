@@ -9,7 +9,6 @@ add_library(libsim
 )
 
 add_subdirectory(component)
-add_subdirectory(senses)
 add_subdirectory(system)
 
 target_link_libraries(libsim

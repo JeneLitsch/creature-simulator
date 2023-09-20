@@ -4,15 +4,6 @@
 
 namespace sim {
 	namespace {
-		void export_comp(stx::json::write_iterator json, const PheromoneEmitter & comp) {
-			json["composition"].push_back(comp.composition.r);
-			json["composition"].push_back(comp.composition.g);
-			json["composition"].push_back(comp.composition.b);
-			json["distance"] = comp.distance;
-		}
-
-		
-		
 		void export_comp(stx::json::write_iterator json, const Stomach & comp) {
 			json["food"] = comp.food;
 		}
@@ -140,7 +131,6 @@ namespace sim {
 		stx::json::write_iterator json{node};
 		json = stx::json::object;
 		
-		export_if<PheromoneEmitter>(entity, json, "pheromone_emitter");
 		export_if<Stomach>(entity, json, "stomach");
 		export_if<Transform>(entity, json, "transform");
 		export_if<Movement>(entity, json, "movement");
@@ -179,18 +169,6 @@ namespace sim {
 
 			return node;
 		}
-
-
-
-		stx::json::node export_pheromone_field(const PheromoneField & field) {
-			stx::json::node node;
-			stx::json::write_iterator json{node};
-			auto image = field.get_texture().copyToImage();
-			auto begin = image.getPixelsPtr();
-			auto size = (image.getSize().x * image.getSize().y) * 4;
-			json = hex::encode(begin, size);
-			return node;
-		}
 	}
 
 
@@ -199,7 +177,6 @@ namespace sim {
 		stx::json::node node;
 		stx::json::write_iterator json{node};
 		json["entities"] = export_ecs(sim.get_ecs());
-		json["pheromones"] = export_pheromone_field(sim.get_pheromone_field());
 
 		json["size"].push_back(sim.get_grid().size().x);
 		json["size"].push_back(sim.get_grid().size().y);

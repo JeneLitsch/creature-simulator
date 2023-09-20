@@ -29,16 +29,11 @@ namespace sim {
 
 
 
-	Ecs::Entity & create_food(Ecs & ecs, stx::vector2i position, stx::grid2<std::uint64_t> & grid, PheromoneField & phero_field) {
+	Ecs::Entity & create_food(Ecs & ecs, stx::vector2i position, stx::grid2<std::uint64_t> & grid) {
 		auto & entity = create_entity(ecs, position, grid);
 		entity.add(Edible{ .value = 1.0f});
 		entity.add(Sprite{
 			.color = sf::Color::Green,
-		});
-		entity.add(PheromoneEmitter{
-			.field = phero_field,
-			.composition = sf::Color{0, 4, 0},
-			.distance = 5,
 		});
 		return entity;
 	}
