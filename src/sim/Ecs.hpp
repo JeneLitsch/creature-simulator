@@ -74,7 +74,7 @@ namespace sim {
 		uint16_t maxAge = 1000;
 		bool enable_short_oscilator = false;
 		bool enable_long_oscilator = false;
-		NeuralNetMutConfig neural_net = NeuralNetMutConfig{};
+		NeuralNetConfig neural_net = NeuralNetConfig{};
 		ReproductionConfig reproduction = ReproductionConfig{};
 		EntitySensorConfig sensors = EntitySensorConfig{};
 		MetabolismConfig metabolism = MetabolismConfig{};

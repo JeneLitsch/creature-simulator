@@ -99,6 +99,17 @@ namespace sim {
 				json_input_matrix.push_back(node);
 			}
 
+			auto json_hidden_matrix = json["hidden_matrix"];
+			json_hidden_matrix = stx::json::array;
+			for(const auto & line : comp.hiddenMatrix) {
+				stx::json::node node;
+				stx::json::write_iterator json_line = node;
+				for(const auto & elem : line) {
+					json_line.push_back(elem);
+				}
+				json_hidden_matrix.push_back(node);
+			}
+
 
 			auto json_output_matrix = json["output_matrix"];
 			json_output_matrix = stx::json::array;

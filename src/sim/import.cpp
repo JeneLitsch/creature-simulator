@@ -203,6 +203,7 @@ namespace sim {
 			neural_network.output_size = *output_size;
 
 			neural_network.inputMatrix = import_matrix(json["input_matrix"]);
+			neural_network.hiddenMatrix = import_matrix(json["hidden_matrix"]);
 			neural_network.outputMatrix = import_matrix(json["output_matrix"]);
 			
 			return neural_network;

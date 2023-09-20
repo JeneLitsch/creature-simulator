@@ -2,7 +2,7 @@
 #include "sim/Ecs.hpp"
 
 namespace client::level {
-    void nnConfig(sim::NeuralNetMutConfig & config){
+    void nnConfig(sim::NeuralNetConfig & config){
         if (ImGui::CollapsingHeader("Neural_Net")){
             ImGui::Checkbox("limit number of mutations", &config.limit_number_of_mutations);
             ImGui::SameLine();ImGui::Checkbox("limit weight change", &config.limit_weight_change);
