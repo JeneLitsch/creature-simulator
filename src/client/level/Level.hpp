@@ -3,7 +3,8 @@
 #include "sim/Simulation.hpp"
 #include "stdxx/reference.hxx"
 #include "stdxx/math.hxx"
-#include "stdxx/chrono.hxx"
+#include "Timer.hpp"
+
 
 namespace client::session {
 	class Session;
@@ -27,7 +28,7 @@ namespace client::level {
 
 	private:
 		virtual void on_event(const core::KeyPressed &) override;
-		stx::chrono::every tick_timer;
+		Timer tick_timer;
 		
 		stx::reference<sim::Simulation> simulation;
 
