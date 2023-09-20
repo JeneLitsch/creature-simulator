@@ -1,6 +1,10 @@
 #include "eval_neural_net.hpp"
 
 namespace sim {
+	constexpr auto sigmoid(double x) {
+		return 1 / (1 + std::exp(-x));
+	}
+
 	void eval_neural(Ecs::Entity & entity, const Config& config, double oscilatorShort, double oscilatorLong){
 		Age* age = entity.get_if<Age>();
 		Stomach* stomach = entity.get_if<Stomach>();
@@ -11,8 +15,9 @@ namespace sim {
 		EdibleSensorLR* sensor4 = entity.get_if<EdibleSensorLR>();
 		BarrierSensorFB* sensor5 = entity.get_if<BarrierSensorFB>();
 		BarrierSensorLR* sensor6 = entity.get_if<BarrierSensorLR>();
+		Movement* movement = entity.get_if<Movement>();
 
-		if(!age || !stomach|| !health|| !sensor1|| !sensor2|| !sensor3|| !sensor4)
+		if(!age || !stomach|| !health|| !sensor1|| !sensor2|| !sensor3|| !sensor4 || !movement)
 			return;
 
         std::vector<double> input;
@@ -45,13 +50,16 @@ namespace sim {
 			input.push_back(0.0);
 			input.push_back(0.0);
 		}
+		input.push_back(movement->direction.x);
+		input.push_back(movement->direction.y);
+		input.push_back(sigmoid(movement->same_move));
 
         NeuralNetwork* neuralNetwork = entity.get_if<NeuralNetwork>();
 
 		if(!neuralNetwork)
 			return;
 
-		std::vector<double> output = neuralNetwork->eval(input);
+		std::vector<double> output = neuralNetwork->eval(input, config.neural_net);
 
 		Reproduction* reproduction = entity.get_if<Reproduction>();
 		if(reproduction)
@@ -62,24 +70,30 @@ namespace sim {
 		direction.x = std::cos(alpha) * output[1]  - std::sin(alpha) * output[2];
 		direction.y = std::sin(alpha) * output[1]  + std::cos(alpha) * output[2];
 
-		if(Movement* movement = entity.get_if<Movement>()){
-			if(stx::hypot(direction) > 0.1){
-				direction = stx::normalized(direction);
-				double max = 0;
-				for(int i = -1; i<=1; i++){
-					for(int j = -1; j<=1; j++){
-						stx::vector2d temp = stx::normalized(stx::vector2d{static_cast<double>(i), static_cast<double>(j)});
-						if(stx::dot(temp, direction) > max){
-							max = stx::dot(temp, direction);
-							movement->direction = {i, j};
+		if(stx::hypot(direction) > 0.1){
+			direction = stx::normalized(direction);
+			double max = 0;
+			for(int i = -1; i<=1; i++){
+				for(int j = -1; j<=1; j++){
+					stx::vector2d temp = stx::normalized(stx::vector2d{static_cast<double>(i), static_cast<double>(j)});
+					if(stx::dot(temp, direction) > max){
+						max = stx::dot(temp, direction);
+						stx::vector2i new_direction = {i, j};
+						if(new_direction != movement->direction){
+							movement->same_move = 0;
 						}
+						movement->direction = new_direction;
 					}
 				}
 			}
-			else{
-				movement->direction = 0;
-			}
 		}
+		else{
+			if(movement->direction != stx::vector2i{0, 0}){
+				movement->same_move = 0;
+			}
+			movement->direction = 0;
+		}
+		movement->same_move++;
 
 		stomach->shareFood = output[3] >= 0.0;
     }
