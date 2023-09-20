@@ -10,7 +10,7 @@
 namespace sim{
 
     template <typename SensedComponent, EntitySensorAxis axis>
-    void update_entity_sensor(stx::grid2<std::uint64_t>& grid, Ecs& ecs, EntitySensor<SensedComponent, axis>* sensor, const EntitySensorConfig& config){
+    void update_entity_sensor(EntitySensor<SensedComponent, axis>* sensor, std::vector<Ecs::Entity*> sensedEntities, const EntitySensorConfig& config){
         stx::vector2i loc = sensor->transform->location;
         double sum = 0.0;
         stx::vector2d dirVec = stx::vector2d{sensor->transform->rotation};
@@ -19,35 +19,46 @@ namespace sim{
             dirVec = stx::rotate_90_cw(dirVec);
         }
 
-        auto f = [&](stx::vector2i tloc) {
-            uint64_t entity_id = grid[tloc];
-            auto* entity = ecs.get_if(entity_id);
-            if (tloc != loc && entity && entity->has<SensedComponent>()) {
+        for(Ecs::Entity* other : sensedEntities){
+            if (other->has<SensedComponent>()) {
+                Transform* transform = other->get_if<Transform>();
+                if(!transform) return;
+                stx::vector2i tloc = transform->location;
+
                 stx::vector2d offset = stx::vector2d(tloc - loc);
                 double proj = dirVec.x * offset.x + dirVec.y * offset.y; // Magnitude of projection along dir
                 double contrib = proj / (offset.x * offset.x + offset.y * offset.y);
                 sum += contrib;
             }
-        };
-
-        visitNeighborhood(grid, loc, sensor->radius, f);
+        }
 
         // convert to -1.0..1.0
-        double sensorVal = std::tanh((sum / sensor->radius) * config.sensibility);
+        double sensorVal = std::tanh((sum / config.radius) * config.sensibility);
 
         sensor->value = sensorVal;
     }
 
-    void visitNeighborhood(stx::grid2<std::uint64_t>& grid, stx::vector2i loc, int radius, std::function<void(stx::vector2i)> f)
+    std::vector<Ecs::Entity*> visitNeighborhood(Ecs::Entity& entity, stx::grid2<std::uint64_t>& grid, Ecs& ecs, const EntitySensorConfig& config)
     {
-        for (int dx = -std::min<int>(radius, loc.x); dx <= std::min<int>(radius, (grid.size().x - loc.x) - 1); ++dx) {
+        std::vector<Ecs::Entity*> entities;
+        Transform* transform = entity.get_if<Transform>();
+        
+        if(!transform) return entities;
+
+        stx::vector2i loc = transform->location;
+        for (int dx = -std::min<int>(config.radius, loc.x); dx <= std::min<int>(config.radius, (grid.size().x - loc.x) - 1); ++dx) {
             int x = loc.x + dx;
             assert(x >= 0 && x < grid.size().x);
-            for (int dy = -std::min<int>(radius, loc.y); dy <= std::min<int>(radius, (grid.size().y - loc.y) - 1); ++dy) {
+            for (int dy = -std::min<int>(config.radius, loc.y); dy <= std::min<int>(config.radius, (grid.size().y - loc.y) - 1); ++dy) {
                 int y = loc.y + dy;
                 assert(y >= 0 && y < grid.size().y);
-                f( stx::vector2i { x, y} );
+                uint64_t entity_id = grid[{static_cast<std::uint64_t>(x), static_cast<std::uint64_t>(y)}];
+                auto* otherEntity = ecs.get_if(entity_id);
+                if(otherEntity && stx::vector2i{x, y} != loc){
+                    entities.push_back(otherEntity);
+                }
             }
         }
+        return entities;
     }
 }

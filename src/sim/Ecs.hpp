@@ -12,13 +12,15 @@
 #include "sim/component/FoodSpawn.hpp"
 #include "sim/component/EntitySensor.hpp"
 #include "sim/component/Health.hpp"
-#include "sim/component/Sprite.hpp"
+#include "sim/component/Barrier.hpp"
 
 namespace sim {
 	using StomachSensorFB = EntitySensor<Stomach, EntitySensorAxis::front_back>;
 	using StomachSensorLR = EntitySensor<Stomach, EntitySensorAxis::left_right>;
 	using EdibleSensorFB = EntitySensor<Edible, EntitySensorAxis::front_back>;
 	using EdibleSensorLR = EntitySensor<Edible, EntitySensorAxis::left_right>;
+	using BarrierSensorFB = EntitySensor<Barrier, EntitySensorAxis::front_back>;
+	using BarrierSensorLR = EntitySensor<Barrier, EntitySensorAxis::left_right>;
 
 	using Ecs =	nc::Ecs<
 		PheromoneEmitter, 
@@ -34,13 +36,19 @@ namespace sim {
 		StomachSensorLR, 
 		EdibleSensorFB, 
 		EdibleSensorLR,
+		BarrierSensorFB, 
+		BarrierSensorLR,
 		Health,
-		NeuralNetwork
+		NeuralNetwork,
+		Barrier
 	>;
 
 	struct EntitySensorConfig{
         double sensibility = 20.0;
-		int range = 25;
+		int radius = 25;
+		bool enable_food_sensor = true;
+		bool enable_stomach_sensor = true;
+		bool enable_barrier_sensor = true;
     };
 
 	struct MetabolismConfig{
@@ -68,8 +76,7 @@ namespace sim {
 		bool enable_long_oscilator = false;
 		NeuralNetMutConfig neural_net = NeuralNetMutConfig{};
 		ReproductionConfig reproduction = ReproductionConfig{};
-		EntitySensorConfig creature_sensor = EntitySensorConfig{};
-		EntitySensorConfig food_sensor = EntitySensorConfig{};
+		EntitySensorConfig sensors = EntitySensorConfig{};
 		MetabolismConfig metabolism = MetabolismConfig{};
 	};
 }

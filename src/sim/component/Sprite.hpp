@@ -1,13 +1,14 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include "Reproduction.hpp"
+#include "shared/random/xoshiro256.h"
 
 namespace sim {
 	struct Sprite {
 		sf::Color color = {196, 196, 196};
 
 		Sprite createChild(std::uint64_t seed, const ReproductionConfig & config, double mutationDampener){
-			std::mt19937_64 rng;
+            Xoshiro::Xoshiro256PP rng;
 		    rng.seed(seed);
 			Sprite child = *this;
 			std::uniform_int_distribution interval { -config.max_color_difference, config.max_color_difference };

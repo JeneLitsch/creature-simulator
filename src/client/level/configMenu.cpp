@@ -20,9 +20,8 @@ namespace client::level {
 
     void reproductionConfig(sim::ReproductionConfig & config){
         if (ImGui::CollapsingHeader("Reproduction_Config")){
-            ImGui::SliderUInt64("Max Reproduction cooldown", &config.max_reproduction_cooldown, 1, 10000, "%d", ImGuiSliderFlags_Logarithmic);
-            ImGui::SliderUInt64("Min Reprocution Cooldown", &config.min_reproduction_cooldown, 1, 10000, "%d", ImGuiSliderFlags_Logarithmic);
-            ImGui::SliderUInt64("Max cooldown difference", &config.max_cooldown_difference, 1, 10000, "%d", ImGuiSliderFlags_Logarithmic);
+            ImGui::SliderUInt64("Reproduction cooldown", &config.cooldown, 1, 10000, "%d", ImGuiSliderFlags_Logarithmic);
+            ImGui::SliderDouble("Reproduction food cost", &config.food_cost, 0.0, 10.0);
         }
     }
 
@@ -38,8 +37,7 @@ namespace client::level {
     void Menu(sim::Config& config) {
         ImGui::Begin("config");
         ImGui::SliderUInt16("Age", &config.maxAge, 100, 10000, "%d", ImGuiSliderFlags_Logarithmic);
-        ImGui::SliderDouble("food_sensor", &config.food_sensor.sensibility, 0.0f, 200.0f);
-        ImGui::SliderDouble("creature_sensor", &config.creature_sensor.sensibility, 0.0f, 200.0f);
+        ImGui::SliderDouble("sensors", &config.sensors.sensibility, 0.0f, 200.0f);
         nnConfig(config.neural_net);
         reproductionConfig(config.reproduction);
         metabolismConfig(config.metabolism);

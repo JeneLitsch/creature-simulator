@@ -18,7 +18,7 @@ namespace client::main_menu {
 
 
 
-	void ui_world(sim::WorldPreset & preset, std::mt19937_64 & rng) {
+	void ui_world(sim::WorldPreset & preset, Xoshiro::Xoshiro256PP & rng) {
 		ImGui::SeparatorText("World");
 		
 		ImGui::InputUInt64("Seed", &preset.seed, 1, 100, ImGuiInputTextFlags_CharsHexadecimal);
@@ -34,7 +34,7 @@ namespace client::main_menu {
 
 
 		if(ImGui::InputUInt32("Height", &preset.size.y, 1, 16)) {
-			preset.size.x = std::clamp<std::uint32_t>(preset.size.y, 8, 1024);
+			preset.size.y = std::clamp<std::uint32_t>(preset.size.y, 8, 1024);
 		}
 
 		ImGui::EndGroup();
@@ -59,10 +59,10 @@ namespace client::main_menu {
 		ImGui::SeparatorText("Entities");
 
 		if(ImGui::InputUInt32("Food Spawners", &preset.entities.food_spawners, 1, 16)) {
-			preset.entities.food_spawners = std::clamp<std::uint32_t>(preset.entities.food_spawners, 8, 1024);
+			preset.entities.food_spawners = std::clamp<std::uint32_t>(preset.entities.food_spawners, 1, 1024);
 		}
 		if(ImGui::InputUInt32("Empty Creatures", &preset.entities.empty_creatures, 1, 16)) {
-			preset.entities.empty_creatures = std::clamp<std::uint32_t>(preset.entities.food_spawners, 8, 1024);
+			preset.entities.empty_creatures = std::clamp<std::uint32_t>(preset.entities.empty_creatures, 1, 1024);
 		}
 
 		const auto total_entities

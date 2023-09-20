@@ -36,5 +36,7 @@ namespace client::edit {
 		stx::optref<Tool> current_tool;
 
 		std::uint64_t inspected_id = 0;
+
+		sf::RenderTexture neural_network_graph;
 	};
 }

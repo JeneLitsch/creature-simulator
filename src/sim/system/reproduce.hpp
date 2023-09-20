@@ -5,5 +5,5 @@
 #include <random>
 
 namespace sim{
-    void reproduce(Ecs::Entity& entity, stx::grid2<std::uint64_t>* grid, Ecs* ecs, PheromoneField* pheromone_field, const Config& config, std::mt19937_64& rng);
+    void reproduce(Ecs::Entity& entity, stx::grid2<std::uint64_t>* grid, Ecs* ecs, PheromoneField* pheromone_field, const Config& config, Xoshiro::Xoshiro256PP& rng);
 }

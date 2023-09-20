@@ -1,5 +1,6 @@
 #include "ui_inspect.hpp"
 #include "imgui.h"
+#include "imgui-SFML.h"
 
 namespace client::edit {
 	namespace {
@@ -88,17 +89,18 @@ namespace client::edit {
 
 
 
-		void comp_details(sim::NeuralNetwork & comp) {
-
+		void comp_details(sim::NeuralNetwork & comp, sf::RenderTexture & graph) {
+			const float aspect_ratio = static_cast<float>(graph.getSize().x) / static_cast<float>(graph.getSize().y);
+			ImGui::Image(graph, { ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().x / aspect_ratio });
 		}
 		
 
 
 		template<typename Comp>
-		void ui_inspect_component(sim::Ecs::Entity & entity) {
+		void ui_inspect_component(sim::Ecs::Entity & entity, auto && ... args) {
 			if(auto * comp = entity.get_if<Comp>()) {
 		        if (ImGui::CollapsingHeader(comp_name(*comp))){
-					comp_details(*comp);
+					comp_details(*comp, args...);
 				}
 			}
 		}
@@ -106,7 +108,7 @@ namespace client::edit {
 
 
 
-	void ui_inspect(sim::Ecs::Entity & entity) {
+	void ui_inspect(sim::Ecs::Entity & entity, sf::RenderTexture & neural_network_graph) {
 		ImGui::Begin("Inspector");
 		ImGui::Text("Entity #%lu", entity.get_id());
 
@@ -125,7 +127,7 @@ namespace client::edit {
 		ui_inspect_component<sim::EdibleSensorLR>(entity);
 
 		ui_inspect_component<sim::Health>(entity);
-		ui_inspect_component<sim::NeuralNetwork>(entity);
+		ui_inspect_component<sim::NeuralNetwork>(entity, neural_network_graph);
 
 		ImGui::End();
 	}

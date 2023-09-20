@@ -1,6 +1,5 @@
 #pragma once
 #include <memory>
-#include <random>
 #include <array>
 #include "stdxx/grid.hxx"
 #include "stdxx/json.hxx"
@@ -8,6 +7,7 @@
 #include "stdxx/grid.hxx"
 #include "sim/senses/PheromoneField.hpp"
 #include "WorldPreset.hpp"
+#include "shared/random/xoshiro256.h"
 
 namespace sim {
 	class Simulation {
@@ -29,7 +29,7 @@ namespace sim {
 		static std::unique_ptr<Simulation> empty(stx::size2u32 size);
 
 		sim::Ecs ecs;
-		std::mt19937_64 rng;
+        Xoshiro::Xoshiro256PP rng;
 		stx::grid2<std::uint64_t> grid;
 		PheromoneField pheromone_field;
 	private:

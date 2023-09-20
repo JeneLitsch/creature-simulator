@@ -74,7 +74,6 @@ namespace sim {
 
 		template<typename SensedComp, EntitySensorAxis axis>
 		void export_comp(stx::json::write_iterator json, const EntitySensor<SensedComp, axis> & comp) {
-			json["radius"] = comp.radius;
 			json["value"] = comp.value;
 		}
 
@@ -98,6 +97,17 @@ namespace sim {
 					json_line.push_back(elem);
 				}
 				json_input_matrix.push_back(node);
+			}
+
+			auto json_hidden_matrix = json["hidden_matrix"];
+			json_hidden_matrix = stx::json::array;
+			for(const auto & line : comp.hiddenMatrix) {
+				stx::json::node node;
+				stx::json::write_iterator json_line = node;
+				for(const auto & elem : line) {
+					json_line.push_back(elem);
+				}
+				json_hidden_matrix.push_back(node);
 			}
 
 
@@ -145,6 +155,8 @@ namespace sim {
 		export_if<StomachSensorLR>(entity, json, "stomach_sensor_lr");
 		export_if<EdibleSensorFB>(entity, json, "edible_sensor_fb");
 		export_if<EdibleSensorLR>(entity, json, "edible_sensor_lr");
+		export_if<BarrierSensorFB>(entity, json, "barrier_sensor_fb");
+		export_if<BarrierSensorLR>(entity, json, "barrier_sensor_lr");
 	
 		return node;
 	}

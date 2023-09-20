@@ -5,6 +5,7 @@
 #include "sim/create.hpp"
 #include "ui_tool.hpp"
 #include "ui_inspect.hpp"
+#include "render_neural_network.hpp"
 
 namespace client::edit {
 	Edit::Edit(stx::reference<level::Level> level) 
@@ -16,6 +17,8 @@ namespace client::edit {
 		this->tools.push_back(Tool::place_entity());
 		this->tools.push_back(Tool::inspector(*this));
 		this->tools.push_back(Tool::medusa());
+
+		this->neural_network_graph.create(4096,2048);
 	}
 
 
@@ -45,7 +48,12 @@ namespace client::edit {
 		this->current_tool = ui_tool(this->tools, this->current_tool);
 		
 		if(auto * entity = session->get_sim().ecs.get_if(this->inspected_id)) {
-			ui_inspect(*entity);
+			if(auto * nn = entity->get_if<sim::NeuralNetwork>()) {
+				this->neural_network_graph.clear(sf::Color::Black);
+				render_neural_network(*nn,neural_network_graph);
+				neural_network_graph.display();
+			}
+			ui_inspect(*entity, this->neural_network_graph);
 		}
 		else {
 			this->inspected_id = 0;

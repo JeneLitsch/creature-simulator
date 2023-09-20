@@ -37,21 +37,6 @@ namespace client::level {
 	void Level::update(double dt) {
 		this->update_camera(dt);
 
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F5)) {
-			this->session->export_sim("tmp/export/sim.json");
-		}
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F9)) {
-			this->pop();
-			this->pop();
-			this->push(std::make_unique<session::Session>("tmp/export/sim.json"));
-		}
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::F6)) {
-			this->session->get_sim().get_ecs().run_system([&] (const sim::Ecs::Entity & entity) {
-				auto id = entity.get_id();
-				this->session->export_entity("tmp/export/entity/" + std::to_string(id) + ".json",id);
-			});
-		}
-		
 		if(this->tick_timer(dt)) {
 			this->session->tick();
 		}
@@ -117,6 +102,21 @@ namespace client::level {
 		if(event.code == sf::Keyboard::Space) {
 			this->push(std::make_unique<edit::Edit>(*this));
 		}
+        if (event.code == sf::Keyboard::F5) {
+			this->session->export_sim("tmp/export/sim.json");
+        }
+        if (event.code == sf::Keyboard::F6) {
+			this->session->get_sim().get_ecs().run_system([&] (const sim::Ecs::Entity & entity) {
+				auto id = entity.get_id();
+				this->session->export_entity("tmp/export/entity/" + std::to_string(id) + ".json",id);
+			});
+        }
+        if (event.code == sf::Keyboard::F9) {
+			this->pop();
+			this->pop();
+			this->push(std::make_unique<session::Session>("tmp/export/sim.json"));
+        }
+
     }
 
 
