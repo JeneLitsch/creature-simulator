@@ -4,6 +4,7 @@
 #include "imgui.h"
 #include "sim/create.hpp"
 #include "ui_tool.hpp"
+#include "ui_inspect.hpp"
 
 namespace client::edit {
 	Edit::Edit(stx::reference<level::Level> level) 
@@ -13,6 +14,7 @@ namespace client::edit {
 		this->tools.push_back(Tool::eraser());
 		this->tools.push_back(Tool::barrier());
 		this->tools.push_back(Tool::place_entity());
+		this->tools.push_back(Tool::inspector(*this));
 	}
 
 
@@ -31,7 +33,7 @@ namespace client::edit {
 		ImGui::SetWindowPos({0,0});
 
 		ImGui::SetWindowFontScale(4);
-		ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 0, 255));
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{255, 255, 0, 255});
 
 		ImGui::Text("Edit Mode!");
 
@@ -40,6 +42,14 @@ namespace client::edit {
 
 		ImGui::End();
 		this->current_tool = ui_tool(this->tools, this->current_tool);
+		
+		if(auto * entity = session->get_sim().ecs.get_if(this->inspected_id)) {
+			ui_inspect(*entity);
+		}
+		else {
+			this->inspected_id = 0;
+		}
+		
 		this->level->ui_config();
 	}
 
@@ -82,6 +92,7 @@ namespace client::edit {
 	}
 
 
+
 	void Edit::on_event(const core::KeyPressed& event) {
 		if(event.code == sf::Keyboard::Space) {
 			this->pop();
@@ -90,7 +101,7 @@ namespace client::edit {
 
 
 
-	void use_tool() {
-
+	void Edit::inspect(std::uint64_t id) {
+		this->inspected_id = id;
 	}
 }

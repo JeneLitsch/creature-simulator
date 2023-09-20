@@ -1,5 +1,6 @@
 #include "Tool.hpp"
 #include "imgui.h"
+#include "client/edit/Edit.hpp"
 
 #include "shape/Rect.hpp"
 #include "shape/Point.hpp"
@@ -7,6 +8,7 @@
 #include "effect/Erase.hpp"
 #include "effect/EmptyEntity.hpp"
 #include "effect/Barrier.hpp"
+#include "effect/Inspect.hpp"
 
 namespace client::edit {
 	void Tool::draw(sim::Simulation & sim, stx::position2i position) {
@@ -58,4 +60,14 @@ namespace client::edit {
 			.effect = std::make_unique<EmptyEntity>(),
 		};
 	}	
+
+
+	
+	Tool Tool::inspector(stx::reference<Edit> edit) {
+		return Tool {
+			.name = "Inspector",
+			.shape = std::make_unique<Point>(),
+			.effect = std::make_unique<Inspect>(edit),
+		};
+	}
 }

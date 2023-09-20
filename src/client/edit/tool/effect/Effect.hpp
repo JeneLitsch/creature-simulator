@@ -10,5 +10,6 @@ namespace client::edit {
 	public:
 		virtual void apply(sim::Simulation & sim, stx::position2i position) = 0;
 		virtual void clean_up(sim::Simulation & sim) = 0;
+		virtual ~Effect() = default;
 	};
 }

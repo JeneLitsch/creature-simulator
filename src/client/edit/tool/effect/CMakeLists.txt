@@ -4,4 +4,5 @@ target_sources(libclient PRIVATE
 	Barrier.cpp
 	Erase.cpp
 	EmptyEntity.cpp
+	Inspect.cpp
 )
