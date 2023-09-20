@@ -40,7 +40,6 @@ namespace sim{
 			stx::vector2i position,
 			stx::grid2<std::uint64_t> & grid,
 			const Config & config,
-			Reproduction & reproduction,
             NeuralNetwork& neuralNet,
             Age & age,
 			Sprite & sprite,
@@ -77,7 +76,7 @@ namespace sim{
             const auto child_position = find_empty_neighbor(*grid, transform->location);
 			if(child_position) {
 				double food = consume_food(*stomach, config.reproduction);
-				spawn_child(*ecs, *child_position, *grid, config, *reproduction, *neuralNet, *age, *sprite, food, rng);
+				spawn_child(*ecs, *child_position, *grid, config, *neuralNet, *age, *sprite, food, rng);
 			}
             else {
 				return;
