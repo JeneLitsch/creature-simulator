@@ -28,7 +28,7 @@ namespace client::level {
 
 	private:
 		virtual void on_event(const core::KeyPressed &) override;
-		stx::chrono::every tick_timer;
+		Timer tick_timer;
 		
 		stx::reference<sim::Simulation> simulation;
 
