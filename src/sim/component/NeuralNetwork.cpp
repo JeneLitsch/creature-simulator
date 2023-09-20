@@ -117,7 +117,6 @@ namespace sim{
 				if(matrix_index == 0 && net.hidden_size > 0){
 					int i = rng() % net.input_size;
 					int j = rng() % net.hidden_size;
-					j += net.input_size;
 					net.inputMatrix.at(i).at(j) = change_weight(net.inputMatrix.at(i).at(j), rng, config, weight_interval);
 					
 				}
@@ -125,7 +124,7 @@ namespace sim{
 					int i = rng() % (net.input_size + net.hidden_size);
 					int j = rng() % net.hidden_size;
 					j += net.input_size;
-					net.inputMatrix.at(i).at(j) = change_weight(net.hiddenMatrix.at(i).at(j), rng, config, weight_interval);
+					net.hiddenMatrix.at(i).at(j) = change_weight(net.hiddenMatrix.at(i).at(j), rng, config, weight_interval);
 					
 				}
 				if(matrix_index == 2){
