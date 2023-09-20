@@ -23,6 +23,7 @@ namespace sim {
 		entity.add(Sprite{
 			.color = sf::Color::Red,
 		});
+		entity.add(Barrier{});
 		return entity;
 	}
 
@@ -49,12 +50,14 @@ namespace sim {
 		entity.add(Health{});
 		entity.add(Sprite{});
 		entity.add(Movement{entity.get_if<Transform>(), &grid});
-		entity.add(StomachSensorFB{entity.get_if<Transform>(), config.creature_sensor.range});
-		entity.add(StomachSensorLR{entity.get_if<Transform>(), config.creature_sensor.range});
-		entity.add(EdibleSensorFB{entity.get_if<Transform>(), config.food_sensor.range});
-		entity.add(EdibleSensorLR{entity.get_if<Transform>(), config.food_sensor.range});
-		entity.add(NeuralNetwork{9, 4});
-		entity.add(Reproduction{config.reproduction.default_cooldown});
+		entity.add(StomachSensorFB{entity.get_if<Transform>()});
+		entity.add(StomachSensorLR{entity.get_if<Transform>()});
+		entity.add(EdibleSensorFB{entity.get_if<Transform>()});
+		entity.add(EdibleSensorLR{entity.get_if<Transform>()});
+		entity.add(BarrierSensorFB{entity.get_if<Transform>()});
+		entity.add(BarrierSensorLR{entity.get_if<Transform>()});
+		entity.add(NeuralNetwork{11, 4});
+		entity.add(Reproduction{config.reproduction.cooldown});
 		return entity;
 	}
 
@@ -65,6 +68,7 @@ namespace sim {
 		entity.add(Sprite{
 			.color = sf::Color{64,64,64}
 		});
+		entity.add(Barrier{});
 		return entity;
 	}
 }

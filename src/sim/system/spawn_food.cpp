@@ -2,7 +2,7 @@
 #include "sim/create.hpp"
 
 namespace sim {
-	void spawn_food(Ecs::Entity & entity, stx::grid2<std::uint64_t> & grid, Ecs & ecs, std::mt19937_64 & rng, PheromoneField & phero_field) {
+	void spawn_food(Ecs::Entity & entity, stx::grid2<std::uint64_t> & grid, Ecs & ecs, Xoshiro::Xoshiro256PP & rng, PheromoneField & phero_field) {
 		auto * food_spawn = entity.get_if<FoodSpawn>();
 		auto * transform = entity.get_if<Transform>();
 		if(!food_spawn) return;

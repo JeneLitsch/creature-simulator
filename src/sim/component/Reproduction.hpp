@@ -3,10 +3,7 @@
 
 namespace sim{
     struct ReproductionConfig{
-        uint64_t min_reproduction_cooldown = 50;
-        uint64_t max_reproduction_cooldown = 200;
-        uint64_t max_cooldown_difference = 50;
-        uint64_t default_cooldown = 100;
+        uint64_t cooldown = 100;
 		double food_cost = 1.0;
         int max_color_difference = 10;
     };
@@ -19,7 +16,6 @@ namespace sim{
         Reproduction(uint64_t max_cooldown);
         Reproduction(uint64_t max_cooldown, std::uint64_t current_cooldown, bool wants_to_reproduce);
 
-        Reproduction createChild(std::uint64_t seed, const ReproductionConfig & config, double mutationDampener);
         void incrementCooldown();
     };
 }

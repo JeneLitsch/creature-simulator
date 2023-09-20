@@ -23,6 +23,7 @@ namespace sim{
 		NeuralNetwork createChild(std::uint64_t seed, const NeuralNetMutConfig & config, double mutationFactor);
 
 		std::vector<std::vector<double>> inputMatrix;
+		std::vector<std::vector<double>> hiddenMatrix;
 		std::vector<std::vector<double>> outputMatrix;
 		std::size_t input_size;
 		std::size_t hidden_size = 0;

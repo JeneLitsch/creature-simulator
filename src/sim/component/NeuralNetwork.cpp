@@ -1,10 +1,12 @@
 #include "NeuralNetwork.hpp"
+#include "shared/random/xoshiro256.h"
 #include <iostream>
 #include <numeric>
 #include <numbers>
 #include <cmath>
 #include <random>
 #include <algorithm>
+#include "stdxx/array.hxx"
 
 namespace sim{
 	std::vector<double> vectorMatrixMult(const std::vector<double>& vec, const std::vector<std::vector<double>>& mat){
@@ -30,9 +32,10 @@ namespace sim{
 		std::size_t output_size) 
 	: input_size{input_size}, output_size{output_size} {
 		inputMatrix.resize(input_size, std::vector<double>{});
+		hiddenMatrix.resize(input_size, std::vector<double>{});
 		for(int i = 0; i<input_size; i++){
-			inputMatrix.at(i).resize(input_size, 0.0);
-			inputMatrix.at(i).at(i) = 1.0;
+			hiddenMatrix.at(i).resize(input_size, 0.0);
+			hiddenMatrix.at(i).at(i) = 1.0;
 		}
 		outputMatrix.resize(input_size, std::vector<double>{});
 		for(int i = 0; i<input_size; i++){
@@ -43,8 +46,11 @@ namespace sim{
 
 	void NeuralNetwork::addNode(){
 		hidden_size ++;
-		inputMatrix.resize(input_size + hidden_size, std::vector<double>{});
+		hiddenMatrix.resize(input_size + hidden_size, std::vector<double>{});
 		for(std::vector<double>& vec: inputMatrix){
+			vec.resize(hidden_size, 0.0);
+		}
+		for(std::vector<double>& vec: hiddenMatrix){
 			vec.resize(input_size + hidden_size, 0.0);
 		}
 		outputMatrix.resize(input_size + hidden_size, std::vector<double>{});
@@ -55,8 +61,8 @@ namespace sim{
 		if (input.size() != input_size) {
 			throw std::runtime_error{"Input does not match input layer"};
 		}
-		std::vector<double> inputWithHidden = input;
-		inputWithHidden.resize(input_size + hidden_size, 0.0);
+		std::vector<double> hidden = vectorMatrixMult(input, inputMatrix);
+		std::vector<double> inputWithHidden = input + hidden;
 		/*
 		// Sigmoid für hidden Nodes
 		std::vector<double> realInput = vectorMatrixMult(inputWithHidden, inputMatrix);
@@ -66,7 +72,7 @@ namespace sim{
 		std::vector<double> out = vectorMatrixMult(realInput, outputMatrix);
 		*/
 		//kein Sigmoid für hidden Nodes
-		std::vector<double> out = vectorMatrixMult(vectorMatrixMult(inputWithHidden, inputMatrix), outputMatrix);
+		std::vector<double> out = vectorMatrixMult(vectorMatrixMult(inputWithHidden, hiddenMatrix), outputMatrix);
 		/*
 		for(double& num : out){
 			num = std::tanh(num);
@@ -81,12 +87,12 @@ namespace sim{
 		return child;
 	}
 
-	bool to_be_mutated(double p, std::mt19937_64& rng) {
+	bool to_be_mutated(double p, Xoshiro::Xoshiro256PP& rng) {
 		std::uniform_real_distribution interval { 0.0, 1.0 };
 		return interval(rng) < p;
 	}
 
-	double change_weight(double weight_value, std::mt19937_64& rng, const NeuralNetMutConfig & config, std::uniform_real_distribution<double>& weight_interval){
+	double change_weight(double weight_value, Xoshiro::Xoshiro256PP& rng, const NeuralNetMutConfig & config, std::uniform_real_distribution<double>& weight_interval){
 		if(config.limit_weight_change){
 			double value = std::clamp(weight_interval(rng), weight_value - config.max_weight_change, weight_value + config.max_weight_change);
 			return std::clamp(value, config.weight_min, config.weight_max);
@@ -96,7 +102,7 @@ namespace sim{
 	}
 
 	void mutate(NeuralNetwork & net, std::uint64_t seed, const NeuralNetMutConfig & config, double mutationDampener) {
-		std::mt19937_64 rng;
+		Xoshiro::Xoshiro256PP rng;
 		rng.seed(seed);
 		if(to_be_mutated(config.chance_for_new_node - mutationDampener * config.chance_for_new_node, rng) && net.hidden_size < config.max_hidden_nodes){
 			net.addNode();
@@ -107,15 +113,22 @@ namespace sim{
 				if(!to_be_mutated(config.chance_per_roll - mutationDampener * config.chance_per_roll, rng)){
 					continue;
 				}
-				int matrix_index = rng() % 2;
-				if(matrix_index < 1 && net.hidden_size > 0){
+				int matrix_index = rng() % 3;
+				if(matrix_index == 0 && net.hidden_size > 0){
+					int i = rng() % net.input_size;
+					int j = rng() % net.hidden_size;
+					j += net.input_size;
+					net.inputMatrix.at(i).at(j) = change_weight(net.inputMatrix.at(i).at(j), rng, config, weight_interval);
+					
+				}
+				if(matrix_index == 1 && net.hidden_size > 0){
 					int i = rng() % (net.input_size + net.hidden_size);
 					int j = rng() % net.hidden_size;
 					j += net.input_size;
 					net.inputMatrix.at(i).at(j) = change_weight(net.inputMatrix.at(i).at(j), rng, config, weight_interval);
 					
 				}
-				else{
+				if(matrix_index == 2){
 					int i = rng() % (net.input_size + net.hidden_size);
 					int j = rng() % net.output_size;
 					net.outputMatrix.at(i).at(j) = change_weight(net.outputMatrix.at(i).at(j), rng, config, weight_interval);
@@ -124,10 +137,17 @@ namespace sim{
 			}
 		}
 		else{
+			for(int i = 0; i<net.input_size; i++){
+				for(int j = net.input_size; j<net.hidden_size; j++){
+					if(to_be_mutated(config.mutation_rate_per_weight, rng)){
+						net.inputMatrix.at(i).at(j) = change_weight(net.inputMatrix.at(i).at(j), rng, config, weight_interval);
+					}
+				}
+			}
 			for(int i = 0; i<net.input_size + net.hidden_size; i++){
 				for(int j = net.input_size; j<net.input_size + net.hidden_size; j++){
 					if(to_be_mutated(config.mutation_rate_per_weight, rng)){
-						net.inputMatrix.at(i).at(j) = change_weight(net.inputMatrix.at(i).at(j), rng, config, weight_interval);
+						net.hiddenMatrix.at(i).at(j) = change_weight(net.hiddenMatrix.at(i).at(j), rng, config, weight_interval);
 					}
 				}
 			}

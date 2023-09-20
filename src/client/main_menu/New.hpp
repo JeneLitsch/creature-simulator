@@ -1,6 +1,7 @@
 #pragma once
 #include <random>
 #include "Sub.hpp"
+#include "shared/random/xoshiro256.h"
 #include "sim/WorldPreset.hpp"
 
 namespace client::main_menu {
@@ -21,7 +22,7 @@ namespace client::main_menu {
 
 		sim::WorldPreset preset;
 
-		std::mt19937_64 rng;
+		Xoshiro::Xoshiro256PP rng;
 
 		int radio_index = 0;
 	};
