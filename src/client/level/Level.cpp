@@ -8,14 +8,9 @@
 
 namespace client::level {
 
-    bool showMenu = true;
-
-    uint16_t tick_speed = 100.0;
-
 	Level::Level(session::Session & session, sim::Simulation & simulation)
 		: session{session}
-		, simulation{simulation}
-		, tick_timer{tick_speed} {
+		, simulation{simulation} {
 		
 		this->camera_center = stx::position2f{this->session->get_sim().get_grid().size()} / 2.f;
 	}
@@ -31,7 +26,7 @@ namespace client::level {
 
 
 	void Level::ui_config() {
-		level::Menu(simulation->config);
+		level::Menu(tick_speed, simulation->config);
 	}
 
 
@@ -76,10 +71,6 @@ namespace client::level {
 
 	
 	void Level::render(sf::RenderTarget & render_target) {
-
-        if (showMenu){
-            level::Menu(tick_speed, level::Level::simulation->config);
-        }
 
 		auto old_view = render_target.getView();
 		camera.setCenter(this->camera_center.to<sf::Vector2f>());
