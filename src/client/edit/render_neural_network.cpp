@@ -2,9 +2,42 @@
 #include <optional>
 
 namespace client::edit {
+	namespace {
+		sf::Color mix_color(std::optional<double> weight, const sim::NeuralNetConfig & config) {
+			if(!weight)     return sf::Color{128,128,128};
+			if(*weight < 0)  return stx::lerp(sf::Color::White, sf::Color::Red, std::abs(*weight / config.weight_min));
+			if(*weight >= 0) return stx::lerp(sf::Color::White, sf::Color::Green, std::abs(*weight / config.weight_max));
+		}
+
+
+		std::optional<double> get_weight(sim::NeuralNetwork & neural_network, std::uint64_t i, std::uint64_t a, std::uint64_t b) {
+			if(i == 0) {
+				if(b >= neural_network.input_size) {
+					return neural_network.inputMatrix[a][b];
+				}
+				else {
+					return std::nullopt;
+				}
+			}
+			else if((i + 2) == 4) {
+				return neural_network.outputMatrix[a][b];
+			}
+			else {
+				if((a == b) && (a < neural_network.input_size)) {
+					return std::nullopt;
+				}
+				else {
+					return neural_network.hiddenMatrix[a][b];
+				}
+			}
+		}
+	}
+
+
 	void render_neural_network(
 		sim::NeuralNetwork & neural_network,
-		sf::RenderTarget & target) {
+		sf::RenderTarget & target,
+		const sim::NeuralNetConfig & config) {
 			
 		sf::VertexArray nodes;
 		nodes.setPrimitiveType(sf::Quads);
@@ -50,39 +83,14 @@ namespace client::edit {
 					const auto dir = stx::normalized(pos_b - pos_a);
 					const auto normal = stx::rotate_90_cw(dir);
 
-					std::optional<float> weight;
+					const std::optional<double> weight = get_weight(neural_network, i, a, b);
 
-					sf::Color color = sf::Color::White;
+					const sf::Color color = mix_color(weight,config);
 
-					if(i == 0) {
-						if(b >= neural_network.input_size) {
-							weight = neural_network.inputMatrix[a][b];
-						}
-					}
-					else if((i + 2) == layer_sizes.size()) {
-						weight = neural_network.outputMatrix[a][b];
-					}
-					else {
-						if((a == b) && (a < neural_network.input_size)) {
-						}
-						else {
-							weight = neural_network.hiddenMatrix[a][b];
-						}
-					}
-
-					if(weight) {
-						if(weight > 0) {
-							color = stx::lerp(sf::Color{255,255,255}, sf::Color{0,255,0}, std::abs(*weight));
-						}
-						else {
-							color = stx::lerp(sf::Color{255,255,255}, sf::Color{255,0,0}, std::abs(*weight));
-						}
-					}
-					else {
-						color = sf::Color{128,128,128};
-					}
-
-					const float width = weight.value_or(a == b ? 1.f : 0.f) *  node_size * 0.25f;
+					const float width 
+						= node_size * 0.25f * (weight
+						? std::abs(stx::remap(config.weight_min, config.weight_max, -1.f, 1.f, *weight))
+						: a == b ? 1.f : 0.f);
 
 					const auto offset = normal * width;
 					
