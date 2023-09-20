@@ -19,6 +19,7 @@ namespace client::session {
 		void tick();
 
 		const sim::Simulation & get_sim() const;
+		sim::Simulation & get_sim();
 
 		virtual const char * name() { return "Session"; }
 

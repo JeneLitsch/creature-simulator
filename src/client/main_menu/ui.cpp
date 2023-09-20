@@ -32,6 +32,7 @@ namespace client::main_menu {
 			preset.size.x = std::clamp<std::uint32_t>(preset.size.x, 8, 1024);
 		}
 
+
 		if(ImGui::InputUInt32("Height", &preset.size.y, 1, 16)) {
 			preset.size.y = std::clamp<std::uint32_t>(preset.size.y, 8, 1024);
 		}
@@ -63,6 +64,12 @@ namespace client::main_menu {
 		if(ImGui::InputUInt32("Empty Creatures", &preset.entities.empty_creatures, 1, 16)) {
 			preset.entities.empty_creatures = std::clamp<std::uint32_t>(preset.entities.empty_creatures, 1, 1024);
 		}
+
+		const auto total_entities
+			= preset.entities.food_spawners
+			+ preset.entities.empty_creatures;
+
+		ImGui::Text("Generated Entities %lld", total_entities);
 	}
 
 

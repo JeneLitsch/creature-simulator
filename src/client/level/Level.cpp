@@ -3,6 +3,8 @@
 #include "imgui.h"
 #include "render.hpp"
 #include "configMenu.hpp"
+#include "sim/create.hpp"
+#include "client/edit/Edit.hpp"
 
 namespace client::level {
 
@@ -18,7 +20,31 @@ namespace client::level {
 
 
 
+	void Level::ui(stx::vector2f window_size) {
+        if (showMenu){
+			this->ui_config();
+        }
+	}
+
+
+
+	void Level::ui_config() {
+		level::Menu(simulation->config);
+	}
+
+
+
 	void Level::update(double dt) {
+		this->update_camera(dt);
+
+		if(this->tick_timer(dt)) {
+			this->session->tick();
+		}
+	}
+
+
+
+	void Level::update_camera(double dt) {
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 			this->camera_center.x -= (dt * camera_speed) * this->camera_zoom;
 		}
@@ -38,35 +64,21 @@ namespace client::level {
 			this->camera_zoom += this->camera_zoom * dt;
 		}
 
-
-
-
-
-
 		this->camera_center = stx::clamp(
 			this->camera_center,
 			stx::position2f{0,0},
 			stx::position2f{this->session->get_sim().get_grid().size()}
 		);
-		
-		if(this->tick_timer(dt)) {
-			this->session->tick();
-		}
 	}
 	
 
 	
 	void Level::render(sf::RenderTarget & render_target) {
 
-        if (showMenu){
-            level::Menu(level::Level::simulation->config);
-        }
-
 		auto old_view = render_target.getView();
-		auto new_view = render_target.getView();
-		new_view.setCenter(this->camera_center.to<sf::Vector2f>());
-		new_view.setSize(960.f * this->camera_zoom, 540.f * this->camera_zoom);
-		render_target.setView(new_view);
+		camera.setCenter(this->camera_center.to<sf::Vector2f>());
+		camera.setSize(960.f * this->camera_zoom, 540.f * this->camera_zoom);
+		render_target.setView(camera);
 
 		auto & sim = this->session->get_sim();
 		auto & grid = sim.get_grid();
@@ -79,11 +91,17 @@ namespace client::level {
 		
 		render_target.setView(old_view);
 	}
+
+
 	
-    void Level::on_event(const core::ButtonPressed& event) {
+    void Level::on_event(const core::KeyPressed& event) {
         if (event.code == sf::Keyboard::O) {
             showMenu = !showMenu;
         }
+
+		if(event.code == sf::Keyboard::Space) {
+			this->push(std::make_unique<edit::Edit>(*this));
+		}
         if (event.code == sf::Keyboard::F5) {
 			this->session->export_sim("tmp/export/sim.json");
         }
@@ -100,7 +118,8 @@ namespace client::level {
         }
 
     }
-	
+
+
 	
 	void Level::init() {
 
