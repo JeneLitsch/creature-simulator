@@ -1,8 +1,7 @@
 cmake_minimum_required (VERSION 3.13)
 
 target_sources(libclient PRIVATE
-	Tool.cpp
+	Barrier.cpp
+	Erase.cpp
+	PlaceEntity.cpp
 )
-
-add_subdirectory(effect)
-add_subdirectory(shape)

@@ -5,8 +5,10 @@ namespace client::edit {
 	void ui_tool(ToolBox & toolbox) {
 		ImGui::Begin("Tools");
 
-		if(ImGui::Button("Eraser")) {
-			toolbox.current = toolbox.eraser;
+		for(auto & tool : toolbox.tools) {
+			if(ImGui::Button(tool.name.c_str())) {
+				toolbox.current = tool;
+			}
 		}
 
 		if(toolbox.current) {

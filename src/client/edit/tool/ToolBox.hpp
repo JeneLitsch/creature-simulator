@@ -1,11 +1,14 @@
 #pragma once
 #include "stdxx/reference.hxx"
 #include "Tool.hpp"
-#include "Eraser.hpp"
 
 namespace client::edit {
 	struct ToolBox {
-		Eraser eraser;
+		std::array<Tool, 3> tools {
+			Tool::eraser(),
+			Tool::barrier(),
+			Tool::place_entity(),
+		};
 
 		stx::optref<Tool> current;
 	};

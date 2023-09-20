@@ -45,7 +45,7 @@ namespace client::edit {
 
 		if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
 			if(this->toolbox.current) {
-				this->toolbox.current->apply(session->get_sim(), this->cursor_position);
+				this->toolbox.current->draw(session->get_sim(), this->cursor_position);
 			}
 		}
 	}
