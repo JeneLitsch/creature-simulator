@@ -63,7 +63,9 @@ namespace client::edit {
 						weight = neural_network.outputMatrix[a][b];
 					}
 					else {
-						if(a != b) {
+						if((a == b) && (a < neural_network.input_size)) {
+						}
+						else {
 							weight = neural_network.hiddenMatrix[a][b];
 						}
 					}
