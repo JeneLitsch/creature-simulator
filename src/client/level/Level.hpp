@@ -29,7 +29,7 @@ namespace client::level {
 	private:
 		virtual void on_event(const core::KeyPressed &) override;
         bool showMenu = true;
-        uint16_t tick_speed = 100.0;
+        uint16_t tick_speed = 60.0;
 		Timer tick_timer;
 
 		double lag = 0.0;

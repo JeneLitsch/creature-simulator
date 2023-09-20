@@ -35,12 +35,8 @@ namespace client::level {
 	void Level::update(double dt) {
 		this->update_camera(dt);
 
-		this->lag += dt;
-
-		const double tick_dt = 1.0 / static_cast<double>(tick_speed);
-		while(this->lag >= tick_dt) {
+		if(this->tick_timer(dt)) {
 			this->session->tick();
-			this->lag -= tick_dt;
 		}
 	}
 

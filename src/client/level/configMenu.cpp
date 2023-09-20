@@ -91,7 +91,7 @@ namespace client::level {
 
     void Menu(uint16_t& tick_speed, sim::Config& config) {
         ImGui::Begin("config");
-        ImGui::SliderUInt16("tick_speed", &tick_speed, 1, 1000, "%d");
+        ImGui::SliderUInt16("tick_speed", &tick_speed, 1, 60, "%d");
         ImGui::SliderUInt16("Age", &config.maxAge, 100, 10000, "%d", ImGuiSliderFlags_Logarithmic);
         ImGui::SliderDouble("sensors", &config.sensors.sensibility, 0.0f, 200.0f);
         ImGui::Checkbox("enable long oscilator", &config.enable_long_oscilator);
