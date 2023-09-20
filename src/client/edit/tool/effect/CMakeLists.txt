@@ -5,4 +5,5 @@ target_sources(libclient PRIVATE
 	Erase.cpp
 	EmptyEntity.cpp
 	Inspect.cpp
+	Petrify.cpp
 )

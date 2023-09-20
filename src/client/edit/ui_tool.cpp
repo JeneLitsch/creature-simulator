@@ -6,7 +6,7 @@ namespace client::edit {
 		ImGui::Begin("Tools");
 
 		for(auto & tool : tools) {
-			if(ImGui::Button(tool.name.c_str())) {
+			if(ImGui::Button(tool.name.c_str(), {ImGui::GetContentRegionAvail().x, 0})) {
 				current_tool = tool;
 			}
 		}

@@ -24,6 +24,7 @@ namespace client::edit {
 		static Tool barrier();	
 		static Tool place_entity();	
 		static Tool inspector(stx::reference<Edit> edit);
+		static Tool medusa();
 	};
 
 

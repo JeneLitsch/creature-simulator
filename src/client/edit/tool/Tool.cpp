@@ -9,6 +9,7 @@
 #include "effect/EmptyEntity.hpp"
 #include "effect/Barrier.hpp"
 #include "effect/Inspect.hpp"
+#include "effect/Petrify.hpp"
 
 namespace client::edit {
 	void Tool::draw(sim::Simulation & sim, stx::position2i position) {
@@ -68,6 +69,16 @@ namespace client::edit {
 			.name = "Inspector",
 			.shape = std::make_unique<Point>(),
 			.effect = std::make_unique<Inspect>(edit),
+		};
+	}
+
+
+
+	Tool Tool::medusa() {
+		return Tool {
+			.name = "Medusa",
+			.shape = std::make_unique<Rect>(),
+			.effect = std::make_unique<Petrify>(),
 		};
 	}
 }
