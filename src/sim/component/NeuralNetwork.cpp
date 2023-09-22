@@ -15,8 +15,8 @@ namespace sim{
 		}
 		std::vector<double> out;
 		out.resize(mat.at(0).size(), 0.0);
-		for(int i = 0; i<mat.at(0).size(); i++){
-			for(int j = 0; j<mat.size(); j++){
+		for(std::size_t i = 0; i<mat.at(0).size(); i++){
+			for(std::size_t j = 0; j<mat.size(); j++){
 				out.at(i) += mat.at(j).at(i) * vec.at(j);
 			}
 		}
@@ -29,12 +29,12 @@ namespace sim{
 	: input_size{input_size}, output_size{output_size} {
 		inputMatrix.resize(input_size, std::vector<double>{});
 		hiddenMatrix.resize(input_size, std::vector<double>{});
-		for(int i = 0; i<input_size; i++){
+		for(std::size_t i = 0; i<input_size; i++){
 			hiddenMatrix.at(i).resize(input_size, 0.0);
 			hiddenMatrix.at(i).at(i) = 1.0;
 		}
 		outputMatrix.resize(input_size, std::vector<double>{});
-		for(int i = 0; i<input_size; i++){
+		for(std::size_t i = 0; i<input_size; i++){
 			outputMatrix.at(i).resize(output_size, 0.0);
 		}
 		lastOutput.resize(output_size, 0);
@@ -61,11 +61,11 @@ namespace sim{
 		std::vector<double> inputWithHidden = input + hidden;
 		std::vector<double> out;
 		if(config.use_tanh_for_hidden){
-			for(int i = input_size; i<inputWithHidden.size(); i++){
+			for(std::size_t i = input_size; i<inputWithHidden.size(); i++){
 				inputWithHidden.at(i) = std::tanh(inputWithHidden.at(i));
 			}
 			inputWithHidden = vectorMatrixMult(inputWithHidden, hiddenMatrix);
-			for(int i = input_size; i<inputWithHidden.size(); i++){
+			for(std::size_t i = input_size; i<inputWithHidden.size(); i++){
 				inputWithHidden.at(i) = std::tanh(inputWithHidden.at(i));
 			}
 			out = vectorMatrixMult(inputWithHidden, outputMatrix);
@@ -104,54 +104,54 @@ namespace sim{
 	void mutate(NeuralNetwork & net, std::uint64_t seed, const NeuralNetConfig & config, double mutationDampener) {
 		Xoshiro::Xoshiro256PP rng;
 		rng.seed(seed);
-		if(to_be_mutated(config.chance_for_new_node - mutationDampener * config.chance_for_new_node, rng) && net.hidden_size < config.max_hidden_nodes){
+		if(to_be_mutated(config.chance_for_new_node - mutationDampener * config.chance_for_new_node, rng) && net.hidden_size < static_cast<std::size_t>(config.max_hidden_nodes)){
 			net.addNode();
 		}
 		std::uniform_real_distribution weight_interval {config.weight_min, config.weight_max};
 		if(config.limit_number_of_mutations){
-			for(int i = 0; i < config.mutation_rolls; i++){
+			for(std::size_t i = 0; i < static_cast<std::size_t>(config.mutation_rolls); i++){
 				if(!to_be_mutated(config.chance_per_roll - mutationDampener * config.chance_per_roll, rng)){
 					continue;
 				}
-				int matrix_index = rng() % 3;
+				std::size_t matrix_index = rng() % 3;
 				if(matrix_index == 0 && net.hidden_size > 0){
-					int i = rng() % net.input_size;
-					int j = rng() % net.hidden_size;
+					std::size_t i = rng() % net.input_size;
+					std::size_t j = rng() % net.hidden_size;
 					net.inputMatrix.at(i).at(j) = change_weight(net.inputMatrix.at(i).at(j), rng, config, weight_interval);
 					
 				}
 				if(matrix_index == 1 && net.hidden_size > 0){
-					int i = rng() % (net.input_size + net.hidden_size);
-					int j = rng() % net.hidden_size;
+					std::size_t i = rng() % (net.input_size + net.hidden_size);
+					std::size_t j = rng() % net.hidden_size;
 					j += net.input_size;
 					net.hiddenMatrix.at(i).at(j) = change_weight(net.hiddenMatrix.at(i).at(j), rng, config, weight_interval);
 					
 				}
 				if(matrix_index == 2){
-					int i = rng() % (net.input_size + net.hidden_size);
-					int j = rng() % net.output_size;
+					std::size_t i = rng() % (net.input_size + net.hidden_size);
+					std::size_t j = rng() % net.output_size;
 					net.outputMatrix.at(i).at(j) = change_weight(net.outputMatrix.at(i).at(j), rng, config, weight_interval);
 					
 				}
 			}
 		}
 		else{
-			for(int i = 0; i<net.input_size; i++){
-				for(int j = net.input_size; j<net.hidden_size; j++){
+			for(std::size_t i = 0; i<net.input_size; i++){
+				for(std::size_t j = net.input_size; j<net.hidden_size; j++){
 					if(to_be_mutated(config.mutation_rate_per_weight, rng)){
 						net.inputMatrix.at(i).at(j) = change_weight(net.inputMatrix.at(i).at(j), rng, config, weight_interval);
 					}
 				}
 			}
-			for(int i = 0; i<net.input_size + net.hidden_size; i++){
-				for(int j = net.input_size; j<net.input_size + net.hidden_size; j++){
+			for(std::size_t i = 0; i<net.input_size + net.hidden_size; i++){
+				for(std::size_t j = net.input_size; j<net.input_size + net.hidden_size; j++){
 					if(to_be_mutated(config.mutation_rate_per_weight, rng)){
 						net.hiddenMatrix.at(i).at(j) = change_weight(net.hiddenMatrix.at(i).at(j), rng, config, weight_interval);
 					}
 				}
 			}
-			for(int i = 0; i<net.input_size + net.hidden_size; i++){
-				for(int j = 0; j<net.output_size; j++){
+			for(std::size_t i = 0; i<net.input_size + net.hidden_size; i++){
+				for(std::size_t j = 0; j<net.output_size; j++){
 					if(to_be_mutated(config.mutation_rate_per_weight, rng)){
 						net.outputMatrix.at(i).at(j) = change_weight(net.outputMatrix.at(i).at(j), rng, config, weight_interval);
 					}
