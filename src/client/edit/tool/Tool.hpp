@@ -22,7 +22,9 @@ namespace client::edit {
 
 		static Tool eraser();	
 		static Tool barrier();	
-		static Tool place_entity();	
+		static Tool place_empty_creature();
+		static Tool place_food_spawner();
+		static Tool place_food();
 		static Tool inspector(stx::reference<Edit> edit);
 		static Tool medusa();
 	};

@@ -7,7 +7,9 @@
 #include "shape/Point.hpp"
 
 #include "effect/Erase.hpp"
-#include "effect/EmptyEntity.hpp"
+#include "effect/PlaceEmptyCreature.hpp"
+#include "effect/PlaceFoodSpawner.hpp"
+#include "effect/PlaceFood.hpp"
 #include "effect/Barrier.hpp"
 #include "effect/Inspect.hpp"
 #include "effect/Petrify.hpp"
@@ -60,13 +62,33 @@ namespace client::edit {
 
 
 
-	Tool Tool::place_entity() {
+	Tool Tool::place_empty_creature() {
 		return Tool {
-			.name = "Empty Entity",
+			.name = "Empty Creature",
 			.shape = std::make_unique<Point>(),
-			.effect = std::make_unique<EmptyEntity>(),
+			.effect = std::make_unique<PlaceEmptyCreature>(),
 		};
-	}	
+	}
+
+
+
+	Tool Tool::place_food_spawner() {
+		return Tool {
+			.name = "Food Spawner",
+			.shape = std::make_unique<Point>(),
+			.effect = std::make_unique<PlaceFoodSpawner>(),
+		};
+	}
+
+
+
+	Tool Tool::place_food() {
+		return Tool {
+			.name = "Food",
+			.shape = std::make_unique<Rect>(),
+			.effect = std::make_unique<PlaceFood>(),
+		};
+	}
 
 
 	

@@ -14,7 +14,9 @@ namespace client::edit {
 		
 		this->tools.push_back(Tool::eraser());
 		this->tools.push_back(Tool::barrier());
-		this->tools.push_back(Tool::place_entity());
+		this->tools.push_back(Tool::place_empty_creature());
+		this->tools.push_back(Tool::place_food());
+		this->tools.push_back(Tool::place_food_spawner());
 		this->tools.push_back(Tool::inspector(*this));
 		this->tools.push_back(Tool::medusa());
 
