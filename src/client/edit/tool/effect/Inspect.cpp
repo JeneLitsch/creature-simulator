@@ -10,9 +10,8 @@ namespace client::edit {
 
 	void Inspect::apply(sim::Simulation & sim, stx::position2i position) {
 		auto & grid = sim.get_grid();
-		auto & ecs = sim.get_ecs();
-		if(grid.in_range(position) && grid[position]) {
-			this->edit->inspect(grid[position]);
+		if(grid[stx::vector2u{position}]) {
+			this->edit->inspect(grid[stx::vector2u{position}]);
 		}
 	}
 

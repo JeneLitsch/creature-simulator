@@ -7,6 +7,7 @@ namespace client::edit {
 			if(!weight)     return sf::Color{128,128,128};
 			if(*weight < 0)  return stx::lerp(sf::Color::White, sf::Color::Red, std::abs(*weight / config.weight_min));
 			if(*weight >= 0) return stx::lerp(sf::Color::White, sf::Color::Green, std::abs(*weight / config.weight_max));
+			return sf::Color::Magenta;
 		}
 
 
@@ -52,14 +53,14 @@ namespace client::edit {
 			neural_network.output_size
 		};
 
-		const float dist_x = target.getSize().x / 5.f;
-		const float dist_y = target.getSize().y / (1.f + static_cast<float>(*std::max_element(std::begin(layer_sizes), std::end(layer_sizes))));
+		const float dist_x = static_cast<float>(target.getSize().x) / 5.f;
+		const float dist_y = static_cast<float>(target.getSize().y) / (1.f + static_cast<float>(*std::max_element(std::begin(layer_sizes), std::end(layer_sizes))));
 		const float node_size =  0.125f * std::min(dist_x, dist_y);
 
 		const auto calc_pos = [&] (std::uint64_t x, std::uint64_t y) {
 			return stx::vector2f{
-				dist_x + x * dist_x,
-				dist_y + y * dist_y,
+				dist_x + static_cast<float>(x) * dist_x,
+				dist_y + static_cast<float>(y) * dist_y,
 			};
 		};
 

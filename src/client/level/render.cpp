@@ -10,10 +10,12 @@ namespace client {
 			auto * sprite = entity.get_if<sim::Sprite>();
 			const sf::Color color = sprite ? sprite->color : sf::Color::White;
 			if(auto * tr = entity.get_if<sim::Transform>()) {
-				vertecies.append(sf::Vertex{{cell_size * (tr->location.x+0), cell_size * (tr->location.y+0)}, color});
-				vertecies.append(sf::Vertex{{cell_size * (tr->location.x+1), cell_size * (tr->location.y+0)}, color});
-				vertecies.append(sf::Vertex{{cell_size * (tr->location.x+1), cell_size * (tr->location.y+1)}, color});
-				vertecies.append(sf::Vertex{{cell_size * (tr->location.x+0), cell_size * (tr->location.y+1)}, color});
+				const float x = static_cast<float>(tr->location.x);
+				const float y = static_cast<float>(tr->location.y);
+				vertecies.append(sf::Vertex{{cell_size * (x+0.f), cell_size * (y+0.f)}, color});
+				vertecies.append(sf::Vertex{{cell_size * (x+1.f), cell_size * (y+0.f)}, color});
+				vertecies.append(sf::Vertex{{cell_size * (x+1.f), cell_size * (y+1.f)}, color});
+				vertecies.append(sf::Vertex{{cell_size * (x+0.f), cell_size * (y+1.f)}, color});
 			}
 		});
 		target.draw(vertecies);

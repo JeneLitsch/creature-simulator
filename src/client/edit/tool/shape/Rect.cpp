@@ -10,18 +10,24 @@ namespace client::edit {
 		}
 	}
 
+
+
 	void Rect::render(sf::RenderTarget & target, stx::position2i position) const {
 		sf::VertexArray vertecies;
-
-		vertecies.append(sf::Vertex{{1.f * (position.x-radius), 1.f * (position.y-radius)}, sf::Color::White});
-		vertecies.append(sf::Vertex{{1.f * (position.x+radius+1), 1.f * (position.y-radius)}, sf::Color::White});
-		vertecies.append(sf::Vertex{{1.f * (position.x+radius+1), 1.f * (position.y+radius+1)}, sf::Color::White});
-		vertecies.append(sf::Vertex{{1.f * (position.x-radius), 1.f * (position.y+radius+1)}, sf::Color::White});
-		vertecies.append(sf::Vertex{{1.f * (position.x-radius), 1.f * (position.y-radius)}, sf::Color::White});
+		const float x = static_cast<float>(position.x);
+		const float y = static_cast<float>(position.y);
+		const float radius_f = static_cast<float>(this->radius);
+		vertecies.append(sf::Vertex{{x-radius_f  , y-radius_f  }, sf::Color::White});
+		vertecies.append(sf::Vertex{{x+radius_f+1, y-radius_f  }, sf::Color::White});
+		vertecies.append(sf::Vertex{{x+radius_f+1, y+radius_f+1}, sf::Color::White});
+		vertecies.append(sf::Vertex{{x-radius_f  , y+radius_f+1}, sf::Color::White});
+		vertecies.append(sf::Vertex{{x-radius_f  , y-radius_f  }, sf::Color::White});
 		
 		vertecies.setPrimitiveType(sf::LineStrip);
 		target.draw(vertecies);
 	}
+
+
 
 	void Rect::ui() {
 		ImGui::SliderInt("Radius", &this->radius, 0, 10);

@@ -30,6 +30,7 @@ add_compile_options(
 	-Walloca 
 	-Wparentheses 
 	-Wno-unknown-pragmas 
+	-Wno-unused-parameter 
 )
 
 add_subdirectory(libs/sfml)

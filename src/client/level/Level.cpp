@@ -10,8 +10,8 @@ namespace client::level {
 
 	Level::Level(session::Session & session, sim::Simulation & simulation)
 		: session{session}
-		, simulation{simulation}
-		, tick_timer{tick_speed} {
+		, tick_timer{tick_speed} 
+		, simulation{simulation} {
 		
 		this->camera_center = stx::position2f{this->session->get_sim().get_grid().size()} / 2.f;
 	}
@@ -43,23 +43,24 @@ namespace client::level {
 
 
 	void Level::update_camera(double dt) {
+		const float dt_f = static_cast<float>(dt);
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-			this->camera_center.x -= (dt * camera_speed) * this->camera_zoom;
+			this->camera_center.x -= dt_f * camera_speed * this->camera_zoom;
 		}
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-			this->camera_center.x += dt * camera_speed * this->camera_zoom;
+			this->camera_center.x += dt_f * camera_speed * this->camera_zoom;
 		}
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-			this->camera_center.y -= dt * camera_speed * this->camera_zoom;
+			this->camera_center.y -= dt_f * camera_speed * this->camera_zoom;
 		}
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-			this->camera_center.y += dt * camera_speed * this->camera_zoom;
+			this->camera_center.y += dt_f * camera_speed * this->camera_zoom;
 		}
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-			this->camera_zoom -= this->camera_zoom * dt;
+			this->camera_zoom -= this->camera_zoom * dt_f;
 		}
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::E)) {
-			this->camera_zoom += this->camera_zoom * dt;
+			this->camera_zoom += this->camera_zoom * dt_f;
 		}
 
 		this->camera_center = stx::clamp(

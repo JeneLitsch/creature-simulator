@@ -3,7 +3,7 @@
 namespace sim {
 	Ecs::Entity & create_entity(Ecs & ecs, stx::vector2i position, stx::grid2<std::uint64_t> & grid) {
 		auto & entity = ecs.new_entity();
-		auto & transform = entity.add(Transform{
+		entity.add(Transform{
 			.location = {position},
 			.rotation = {1,0},
 		});

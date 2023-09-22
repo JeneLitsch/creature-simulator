@@ -22,7 +22,7 @@ namespace sim {
 		
 		child.color.r = static_cast<std::uint8_t>(std::clamp(new_r, 0, UINT8_MAX));
 		child.color.g = static_cast<std::uint8_t>(std::clamp(new_g, 0, UINT8_MAX));
-		child.color.b = static_cast<std::uint8_t>(std::clamp(new_r, 0, UINT8_MAX));
+		child.color.b = static_cast<std::uint8_t>(std::clamp(new_b, 0, UINT8_MAX));
 		
 		int sum = child.color.r + child.color.g + child.color.b;
 		while(sum < 350){

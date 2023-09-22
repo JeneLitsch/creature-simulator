@@ -31,8 +31,6 @@ namespace client::level {
         bool showMenu = true;
         uint16_t tick_speed = 60.0;
 		Timer tick_timer;
-
-		double lag = 0.0;
 		
 		stx::reference<sim::Simulation> simulation;
 

@@ -46,6 +46,7 @@ namespace client::core {
 			case sf::Event::KeyPressed: return event_button_pressed(event);
 			case sf::Event::MouseMoved: return event_mouse_move(event, window);
 			case sf::Event::MouseButtonPressed: return event_mouse_button_pressed(event);
+			default: break;
 			}
 		}
 		return std::nullopt;

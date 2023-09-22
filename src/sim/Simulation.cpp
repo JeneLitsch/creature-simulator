@@ -17,9 +17,6 @@ namespace sim {
 	constexpr std::uint64_t EMPTY = 0;
 	constexpr std::uint64_t FIRST_CREATURE = 256;
 
-	constexpr double spawn_chance = 0.001;
-
-
 	Simulation::Simulation(stx::size2u32 size) 
 		: grid{size, EMPTY}
 		, ecs{FIRST_CREATURE} {

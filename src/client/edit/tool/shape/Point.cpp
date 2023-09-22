@@ -8,12 +8,13 @@ namespace client::edit {
 
 	void Point::render(sf::RenderTarget & target, stx::position2i position) const {
 		sf::VertexArray vertecies;
-
-		vertecies.append(sf::Vertex{{1.f * (position.x+0), 1.f * (position.y+0)}, sf::Color::White});
-		vertecies.append(sf::Vertex{{1.f * (position.x+1), 1.f * (position.y+0)}, sf::Color::White});
-		vertecies.append(sf::Vertex{{1.f * (position.x+1), 1.f * (position.y+1)}, sf::Color::White});
-		vertecies.append(sf::Vertex{{1.f * (position.x+0), 1.f * (position.y+1)}, sf::Color::White});
-		vertecies.append(sf::Vertex{{1.f * (position.x+0), 1.f * (position.y+0)}, sf::Color::White});
+		const float x = static_cast<float>(position.x);
+		const float y = static_cast<float>(position.y);
+		vertecies.append(sf::Vertex{{x+0.f, y+0.f}, sf::Color::White});
+		vertecies.append(sf::Vertex{{x+1.f, y+0.f}, sf::Color::White});
+		vertecies.append(sf::Vertex{{x+1.f, y+1.f}, sf::Color::White});
+		vertecies.append(sf::Vertex{{x+0.f, y+1.f}, sf::Color::White});
+		vertecies.append(sf::Vertex{{x+0.f, y+0.f}, sf::Color::White});
 		
 		vertecies.setPrimitiveType(sf::LineStrip);
 		target.draw(vertecies);

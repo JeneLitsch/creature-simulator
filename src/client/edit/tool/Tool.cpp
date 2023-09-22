@@ -1,6 +1,7 @@
 #include "Tool.hpp"
 #include "imgui.h"
 #include "client/edit/Edit.hpp"
+#include "sim/Simulation.hpp"
 
 #include "shape/Rect.hpp"
 #include "shape/Point.hpp"
@@ -13,8 +14,13 @@
 
 namespace client::edit {
 	void Tool::draw(sim::Simulation & sim, stx::position2i position) {
+		auto & grid = sim.get_grid();
 		this->shape->apply(position, [&] (stx::position2i position) {
-			this->effect->apply(sim, position);
+			if(position.x < 0) return;
+			if(position.y < 0) return;
+			if(grid.in_range(stx::vector2u{position})) {
+				this->effect->apply(sim, position);
+			}
 		});
 		this->effect->clean_up(sim);
 	}
