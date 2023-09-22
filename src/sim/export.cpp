@@ -62,6 +62,17 @@ namespace sim {
 
 
 
+		void export_comp(stx::json::write_iterator json, const Health & comp) {
+			json["current_health"] = comp.current_health;
+		}
+
+
+
+		void export_comp(stx::json::write_iterator json, const Barrier &) {
+
+		}
+
+
 
 		template<typename SensedComp, EntitySensorAxis axis>
 		void export_comp(stx::json::write_iterator json, const EntitySensor<SensedComp, axis> & comp) {
@@ -70,6 +81,21 @@ namespace sim {
 
 
 		namespace {
+			stx::json::node export_matrix(const std::vector<std::vector<double>> & matrix) {
+				stx::json::node node;
+				stx::json::write_iterator json{node};
+				json = stx::json::array;
+				for(const auto & line : matrix) {
+					stx::json::node node;
+					stx::json::write_iterator json_line = node;
+					for(const auto & elem : line) {
+						json_line.push_back(elem);
+					}
+					json.push_back(node);
+				}
+
+				return node;
+			}
 		}
 
 
@@ -79,39 +105,9 @@ namespace sim {
 			json["hidden_size"] = comp.hidden_size;
 			json["output_size"] = comp.output_size;
 
-			auto json_input_matrix = json["input_matrix"];
-			json_input_matrix = stx::json::array;
-			for(const auto & line : comp.input_matrix) {
-				stx::json::node node;
-				stx::json::write_iterator json_line = node;
-				for(const auto & elem : line) {
-					json_line.push_back(elem);
-				}
-				json_input_matrix.push_back(node);
-			}
-
-			auto json_hidden_matrix = json["hidden_matrix"];
-			json_hidden_matrix = stx::json::array;
-			for(const auto & line : comp.hidden_matrix) {
-				stx::json::node node;
-				stx::json::write_iterator json_line = node;
-				for(const auto & elem : line) {
-					json_line.push_back(elem);
-				}
-				json_hidden_matrix.push_back(node);
-			}
-
-
-			auto json_output_matrix = json["output_matrix"];
-			json_output_matrix = stx::json::array;
-			for(const auto & line : comp.output_matrix) {
-				stx::json::node node;
-				stx::json::write_iterator json_line = node;
-				for(const auto & elem : line) {
-					json_line.push_back(elem);
-				}
-				json_output_matrix.push_back(node);
-			}
+			json["input_matrix"] = export_matrix(comp.input_matrix);
+			json["hidden_matrix"] = export_matrix(comp.hidden_matrix);
+			json["output_matrix"] = export_matrix(comp.output_matrix);
 		}
 
 
@@ -139,7 +135,9 @@ namespace sim {
 		export_if<Edible>(entity, json, "edible");
 		export_if<FoodSpawn>(entity, json, "food_spawn");
 		export_if<Sprite>(entity, json, "sprite");
+		export_if<Health>(entity, json, "health");
 		export_if<NeuralNetwork>(entity, json, "neural_network");
+		export_if<Barrier>(entity, json, "barrier");
 
 		export_if<StomachSensorFB>(entity, json, "stomach_sensor_fb");
 		export_if<StomachSensorLR>(entity, json, "stomach_sensor_lr");
@@ -147,7 +145,8 @@ namespace sim {
 		export_if<EdibleSensorLR>(entity, json, "edible_sensor_lr");
 		export_if<BarrierSensorFB>(entity, json, "barrier_sensor_fb");
 		export_if<BarrierSensorLR>(entity, json, "barrier_sensor_lr");
-	
+		
+
 		return node;
 	}
 

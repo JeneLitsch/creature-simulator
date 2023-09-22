@@ -137,6 +137,22 @@ namespace sim {
 
 
 
+		Health import_health(stx::json::iterator json) {
+			auto current_health = json["current_health"].number();
+			if(!current_health) throw stx::json::format_error { "Cannot read Health::current_health" };
+			return Health {
+				.current_health = *current_health,
+			};
+		}
+
+
+
+		Barrier import_barrier(stx::json::iterator json) {
+			return Barrier {};
+		}
+
+
+
 		template<typename Sensor>
 		Sensor import_entity_sensor(
 			stx::json::iterator json,
@@ -217,6 +233,9 @@ namespace sim {
 			import_if(entity, json["edible"], import_edible);
 			import_if(entity, json["food_spawn"], import_food_spawn);
 			import_if(entity, json["sprite"], import_sprite);
+			import_if(entity, json["neural_network"], import_neural_network);
+			import_if(entity, json["health"], import_health);
+			import_if(entity, json["barrier"], import_barrier);
 
 			import_if(entity, json["stomach_sensor_fb"], import_entity_sensor<StomachSensorFB>, entity);
 			import_if(entity, json["stomach_sensor_lr"], import_entity_sensor<StomachSensorLR>, entity);
@@ -225,7 +244,6 @@ namespace sim {
 			import_if(entity, json["barrier_sensor_fb"], import_entity_sensor<BarrierSensorFB>, entity);
 			import_if(entity, json["barrier_sensor_lr"], import_entity_sensor<BarrierSensorLR>, entity);
 			
-			import_if(entity, json["neural_network"], import_neural_network);
 		};
 
 

@@ -30,15 +30,16 @@ namespace sim {
 		Edible, 
 		FoodSpawn,
 		Sprite, 
+		Health,
+		NeuralNetwork,
+		Barrier,
+
 		StomachSensorFB, 
 		StomachSensorLR, 
 		EdibleSensorFB, 
 		EdibleSensorLR,
 		BarrierSensorFB, 
-		BarrierSensorLR,
-		Health,
-		NeuralNetwork,
-		Barrier
+		BarrierSensorLR
 	>;
 
 	struct EntitySensorConfig{
