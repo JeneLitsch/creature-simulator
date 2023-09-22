@@ -176,9 +176,9 @@ namespace sim {
 			stx::json::node node;
 			stx::json::write_iterator json{node};
 			for(std::uint64_t state : rng.state) {
-				std::cout << "OUT: " << state  << "\n";
+				// std::cout << "OUT: " << state  << "\n";
 				std::ostringstream oss;
-				// oss << std::hex << std::setw(16) << std::setfill('0') << state;
+				oss << std::hex << std::setw(16) << std::setfill('0') << state;
 				json.push_back(oss.str());
 			}
 
