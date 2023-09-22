@@ -50,7 +50,7 @@ namespace client::main_menu {
 
 		ImGui::EndGroup();
 
-		ImGui::Text("Total Cells %lld", preset.size.x * preset.size.y);
+		ImGui::Text("Total Cells %u", preset.size.x * preset.size.y);
 	}
 
 
@@ -69,7 +69,7 @@ namespace client::main_menu {
 			= preset.entities.food_spawners
 			+ preset.entities.empty_creatures;
 
-		ImGui::Text("Generated Entities %lld", total_entities);
+		ImGui::Text("Generated Entities %u", total_entities);
 	}
 
 

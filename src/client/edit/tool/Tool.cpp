@@ -28,7 +28,7 @@ namespace client::edit {
 
 
 	void Tool::ui() {
-		ImGui::Text(this->name.c_str());
+		ImGui::Text("%s", this->name.c_str());
 		this->shape->ui();
 	}
 
