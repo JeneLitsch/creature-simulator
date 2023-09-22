@@ -1,7 +1,7 @@
 #include "Sprite.hpp"
 
 namespace sim {
-	Sprite Sprite::createChild(std::uint64_t seed, const ReproductionConfig & config, double mutationDampener){
+	Sprite Sprite::create_child(std::uint64_t seed, const ReproductionConfig & config, double mutationDampener){
 		Xoshiro::Xoshiro256PP rng;
 		rng.seed(seed);
 		Sprite child = *this;

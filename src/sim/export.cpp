@@ -81,7 +81,7 @@ namespace sim {
 
 			auto json_input_matrix = json["input_matrix"];
 			json_input_matrix = stx::json::array;
-			for(const auto & line : comp.inputMatrix) {
+			for(const auto & line : comp.input_matrix) {
 				stx::json::node node;
 				stx::json::write_iterator json_line = node;
 				for(const auto & elem : line) {
@@ -92,7 +92,7 @@ namespace sim {
 
 			auto json_hidden_matrix = json["hidden_matrix"];
 			json_hidden_matrix = stx::json::array;
-			for(const auto & line : comp.hiddenMatrix) {
+			for(const auto & line : comp.hidden_matrix) {
 				stx::json::node node;
 				stx::json::write_iterator json_line = node;
 				for(const auto & elem : line) {
@@ -104,7 +104,7 @@ namespace sim {
 
 			auto json_output_matrix = json["output_matrix"];
 			json_output_matrix = stx::json::array;
-			for(const auto & line : comp.outputMatrix) {
+			for(const auto & line : comp.output_matrix) {
 				stx::json::node node;
 				stx::json::write_iterator json_line = node;
 				for(const auto & elem : line) {

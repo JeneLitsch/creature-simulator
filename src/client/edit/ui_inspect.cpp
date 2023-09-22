@@ -23,7 +23,7 @@ namespace client::edit {
 
 		void comp_details(sim::Stomach & comp) {
 			ImGui::Text("Food: %f", comp.food);
-			ImGui::Text("Share Food: %s", comp.shareFood ? "Enabled" : "Disabled");
+			ImGui::Text("Share Food: %s", comp.share_food ? "Enabled" : "Disabled");
 		}
 
 
@@ -83,7 +83,7 @@ namespace client::edit {
 
 
 		void comp_details(sim::Health & comp) {
-			ImGui::Text("Health Points: %f", comp.currentHealth);
+			ImGui::Text("Health Points: %f", comp.current_health);
 		}
 
 

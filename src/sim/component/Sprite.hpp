@@ -7,6 +7,6 @@ namespace sim {
 	struct Sprite {
 		sf::Color color = {196, 196, 196};
 
-		Sprite createChild(std::uint64_t seed, const ReproductionConfig & config, double mutationDampener);
+		Sprite create_child(std::uint64_t seed, const ReproductionConfig & config, double mutationDampener);
 	};
 }

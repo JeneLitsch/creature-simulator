@@ -14,21 +14,21 @@ namespace client::edit {
 		std::optional<double> get_weight(sim::NeuralNetwork & neural_network, std::uint64_t i, std::uint64_t a, std::uint64_t b) {
 			if(i == 0) {
 				if(b >= neural_network.input_size) {
-					return neural_network.inputMatrix[a][b];
+					return neural_network.input_matrix[a][b];
 				}
 				else {
 					return std::nullopt;
 				}
 			}
 			else if((i + 2) == 4) {
-				return neural_network.outputMatrix[a][b];
+				return neural_network.output_matrix[a][b];
 			}
 			else {
 				if((a == b) && (a < neural_network.input_size)) {
 					return std::nullopt;
 				}
 				else {
-					return neural_network.hiddenMatrix[a][b];
+					return neural_network.hidden_matrix[a][b];
 				}
 			}
 		}

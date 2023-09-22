@@ -5,46 +5,46 @@ namespace sim {
 		return 1 / (1 + std::exp(-x));
 	}
 
-	void eval_neural(Ecs::Entity & entity, const Config& config, double oscilatorShort, double oscilatorLong){
+	void eval_neural(Ecs::Entity & entity, const Config& config, double oscilator_short, double oscilator_long){
 		Age* age = entity.get_if<Age>();
 		Stomach* stomach = entity.get_if<Stomach>();
 		Health* health = entity.get_if<Health>();
-		StomachSensorFB* sensor1 = entity.get_if<StomachSensorFB>();
-		StomachSensorLR* sensor2 = entity.get_if<StomachSensorLR>();
-		EdibleSensorFB* sensor3 = entity.get_if<EdibleSensorFB>();
-		EdibleSensorLR* sensor4 = entity.get_if<EdibleSensorLR>();
-		BarrierSensorFB* sensor5 = entity.get_if<BarrierSensorFB>();
-		BarrierSensorLR* sensor6 = entity.get_if<BarrierSensorLR>();
+		StomachSensorFB* sensor_1 = entity.get_if<StomachSensorFB>();
+		StomachSensorLR* sensor_2 = entity.get_if<StomachSensorLR>();
+		EdibleSensorFB* sensor_3 = entity.get_if<EdibleSensorFB>();
+		EdibleSensorLR* sensor_4 = entity.get_if<EdibleSensorLR>();
+		BarrierSensorFB* sensor_5 = entity.get_if<BarrierSensorFB>();
+		BarrierSensorLR* sensor_6 = entity.get_if<BarrierSensorLR>();
 		Movement* movement = entity.get_if<Movement>();
 
-		if(!age || !stomach|| !health|| !sensor1|| !sensor2|| !sensor3|| !sensor4 || !movement)
+		if(!age || !stomach|| !health|| !sensor_1|| !sensor_2|| !sensor_3|| !sensor_4 || !movement)
 			return;
 
         std::vector<double> input;
-		input.push_back(oscilatorShort);
-		input.push_back(oscilatorLong);
-		input.push_back(static_cast<double>(age->age) / config.maxAge);
-		input.push_back(stomach->food / config.metabolism.maxStomach);
-		input.push_back(health->currentHealth);
+		input.push_back(oscilator_short);
+		input.push_back(oscilator_long);
+		input.push_back(static_cast<double>(age->age) / config.max_age);
+		input.push_back(stomach->food / config.metabolism.max_stomach);
+		input.push_back(health->current_health);
 		if(config.sensors.enable_stomach_sensor){
-			input.push_back(sensor1->value);
-			input.push_back(sensor2->value);
+			input.push_back(sensor_1->value);
+			input.push_back(sensor_2->value);
 		}
 		else{
 			input.push_back(0.0);
 			input.push_back(0.0);
 		}
 		if(config.sensors.enable_food_sensor){
-			input.push_back(sensor3->value);
-			input.push_back(sensor4->value);
+			input.push_back(sensor_3->value);
+			input.push_back(sensor_4->value);
 		}
 		else{
 			input.push_back(0.0);
 			input.push_back(0.0);
 		}
 		if(config.sensors.enable_barrier_sensor){
-			input.push_back(sensor5->value);
-			input.push_back(sensor6->value);
+			input.push_back(sensor_5->value);
+			input.push_back(sensor_6->value);
 		}
 		else{
 			input.push_back(0.0);
@@ -54,12 +54,12 @@ namespace sim {
 		input.push_back(movement->direction.y);
 		input.push_back(sigmoid(movement->same_move));
 
-        NeuralNetwork* neuralNetwork = entity.get_if<NeuralNetwork>();
+        NeuralNetwork* neural_network = entity.get_if<NeuralNetwork>();
 
-		if(!neuralNetwork)
+		if(!neural_network)
 			return;
 
-		std::vector<double> output = neuralNetwork->eval(input, config.neural_net);
+		std::vector<double> output = neural_network->eval(input, config.neural_net);
 
 		Reproduction* reproduction = entity.get_if<Reproduction>();
 		if(reproduction)
@@ -95,6 +95,6 @@ namespace sim {
 		}
 		movement->same_move++;
 
-		stomach->shareFood = output[3] >= 0.0;
+		stomach->share_food = output[3] >= 0.0;
     }
 }

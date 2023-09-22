@@ -10,35 +10,35 @@
 namespace sim{
 
     template <typename SensedComponent, EntitySensorAxis axis>
-    void update_entity_sensor(EntitySensor<SensedComponent, axis>* sensor, std::vector<Ecs::Entity*> sensedEntities, const EntitySensorConfig& config){
+    void update_entity_sensor(EntitySensor<SensedComponent, axis>* sensor, std::vector<Ecs::Entity*> sensed_entities, const EntitySensorConfig& config){
         stx::vector2i loc = sensor->transform->location;
         double sum = 0.0;
-        stx::vector2d dirVec = stx::vector2d{sensor->transform->rotation};
-        dirVec = dirVec / stx::hypot(dirVec);
+        stx::vector2d dir_vec = stx::vector2d{sensor->transform->rotation};
+        dir_vec = dir_vec / stx::hypot(dir_vec);
         if(axis == EntitySensorAxis::left_right){
-            dirVec = stx::rotate_90_cw(dirVec);
+            dir_vec = stx::rotate_90_cw(dir_vec);
         }
 
-        for(Ecs::Entity* other : sensedEntities){
+        for(Ecs::Entity* other : sensed_entities){
             if (other->has<SensedComponent>()) {
                 Transform* transform = other->get_if<Transform>();
                 if(!transform) return;
                 stx::vector2i tloc = transform->location;
 
                 stx::vector2d offset = stx::vector2d(tloc - loc);
-                double proj = dirVec.x * offset.x + dirVec.y * offset.y; // Magnitude of projection along dir
+                double proj = dir_vec.x * offset.x + dir_vec.y * offset.y; // Magnitude of projection along dir
                 double contrib = proj / (offset.x * offset.x + offset.y * offset.y);
                 sum += contrib;
             }
         }
 
         // convert to -1.0..1.0
-        double sensorVal = std::tanh((sum / config.radius) * config.sensibility);
+        double sensor_val = std::tanh((sum / config.radius) * config.sensibility);
 
-        sensor->value = sensorVal;
+        sensor->value = sensor_val;
     }
 
-    std::vector<Ecs::Entity*> visitNeighborhood(Ecs::Entity& entity, stx::grid2<std::uint64_t>& grid, Ecs& ecs, const EntitySensorConfig& config)
+    std::vector<Ecs::Entity*> visit_neighborhood(Ecs::Entity& entity, stx::grid2<std::uint64_t>& grid, Ecs& ecs, const EntitySensorConfig& config)
     {
         std::vector<Ecs::Entity*> entities;
         Transform* transform = entity.get_if<Transform>();

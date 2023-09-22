@@ -31,7 +31,7 @@ namespace sim {
 		tickCounter++;
 		ecs.run_system(metabolize, this->config.metabolism);
 		ecs.run_system([this](Ecs::Entity& entity) {
-			if(Age* age = entity.get_if<Age>()) age -> incrementAge();
+			if(Age* age = entity.get_if<Age>()) age -> increment_age();
 			StomachSensorFB* sensor1 = entity.get_if<StomachSensorFB>();
 			StomachSensorLR* sensor2 = entity.get_if<StomachSensorLR>();
 			EdibleSensorFB* sensor3 = entity.get_if<EdibleSensorFB>();
@@ -42,7 +42,7 @@ namespace sim {
 			if((config.sensors.enable_stomach_sensor && (sensor1 || sensor2))
 			|| (config.sensors.enable_food_sensor && (sensor3 || sensor4))
 			|| (config.sensors.enable_barrier_sensor && (sensor5 || sensor6))){
-				neighbourhood = visitNeighborhood(entity, grid, ecs, config.sensors);
+				neighbourhood = visit_neighborhood(entity, grid, ecs, config.sensors);
 			}
 			if(config.sensors.enable_stomach_sensor && sensor1) update_entity_sensor(sensor1, neighbourhood, config.sensors);
 			if(config.sensors.enable_stomach_sensor && sensor2) update_entity_sensor(sensor2, neighbourhood, config.sensors);
@@ -60,7 +60,7 @@ namespace sim {
 			oscilatorLong = std::sin(static_cast<double>(tickCounter)/200.0);
 		}
 		ecs.run_system(eval_neural, config, oscilatorShort, oscilatorLong);
-		if(config.metabolism.enableFoodSharing){
+		if(config.metabolism.enable_food_sharing){
 			ecs.run_system(share_food, grid, &ecs, config);
 		}
 		ecs.run_system(move, ecs, *this, config.metabolism);

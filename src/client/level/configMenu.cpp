@@ -68,23 +68,23 @@ namespace client::level {
     void metabolismConfig(sim::MetabolismConfig & config) {
         if (ImGui::CollapsingHeader("Metabolism_Config")){
             ImGui::Spacing();
-            ImGui::SliderDouble("Natural food decay per tick", &config.naturalfoodDecayPerTick, 0.0f, 1.0f);
-            ImGui::InputDouble("Input Natural food decay per tick", &config.naturalfoodDecayPerTick);
+            ImGui::SliderDouble("Natural food decay per tick", &config.natural_food_decay_per_tick, 0.0f, 1.0f);
+            ImGui::InputDouble("Input Natural food decay per tick", &config.natural_food_decay_per_tick);
             ImGui::Spacing();
 
             ImGui::Spacing();
-            ImGui::SliderDouble("starving health decay", &config.starvingHealthDecayPerTick, 0.0f, 1.0f);
-            ImGui::InputDouble("Input starving health decay", &config.starvingHealthDecayPerTick);
+            ImGui::SliderDouble("starving health decay", &config.starving_health_decay_per_tick, 0.0f, 1.0f);
+            ImGui::InputDouble("Input starving health decay", &config.starving_health_decay_per_tick);
             ImGui::Spacing();
 
             ImGui::Spacing();
-            ImGui::SliderDouble("Health Regen per Tick", &config.healthRegenPerTick, 0.0f, 1.0f);
-            ImGui::InputDouble("Input Health Regen per Tick", &config.healthRegenPerTick);
+            ImGui::SliderDouble("Health Regen per Tick", &config.health_regen_per_tick, 0.0f, 1.0f);
+            ImGui::InputDouble("Input Health Regen per Tick", &config.health_regen_per_tick);
             ImGui::Spacing();
 
             ImGui::Spacing();
-            ImGui::SliderDouble("Food used to heal", &config.foodPerHealthRegenerated, 0.0f, 100.0f, "%.3f", ImGuiSliderFlags_Logarithmic);
-            ImGui::InputDouble("Input Food used to heal", &config.healthRegenPerTick);
+            ImGui::SliderDouble("Food used to heal", &config.food_per_health_regenerated, 0.0f, 100.0f, "%.3f", ImGuiSliderFlags_Logarithmic);
+            ImGui::InputDouble("Input Food used to heal", &config.health_regen_per_tick);
             ImGui::Spacing();
         };
     }
@@ -92,7 +92,7 @@ namespace client::level {
     void Menu(uint16_t& tick_speed, sim::Config& config) {
         ImGui::Begin("config");
         ImGui::SliderUInt16("tick_speed", &tick_speed, 1, 60, "%d");
-        ImGui::SliderUInt16("Age", &config.maxAge, 100, 10000, "%d", ImGuiSliderFlags_Logarithmic);
+        ImGui::SliderUInt16("Age", &config.max_age, 100, 10000, "%d", ImGuiSliderFlags_Logarithmic);
         ImGui::SliderDouble("sensors", &config.sensors.sensibility, 0.0f, 200.0f);
         ImGui::Checkbox("enable long oscilator", &config.enable_long_oscilator);
         ImGui::SameLine();ImGui::Checkbox("enable short ocsilator", &config.enable_short_oscilator);

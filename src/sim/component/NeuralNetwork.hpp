@@ -19,17 +19,16 @@ namespace sim{
 
 	struct NeuralNetwork {
 		NeuralNetwork(std::size_t input_size, std::size_t output_size);
-		void addNode();
+		void add_node();
 		std::vector<double> eval(const std::vector<double> & input, const NeuralNetConfig & config) const;
-		NeuralNetwork createChild(std::uint64_t seed, const NeuralNetConfig & config, double mutationFactor);
+		NeuralNetwork create_child(std::uint64_t seed, const NeuralNetConfig & config, double mutationFactor);
 
-		std::vector<std::vector<double>> inputMatrix;
-		std::vector<std::vector<double>> hiddenMatrix;
-		std::vector<std::vector<double>> outputMatrix;
+		std::vector<std::vector<double>> input_matrix;
+		std::vector<std::vector<double>> hidden_matrix;
+		std::vector<std::vector<double>> output_matrix;
 		std::size_t input_size;
 		std::size_t hidden_size = 0;
 		std::size_t output_size;
-		std::vector<double> lastOutput;
 	};
 
 	void mutate(NeuralNetwork & net, std::uint64_t seed, const NeuralNetConfig & config, double mutationFactor);
