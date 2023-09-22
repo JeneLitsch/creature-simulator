@@ -20,7 +20,7 @@ namespace client::edit {
 		virtual void ui(stx::vector2f window_size) final;
 		virtual void update(double dt) override;
 		virtual void render(sf::RenderTarget & render_target) override;
-		virtual const char * name() { return "Edit"; }
+		virtual const char * name() override { return "Edit"; }
 
 		void inspect(std::uint64_t id);
 	private:

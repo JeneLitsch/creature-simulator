@@ -20,7 +20,7 @@ namespace client::level {
 		void ui_config();
 		void update_camera(double dt);
 		virtual void render(sf::RenderTarget & render_target) override;
-		virtual const char * name() { return "Level"; }
+		virtual const char * name() override { return "Level"; }
 		sf::View get_camera() const { return this->camera; }
 		stx::reference<session::Session> session;
 	protected:

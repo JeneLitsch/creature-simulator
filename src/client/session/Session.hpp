@@ -21,7 +21,7 @@ namespace client::session {
 		const sim::Simulation & get_sim() const;
 		sim::Simulation & get_sim();
 
-		virtual const char * name() { return "Session"; }
+		virtual const char * name() override { return "Session"; }
 
 	protected:
 		virtual void init() override {}
