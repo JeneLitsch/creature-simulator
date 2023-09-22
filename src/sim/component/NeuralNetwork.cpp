@@ -57,20 +57,20 @@ namespace sim{
 			throw std::runtime_error{"Input does not match input layer"};
 		}
 		std::vector<double> hidden = vectorMatrixMult(input, input_matrix);
-		std::vector<double> inputWithHidden = input + hidden;
+		std::vector<double> input_with_hidden = input + hidden;
 		std::vector<double> out;
 		if(config.use_tanh_for_hidden){
-			for(std::size_t i = input_size; i<inputWithHidden.size(); i++){
-				inputWithHidden.at(i) = std::tanh(inputWithHidden.at(i));
+			for(std::size_t i = input_size; i<input_with_hidden.size(); i++){
+				input_with_hidden.at(i) = std::tanh(input_with_hidden.at(i));
 			}
-			inputWithHidden = vectorMatrixMult(inputWithHidden, hidden_matrix);
-			for(std::size_t i = input_size; i<inputWithHidden.size(); i++){
-				inputWithHidden.at(i) = std::tanh(inputWithHidden.at(i));
+			input_with_hidden = vectorMatrixMult(input_with_hidden, hidden_matrix);
+			for(std::size_t i = input_size; i<input_with_hidden.size(); i++){
+				input_with_hidden.at(i) = std::tanh(input_with_hidden.at(i));
 			}
-			out = vectorMatrixMult(inputWithHidden, output_matrix);
+			out = vectorMatrixMult(input_with_hidden, output_matrix);
 		}
 		else{
-			out = vectorMatrixMult(vectorMatrixMult(inputWithHidden, hidden_matrix), output_matrix);
+			out = vectorMatrixMult(vectorMatrixMult(input_with_hidden, hidden_matrix), output_matrix);
 		}
 
 		for(double& num : out){
@@ -80,9 +80,9 @@ namespace sim{
 		return out;
 	}
 
-	NeuralNetwork NeuralNetwork::create_child(std::uint64_t seed, const NeuralNetConfig & config, double mutationDampener){
+	NeuralNetwork NeuralNetwork::create_child(std::uint64_t seed, const NeuralNetConfig & config, double mutation_dampener){
 		NeuralNetwork child = *this;
-		mutate(child, seed, config, mutationDampener);
+		mutate(child, seed, config, mutation_dampener);
 		return child;
 	}
 
@@ -100,16 +100,16 @@ namespace sim{
 
 	}
 
-	void mutate(NeuralNetwork & net, std::uint64_t seed, const NeuralNetConfig & config, double mutationDampener) {
+	void mutate(NeuralNetwork & net, std::uint64_t seed, const NeuralNetConfig & config, double mutation_dampener) {
 		Xoshiro::Xoshiro256PP rng;
 		rng.seed(seed);
-		if(to_be_mutated(config.chance_for_new_node - mutationDampener * config.chance_for_new_node, rng) && net.hidden_size < static_cast<std::size_t>(config.max_hidden_nodes)){
+		if(to_be_mutated(config.chance_for_new_node - mutation_dampener * config.chance_for_new_node, rng) && net.hidden_size < static_cast<std::size_t>(config.max_hidden_nodes)){
 			net.add_node();
 		}
 		std::uniform_real_distribution weight_interval {config.weight_min, config.weight_max};
 		if(config.limit_number_of_mutations){
 			for(std::size_t i = 0; i < static_cast<std::size_t>(config.mutation_rolls); i++){
-				if(!to_be_mutated(config.chance_per_roll - mutationDampener * config.chance_per_roll, rng)){
+				if(!to_be_mutated(config.chance_per_roll - mutation_dampener * config.chance_per_roll, rng)){
 					continue;
 				}
 				std::size_t matrix_index = rng() % 3;

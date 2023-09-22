@@ -16,6 +16,8 @@ namespace client::edit {
 		const char * comp_name(const sim::StomachSensorLR &) { return "StomachSensorLR"; }
 		const char * comp_name(const sim::EdibleSensorFB &) { return "EdibleSensorFB"; }
 		const char * comp_name(const sim::EdibleSensorLR &) { return "EdibleSensorLR"; }
+		const char * comp_name(const sim::BarrierSensorFB &) { return "BarrierSensorFB"; }
+		const char * comp_name(const sim::BarrierSensorLR &) { return "BarrierSensorLR"; }
 		const char * comp_name(const sim::Health &) { return "Health"; }
 		const char * comp_name(const sim::NeuralNetwork &) { return "NeuralNetwork"; }
 
@@ -125,6 +127,8 @@ namespace client::edit {
 		ui_inspect_component<sim::StomachSensorLR>(entity);
 		ui_inspect_component<sim::EdibleSensorFB>(entity);
 		ui_inspect_component<sim::EdibleSensorLR>(entity);
+		ui_inspect_component<sim::BarrierSensorFB>(entity);
+		ui_inspect_component<sim::BarrierSensorLR>(entity);
 
 		ui_inspect_component<sim::Health>(entity);
 		ui_inspect_component<sim::NeuralNetwork>(entity, neural_network_graph);

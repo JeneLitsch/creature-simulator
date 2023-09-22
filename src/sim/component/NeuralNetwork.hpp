@@ -21,7 +21,7 @@ namespace sim{
 		NeuralNetwork(std::size_t input_size, std::size_t output_size);
 		void add_node();
 		std::vector<double> eval(const std::vector<double> & input, const NeuralNetConfig & config) const;
-		NeuralNetwork create_child(std::uint64_t seed, const NeuralNetConfig & config, double mutationFactor);
+		NeuralNetwork create_child(std::uint64_t seed, const NeuralNetConfig & config, double mutation_dampener);
 
 		std::vector<std::vector<double>> input_matrix;
 		std::vector<std::vector<double>> hidden_matrix;
@@ -31,5 +31,5 @@ namespace sim{
 		std::size_t output_size;
 	};
 
-	void mutate(NeuralNetwork & net, std::uint64_t seed, const NeuralNetConfig & config, double mutationFactor);
+	void mutate(NeuralNetwork & net, std::uint64_t seed, const NeuralNetConfig & config, double mutation_dampener);
 }

@@ -32,34 +32,34 @@ namespace sim {
 		ecs.run_system(metabolize, this->config.metabolism);
 		ecs.run_system([this](Ecs::Entity& entity) {
 			if(Age* age = entity.get_if<Age>()) age -> increment_age();
-			StomachSensorFB* sensor1 = entity.get_if<StomachSensorFB>();
-			StomachSensorLR* sensor2 = entity.get_if<StomachSensorLR>();
-			EdibleSensorFB* sensor3 = entity.get_if<EdibleSensorFB>();
-			EdibleSensorLR* sensor4 = entity.get_if<EdibleSensorLR>();
-			BarrierSensorFB* sensor5 = entity.get_if<BarrierSensorFB>();
-			BarrierSensorLR* sensor6 = entity.get_if<BarrierSensorLR>();
+			StomachSensorFB* sensor_1 = entity.get_if<StomachSensorFB>();
+			StomachSensorLR* sensor_2 = entity.get_if<StomachSensorLR>();
+			EdibleSensorFB* sensor_3 = entity.get_if<EdibleSensorFB>();
+			EdibleSensorLR* sensor_4 = entity.get_if<EdibleSensorLR>();
+			BarrierSensorFB* sensor_5 = entity.get_if<BarrierSensorFB>();
+			BarrierSensorLR* sensor_6 = entity.get_if<BarrierSensorLR>();
 			std::vector<Ecs::Entity*> neighbourhood;
-			if((config.sensors.enable_stomach_sensor && (sensor1 || sensor2))
-			|| (config.sensors.enable_food_sensor && (sensor3 || sensor4))
-			|| (config.sensors.enable_barrier_sensor && (sensor5 || sensor6))){
+			if((config.sensors.enable_stomach_sensor && (sensor_1 || sensor_2))
+			|| (config.sensors.enable_food_sensor && (sensor_3 || sensor_4))
+			|| (config.sensors.enable_barrier_sensor && (sensor_5 || sensor_6))){
 				neighbourhood = visit_neighborhood(entity, grid, ecs, config.sensors);
 			}
-			if(config.sensors.enable_stomach_sensor && sensor1) update_entity_sensor(sensor1, neighbourhood, config.sensors);
-			if(config.sensors.enable_stomach_sensor && sensor2) update_entity_sensor(sensor2, neighbourhood, config.sensors);
-			if(config.sensors.enable_food_sensor && sensor3) update_entity_sensor(sensor3, neighbourhood, config.sensors);
-			if(config.sensors.enable_food_sensor && sensor4) update_entity_sensor(sensor4, neighbourhood, config.sensors);
-			if(config.sensors.enable_barrier_sensor && sensor5) update_entity_sensor(sensor5, neighbourhood, config.sensors);
-			if(config.sensors.enable_barrier_sensor && sensor6) update_entity_sensor(sensor6, neighbourhood, config.sensors);
+			if(config.sensors.enable_stomach_sensor && sensor_1) update_entity_sensor(sensor_1, neighbourhood, config.sensors);
+			if(config.sensors.enable_stomach_sensor && sensor_2) update_entity_sensor(sensor_2, neighbourhood, config.sensors);
+			if(config.sensors.enable_food_sensor && sensor_3) update_entity_sensor(sensor_3, neighbourhood, config.sensors);
+			if(config.sensors.enable_food_sensor && sensor_4) update_entity_sensor(sensor_4, neighbourhood, config.sensors);
+			if(config.sensors.enable_barrier_sensor && sensor_5) update_entity_sensor(sensor_5, neighbourhood, config.sensors);
+			if(config.sensors.enable_barrier_sensor && sensor_6) update_entity_sensor(sensor_6, neighbourhood, config.sensors);
 		});
-		double oscilatorShort = 0;
+		double oscilator_short = 0;
 		if(config.enable_short_oscilator){
-			oscilatorShort = std::sin(static_cast<double>(tickCounter)/10.0);
+			oscilator_short = std::sin(static_cast<double>(tickCounter)/10.0);
 		}
-		double oscilatorLong = 0;
+		double oscilator_long = 0;
 		if(config.enable_long_oscilator){
-			oscilatorLong = std::sin(static_cast<double>(tickCounter)/200.0);
+			oscilator_long = std::sin(static_cast<double>(tickCounter)/200.0);
 		}
-		ecs.run_system(eval_neural, config, oscilatorShort, oscilatorLong);
+		ecs.run_system(eval_neural, config, oscilator_short, oscilator_long);
 		if(config.metabolism.enable_food_sharing){
 			ecs.run_system(share_food, grid, &ecs, config);
 		}

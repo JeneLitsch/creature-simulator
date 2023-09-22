@@ -19,20 +19,20 @@ namespace sim{
             for(int j = -1; j<=1; j++){
                 if(stomach->food < config.metabolism.food_shared)
                     break;
-                stx::vector2i otherPos = transform->location + stx::vector2i{i, j};
-                if(otherPos == transform->location || otherPos.x < from.x || otherPos.y < from.y || otherPos.x > to.x || otherPos.y > to.y)
+                stx::vector2i other_pos = transform->location + stx::vector2i{i, j};
+                if(other_pos == transform->location || other_pos.x < from.x || other_pos.y < from.y || other_pos.x > to.x || other_pos.y > to.y)
                     continue;
-                const std::uint64_t& otherID = grid[otherPos];
-                auto * otherEntity = ecs->get_if(otherID);
-                if(!otherEntity){
+                const std::uint64_t& other_id = grid[other_pos];
+                auto * other_entity = ecs->get_if(other_id);
+                if(!other_entity){
                     continue;
                 }
-                if(Stomach* otherStomach = otherEntity->get_if<Stomach>()){
-                    if(otherStomach->food + config.metabolism.food_shared > config.metabolism.max_stomach){
+                if(Stomach* other_stomach = other_entity->get_if<Stomach>()){
+                    if(other_stomach->food + config.metabolism.food_shared > config.metabolism.max_stomach){
                         continue;
                     }
                     stomach->food -= config.metabolism.food_shared;
-                    otherStomach->food += config.metabolism.food_shared;
+                    other_stomach->food += config.metabolism.food_shared;
                 }
             }
         }

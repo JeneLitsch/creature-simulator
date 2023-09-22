@@ -1,7 +1,7 @@
 #include "Sprite.hpp"
 
 namespace sim {
-	Sprite Sprite::create_child(std::uint64_t seed, const ReproductionConfig & config, double mutationDampener){
+	Sprite Sprite::create_child(std::uint64_t seed, const ReproductionConfig & config, double mutation_dampener){
 		Xoshiro::Xoshiro256PP rng;
 		rng.seed(seed);
 		Sprite child = *this;
@@ -12,13 +12,13 @@ namespace sim {
 		};
 		
 		const int diff_r = interval(rng);
-		const int new_r = static_cast<int>(child.color.r + (diff_r - mutationDampener * diff_r));
+		const int new_r = static_cast<int>(child.color.r + (diff_r - mutation_dampener * diff_r));
 		
 		const int diff_g = interval(rng);
-		const int new_g = static_cast<int>(child.color.g + (diff_g - mutationDampener * diff_g));
+		const int new_g = static_cast<int>(child.color.g + (diff_g - mutation_dampener * diff_g));
 
 		const int diff_b = interval(rng);
-		const int new_b = static_cast<int>(child.color.b + (diff_b - mutationDampener * diff_b));
+		const int new_b = static_cast<int>(child.color.b + (diff_b - mutation_dampener * diff_b));
 		
 		child.color.r = static_cast<std::uint8_t>(std::clamp(new_r, 0, UINT8_MAX));
 		child.color.g = static_cast<std::uint8_t>(std::clamp(new_g, 0, UINT8_MAX));
