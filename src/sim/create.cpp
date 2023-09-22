@@ -7,7 +7,7 @@ namespace sim {
 			.location = {position},
 			.rotation = {1,0},
 		});
-		grid[position] = entity.get_id();
+		grid[stx::vector2u{position}] = entity.get_id();
 		return entity;
 	}
 

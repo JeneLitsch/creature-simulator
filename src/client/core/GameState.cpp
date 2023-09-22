@@ -30,4 +30,10 @@ namespace client::core {
 	void GameState::clear() {
 		this->state_manager->clear();
 	}
+
+
+
+	void GameState::ui(stx::vector2f window_size) {
+
+	}
 }

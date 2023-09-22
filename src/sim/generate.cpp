@@ -8,10 +8,8 @@ namespace sim {
 	namespace {
 		struct State {
             Xoshiro::Xoshiro256PP rng;
-			std::uniform_int_distribution<std::int32_t> dist_x;
-			std::uniform_int_distribution<std::int32_t> dist_y;
-			std::uniform_int_distribution<std::int32_t> dist_offset_x;
-			std::uniform_int_distribution<std::int32_t> dist_offset_y;
+			std::uniform_int_distribution<std::uint32_t> dist_x;
+			std::uniform_int_distribution<std::uint32_t> dist_y;
 		};
 
 
@@ -71,10 +69,8 @@ namespace sim {
 
 		State state {
             .rng = Xoshiro::Xoshiro256PP(sim->rng()),
-			.dist_x = std::uniform_int_distribution<std::int32_t> {0, static_cast<std::int32_t>(preset.size.x) - 1},
-			.dist_y = std::uniform_int_distribution<std::int32_t> {0, static_cast<std::int32_t>(preset.size.y) - 1},
-			.dist_offset_x = std::uniform_int_distribution<std::int32_t> {-1, +1},
-			.dist_offset_y = std::uniform_int_distribution<std::int32_t> {-1, +1},
+			.dist_x = std::uniform_int_distribution<std::uint32_t> {0, static_cast<std::uint32_t>(preset.size.x) - 1},
+			.dist_y = std::uniform_int_distribution<std::uint32_t> {0, static_cast<std::uint32_t>(preset.size.y) - 1},
 		};
 
 
@@ -82,7 +78,7 @@ namespace sim {
 			const auto x = state.dist_x(state.rng);
 			const auto y = state.dist_y(state.rng);
 			if(sim->grid(x,y) == 0) {
-				create_creature(sim->ecs, stx::vector2i{x, y}, sim->grid, sim->config, 5.0);
+				create_creature(sim->ecs, stx::vector2i{static_cast<std::int32_t>(x),static_cast<std::int32_t>(y)}, sim->grid, sim->config, 5.0);
 			}
 		}
 
@@ -90,7 +86,7 @@ namespace sim {
 			const auto x = state.dist_x(state.rng);
 			const auto y = state.dist_y(state.rng);
 			if(sim->grid(x,y) == 0) {
-				create_food_spawner(sim->ecs, stx::vector2i{x,y}, sim->grid);
+				create_food_spawner(sim->ecs, stx::vector2i{static_cast<std::int32_t>(x),static_cast<std::int32_t>(y)}, sim->grid);
 			}
 		}
 
