@@ -24,19 +24,19 @@ namespace sim {
 		if(other_id < 256){
 			transform->location = new_position;
 			std::swap(id, other_id);
-			stomach->food = std::max(0.0, stomach->food - config.foodDecayPerMove);
+			stomach->food = std::max(0.0, stomach->food - config.food_decay_per_move);
 		}
 		else {
 			auto * other_entity = ecs.get_if(other_id);
 			if(!other_entity) {
-				throw std::runtime_error{"Tried to move invalid entity!!!11elf"};
+				throw std::runtime_error{"Tried to move invalid entity"};
 			}
 			auto * edible = other_entity->get_if<Edible>();
 			if(edible && stomach) {
 				simulation.kill_entity(*other_entity);
 				transform->location = new_position;
 				std::swap(other_id, id);
-				stomach->food = std::clamp(stomach->food + edible->value - config.foodDecayPerMove, 0.0, config.maxStomach);
+				stomach->food = std::clamp(stomach->food + edible->value - config.food_decay_per_move, 0.0, config.max_stomach);
 			} 
 		}
 	}

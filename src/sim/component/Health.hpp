@@ -2,10 +2,10 @@
 
 namespace sim {
 	struct Health {
-		double currentHealth = 1.f;
+		double current_health = 1.f;
 
         bool isDead(){
-            return currentHealth <= 0;
+            return current_health <= 0;
         }
 	};
 }

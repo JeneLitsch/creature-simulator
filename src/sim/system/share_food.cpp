@@ -14,10 +14,10 @@ namespace sim{
 			static_cast<int>(grid.size().y - 1)
 		};
         for(int i = -1; i<=1; i++){
-            if(stomach->food < config.metabolism.foodShared)
+            if(stomach->food < config.metabolism.food_shared)
                     break;
             for(int j = -1; j<=1; j++){
-                if(stomach->food < config.metabolism.foodShared)
+                if(stomach->food < config.metabolism.food_shared)
                     break;
                 stx::vector2i otherPos = transform->location + stx::vector2i{i, j};
                 if(otherPos == transform->location || otherPos.x < from.x || otherPos.y < from.y || otherPos.x > to.x || otherPos.y > to.y)
@@ -28,11 +28,11 @@ namespace sim{
                     continue;
                 }
                 if(Stomach* otherStomach = otherEntity->get_if<Stomach>()){
-                    if(otherStomach->food + config.metabolism.foodShared > config.metabolism.maxStomach){
+                    if(otherStomach->food + config.metabolism.food_shared > config.metabolism.max_stomach){
                         continue;
                     }
-                    stomach->food -= config.metabolism.foodShared;
-                    otherStomach->food += config.metabolism.foodShared;
+                    stomach->food -= config.metabolism.food_shared;
+                    otherStomach->food += config.metabolism.food_shared;
                 }
             }
         }
