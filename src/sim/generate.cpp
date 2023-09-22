@@ -2,7 +2,7 @@
 #include "create.hpp"
 #include <queue>
 #include "stdxx/random.hxx"
-#include "shared/random/xoshiro256.h"
+#include "xoshiro256.h"
 
 namespace sim {
 	namespace {

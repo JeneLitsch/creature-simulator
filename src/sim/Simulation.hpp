@@ -6,7 +6,7 @@
 #include "sim/Ecs.hpp"
 #include "stdxx/grid.hxx"
 #include "WorldPreset.hpp"
-#include "shared/random/xoshiro256.h"
+#include "xoshiro256.h"
 
 namespace sim {
 	class Simulation {

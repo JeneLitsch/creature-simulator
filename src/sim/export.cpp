@@ -1,6 +1,5 @@
 #include "export.hpp"
 #include "Simulation.hpp"
-#include "shared/hex.hpp"
 
 namespace sim {
 	namespace {

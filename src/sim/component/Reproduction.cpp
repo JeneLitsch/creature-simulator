@@ -1,6 +1,6 @@
 #include "Reproduction.hpp"
 #include <algorithm>
-#include "shared/random/xoshiro256.h"
+#include "xoshiro256.h"
 #include "stdxx/vector.hxx"
 
 namespace sim{

@@ -1,7 +1,6 @@
 #include "import.hpp"
 #include "Simulation.hpp"
 #include "stdxx/log.hxx"
-#include "shared/hex.hpp"
 
 namespace sim {
 	namespace {
@@ -245,8 +244,6 @@ namespace sim {
 		auto size = stx::size2u32{import_vector2u32(json["size"])};
 		auto sim = Simulation::empty(size);
 		sim->tickCounter = json["tick_counter"].u64().value_or(0);
-		auto pheromones = hex::decode(json["pheromones"].force_string());
-		std::cout << std::size(pheromones) << "\n";
 		for(const auto entity : stx::json::to_array(json["entities"])) {
 			auto id = entity["id"].u64();
 			if(!id) throw stx::json::format_error {"Cannot read entity id"};

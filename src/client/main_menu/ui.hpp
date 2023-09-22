@@ -1,6 +1,6 @@
 #pragma once
 #include <random>
-#include "shared/random/xoshiro256.h"
+#include "xoshiro256.h"
 #include "sim/WorldPreset.hpp"
 
 namespace client::main_menu {

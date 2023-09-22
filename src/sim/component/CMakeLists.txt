@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.13)
 
-target_sources(libsim PRIVATE
+target_sources(sim PRIVATE
 	Reproduction.cpp
 	NeuralNetwork.cpp
 )

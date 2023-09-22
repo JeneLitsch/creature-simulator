@@ -6,7 +6,8 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/libs/stdxx)
 include_directories(${CMAKE_SOURCE_DIR}/libs/nanocomp)
 include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/libs/sfml/include)
-include_directories(${CMAKE_SOURCE_DIR}/src/shared/imgui)
+include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/libs/imgui)
+include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/libs/xoshiro)
 
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -32,6 +33,7 @@ add_compile_options(
 )
 
 add_subdirectory(libs/sfml)
+add_subdirectory(libs/imgui)
 add_subdirectory(src)
 
 
@@ -39,4 +41,6 @@ target_compile_options(sfml-graphics PRIVATE -w)
 target_compile_options(sfml-system PRIVATE -w)
 target_compile_options(sfml-audio PRIVATE -w)
 target_compile_options(sfml-network PRIVATE -w)
+target_compile_options(sfml-window PRIVATE -w)
+target_compile_options(imgui PRIVATE -w)
 

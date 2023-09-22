@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.13)
 
-add_library(libsim
+add_library(sim
 	Simulation.cpp
 	export.cpp
 	import.cpp
@@ -11,18 +11,14 @@ add_library(libsim
 add_subdirectory(component)
 add_subdirectory(system)
 
-target_link_libraries(libsim
+target_link_libraries(sim
 	"pthread"
 )
 
-target_link_libraries(libsim
+target_link_libraries(sim
 	sfml-graphics
 	sfml-audio
 	sfml-network
 	sfml-system
 	sfml-window
-)
-
-target_link_libraries(libsim
-	libshared
 )

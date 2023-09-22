@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.13)
 
-target_sources(libshared PRIVATE
+add_library(imgui
     imconfig.h
     imconfig-SFML.h
     imgui.cpp

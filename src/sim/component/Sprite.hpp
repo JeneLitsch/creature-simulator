@@ -1,7 +1,7 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include "Reproduction.hpp"
-#include "shared/random/xoshiro256.h"
+#include "xoshiro256.h"
 
 namespace sim {
 	struct Sprite {

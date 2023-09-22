@@ -16,6 +16,9 @@ See <http://creativecommons.org/publicdomain/zero/1.0/>. */
 #include <cstring>
 #include <cstdint>
 
+#pragma GCC system_header
+#pragma warning(push, 0)
+
 namespace Xoshiro {
 
 
@@ -426,3 +429,5 @@ public:
 }
 
 #endif
+
+#pragma warning(pop)
