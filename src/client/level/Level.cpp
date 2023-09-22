@@ -5,6 +5,7 @@
 #include "configMenu.hpp"
 #include "sim/create.hpp"
 #include "client/edit/Edit.hpp"
+#include "client/file/File.hpp"
 
 namespace client::level {
 
@@ -92,26 +93,28 @@ namespace client::level {
 
 	
     void Level::on_event(const core::KeyPressed& event) {
-        if (event.code == sf::Keyboard::O) {
+        if (event.code == sf::Keyboard::Tab) {
             showMenu = !showMenu;
         }
 
 		if(event.code == sf::Keyboard::Space) {
 			this->push(std::make_unique<edit::Edit>(*this));
 		}
-        if (event.code == sf::Keyboard::F5) {
-			this->session->export_sim("tmp/export/sim.json");
+
+        if (event.code == sf::Keyboard::S && event.control) {
+			this->push(std::make_unique<file::File>(std::filesystem::path{"."}, [this] (auto path) {
+				this->pop();
+				this->session->export_sim(path);
+			}));
         }
-        if (event.code == sf::Keyboard::F6) {
-			this->session->get_sim().get_ecs().run_system([&] (const sim::Ecs::Entity & entity) {
-				auto id = entity.get_id();
-				this->session->export_entity("tmp/export/entity/" + std::to_string(id) + ".json",id);
-			});
-        }
-        if (event.code == sf::Keyboard::F9) {
-			this->pop();
-			this->pop();
-			this->push(std::make_unique<session::Session>("tmp/export/sim.json"));
+
+        if (event.code == sf::Keyboard::O && event.control) {
+			this->push(std::make_unique<file::File>(std::filesystem::path{"."}, [this] (auto path) {
+				this->pop();
+				this->pop();
+				this->pop();
+				this->push(std::make_unique<session::Session>(path));
+			}));
         }
 
     }

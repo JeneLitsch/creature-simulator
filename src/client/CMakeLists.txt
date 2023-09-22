@@ -6,6 +6,7 @@ add_library(client
 
 add_subdirectory(core)
 add_subdirectory(edit)
+add_subdirectory(file)
 add_subdirectory(level)
 add_subdirectory(session)
 add_subdirectory(main_menu)
