@@ -163,12 +163,9 @@ namespace sim {
 					matrix.push_back({});
 					for(const auto & elem : stx::json::to_array(line)) {
 						auto num = elem.force_number();
-						std::cout << num << ",";
 						matrix.back().push_back(num);
 					}
-					std::cout << "\n";
 				}
-
 				return matrix;
 			}
 		}
@@ -230,6 +227,19 @@ namespace sim {
 			
 			import_if(entity, json["neural_network"], import_neural_network);
 		};
+
+
+
+		void import_rng(stx::json::iterator json, Xoshiro::Xoshiro256PP & rng) {
+			auto state = stx::json::to_array(json);
+			for(std::size_t i = 0; i < std::min<std::size_t>(4, std::size(state)); ++i) {
+				if(auto str = state[i].string()) {
+					std::istringstream iss {*str};
+					iss >> std::hex >> rng.state[i];
+					// std::cout << "IN: " << rng.state[i] << "\n";
+				}
+			}
+		}
 	}
 
 
@@ -244,6 +254,7 @@ namespace sim {
 		auto size = stx::size2u32{import_vector2u32(json["size"])};
 		auto sim = Simulation::empty(size);
 		sim->tickCounter = json["tick_counter"].u64().value_or(0);
+		import_rng(json["rng"], sim->rng);
 		for(const auto entity : stx::json::to_array(json["entities"])) {
 			auto id = entity["id"].u64();
 			if(!id) throw stx::json::format_error {"Cannot read entity id"};

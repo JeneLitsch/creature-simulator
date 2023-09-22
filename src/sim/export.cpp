@@ -1,5 +1,6 @@
 #include "export.hpp"
 #include "Simulation.hpp"
+#include <iomanip>
 
 namespace sim {
 	namespace {
@@ -168,6 +169,21 @@ namespace sim {
 
 			return node;
 		}
+
+
+
+		stx::json::node export_rng(const Xoshiro::Xoshiro256PP & rng) {
+			stx::json::node node;
+			stx::json::write_iterator json{node};
+			for(std::uint64_t state : rng.state) {
+				// std::cout << "OUT: " << state  << "\n";
+				std::ostringstream oss;
+				oss << std::hex << std::setw(16) << std::setfill('0') << state;
+				json.push_back(oss.str());
+			}
+
+			return node;
+		}
 	}
 
 
@@ -176,6 +192,7 @@ namespace sim {
 		stx::json::node node;
 		stx::json::write_iterator json{node};
 		json["entities"] = export_ecs(sim.get_ecs());
+		json["rng"] = export_rng(sim.rng);
 
 		json["size"].push_back(sim.get_grid().size().x);
 		json["size"].push_back(sim.get_grid().size().y);
