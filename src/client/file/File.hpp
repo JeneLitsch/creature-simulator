@@ -16,8 +16,8 @@ namespace client::file {
 	protected:
 		virtual void init() override {}
 		virtual void ui_addtional() {}
+		virtual void ui_header() {}
 		std::filesystem::path path;
-		std::array<char, 64> new_file_name;
 		std::function<void(std::filesystem::path)> callback;
 	};
 }

@@ -14,15 +14,24 @@ namespace client::file {
 		ImGui::Separator();
 		ImGui::NewLine();
 
-		ImGui::InputText("Name", this->new_file_name.data(), 64);
-		
-		if(ImGui::Button("save new file")) {
+		if(ImGui::InputText("Name", this->new_file_name.data(), 64, ImGuiInputTextFlags_EnterReturnsTrue)) {
 			std::ofstream ofs{this->path / this->new_file_name.data()};
 			this->callback(this->path / this->new_file_name.data());
 		}
 		
-		if(ImGui::Button("create directory")) {
+		if(ImGui::Button("Save new file")) {
+			std::ofstream ofs{this->path / this->new_file_name.data()};
+			this->callback(this->path / this->new_file_name.data());
+		}
+		
+		if(ImGui::Button("Create directory")) {
 			std::filesystem::create_directories(this->path / this->new_file_name.data());
 		}
+	}
+
+
+
+	void SaveFile::ui_header() {
+		ImGui::Text("Export");
 	}
 }

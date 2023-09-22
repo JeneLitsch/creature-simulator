@@ -7,6 +7,7 @@
 #include "client/edit/Edit.hpp"
 #include "client/file/File.hpp"
 #include "client/file/SaveFile.hpp"
+#include "client/file/OpenFile.hpp"
 
 namespace client::level {
 
@@ -110,7 +111,7 @@ namespace client::level {
         }
 
         if (event.code == sf::Keyboard::O && event.control) {
-			this->push(std::make_unique<file::File>(std::filesystem::path{"."}, [this] (auto path) {
+			this->push(std::make_unique<file::OpenFile>(std::filesystem::path{"."}, [this] (auto path) {
 				this->pop();
 				this->pop();
 				this->pop();

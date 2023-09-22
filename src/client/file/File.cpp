@@ -4,7 +4,6 @@
 
 namespace client::file {
 	File::File(std::filesystem::path path, std::function<void(std::filesystem::path)> callback) : path{std::filesystem::canonical(path)}, callback{callback} {
-		this->new_file_name.fill('\0');
 	}
 
 
@@ -19,11 +18,12 @@ namespace client::file {
 			| ImGuiWindowFlags_NoBringToFrontOnFocus);
 
 		ImGui::SetWindowSize(window_size.to<ImVec2>());
-		ImGui::SetWindowPos({0,0});
+		ImGui::SetWindowPos({64,0});
 
 		ImGui::SetWindowFontScale(2);
-		ImGui::Text("%s", path.c_str());
+		this->ui_header();
 		ImGui::SetWindowFontScale(1);
+		ImGui::Text("%s", path.c_str());
 
 		std::filesystem::path next_path = this->path;
 

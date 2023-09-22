@@ -6,12 +6,11 @@
 #include "File.hpp"
 
 namespace client::file {
-	class SaveFile : public File {
+	class OpenFile : public File {
 	public:
-		SaveFile(std::filesystem::path path, std::function<void(std::filesystem::path)>  callback);
+		OpenFile(std::filesystem::path path, std::function<void(std::filesystem::path)>  callback);
 	protected:
 		virtual void ui_addtional() override;
 		virtual void ui_header() override;
-		std::array<char, 64> new_file_name;
 	};
 }
