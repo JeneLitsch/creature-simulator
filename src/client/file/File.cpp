@@ -27,6 +27,18 @@ namespace client::file {
 
 		std::filesystem::path next_path = this->path;
 
+		for(char letter : "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
+			std::filesystem::path root_path = letter + std::string(":\\");
+			if(std::filesystem::exists(root_path)) {
+				if(ImGui::Button(path.string().c_str())) {
+					next_path = root_path;
+				}
+				ImGui::SameLine();
+			}
+		}
+
+		ImGui::Separator();
+
 		if(ImGui::Button("..")) {
 			next_path = path.parent_path();
 		}
