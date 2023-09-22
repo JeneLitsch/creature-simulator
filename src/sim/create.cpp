@@ -29,9 +29,9 @@ namespace sim {
 
 
 
-	Ecs::Entity & create_food(Ecs & ecs, stx::vector2i position, stx::grid2<std::uint64_t> & grid) {
+	Ecs::Entity & create_food(Ecs & ecs, stx::vector2i position, stx::grid2<std::uint64_t> & grid, const MetabolismConfig & config) {
 		auto & entity = create_entity(ecs, position, grid);
-		entity.add(Edible{ .value = 1.0f});
+		entity.add(Edible{ .value = config.food_per_pellet});
 		entity.add(Sprite{
 			.color = sf::Color::Green,
 		});

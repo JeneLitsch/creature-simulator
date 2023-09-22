@@ -122,6 +122,11 @@ namespace client::level {
             ImGui::Spacing();
 
             ImGui::Spacing();
+            ImGui::SliderDouble("Food per pellet", &config.food_per_pellet, 0.0f, 100.0f);
+            ImGui::InputDouble("Input food per pellet", &config.food_per_pellet);
+            ImGui::Spacing();
+
+            ImGui::Spacing();
             ImGui::SliderDouble("Starving health decay", &config.starving_health_decay_per_tick, 0.0f, 1.0f);
             ImGui::InputDouble("Input starving health decay", &config.starving_health_decay_per_tick);
             ImGui::Spacing();

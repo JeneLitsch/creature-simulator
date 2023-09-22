@@ -65,7 +65,7 @@ namespace sim {
 		}
 		ecs.run_system(move, ecs, *this, config.metabolism);
 		ecs.run_system(reproduce, &(this -> grid), &(this -> ecs), this->config, this->rng);
-		ecs.run_system(spawn_food, this->grid, this->ecs, this->rng);
+		ecs.run_system(spawn_food, this->grid, this->ecs, this->rng, this->config.metabolism);
 		ecs.run_system(check_death, *this, this->config);
 		this->ecs.clean_up();
 	}

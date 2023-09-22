@@ -7,7 +7,7 @@ namespace client::edit {
 		auto & grid = sim.get_grid();
 		auto & ecs = sim.get_ecs();
 		if(grid[stx::vector2u{position}] == 0) {
-			sim::create_food(ecs, stx::vector2i{position}, grid);
+			sim::create_food(ecs, stx::vector2i{position}, grid, sim.config.metabolism);
 		}
 	}
 
