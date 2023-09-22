@@ -46,7 +46,9 @@ namespace client {
 		this->state_manager.push(std::make_unique<main_menu::Main>());
 		this->window.setFramerateLimit(60);
 		this->window.setVerticalSyncEnabled(true);
-        ImGui::SFML::Init(this->window);
+        if(!ImGui::SFML::Init(this->window)) {
+			throw std::runtime_error{"Cannot initialize Dear IMGUI backend"};
+		}
         InitImguiStyle();
 
 	}
