@@ -21,4 +21,5 @@ target_link_libraries(client
 	sfml-network
 	sfml-system
 	sfml-window
+	imgui
 )
