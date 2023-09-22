@@ -14,6 +14,7 @@ See <http://creativecommons.org/publicdomain/zero/1.0/>. */
 
 #include <iostream>
 #include <cstring>
+#include <array>
 #include <cstdint>
 
 #pragma GCC system_header
@@ -123,7 +124,7 @@ class Xoshiro256PP
 {
 public:
     using result_type = std::uint64_t;
-    std::uint64_t state[4] = {0x3d23dce41c588f8c, 0x10c770bb8da027b0, 0xc7a4c5e87c63ba25, 0xa830f83239465a2e};
+    std::array<std::uint64_t, 4> state = {0x3d23dce41c588f8c, 0x10c770bb8da027b0, 0xc7a4c5e87c63ba25, 0xa830f83239465a2e};
 
     constexpr static result_type min()
     {
@@ -157,7 +158,7 @@ public:
 
     void seed(const std::uint64_t seed[4])
     {
-        std::memcpy(this->state, seed, 4*sizeof(std::uint64_t));
+        std::memcpy(this->state.data(), seed, 4*sizeof(std::uint64_t));
     }
 
     template<class Sseq>
@@ -218,7 +219,7 @@ public:
 
     bool operator==(const Xoshiro256PP &rhs)
     {
-        return std::memcmp(this->state, rhs.state, 4*sizeof(std::uint64_t));
+        return std::memcmp(this->state.data(), rhs.state.data(), 4*sizeof(std::uint64_t));
     }
 
     #ifndef HAS_CPP20
