@@ -30,7 +30,7 @@ namespace client::file {
 		for(char letter : "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
 			std::filesystem::path root_path = letter + std::string(":\\");
 			if(std::filesystem::exists(root_path)) {
-				if(ImGui::Button(path.string().c_str())) {
+				if(ImGui::Button(root_path.string().c_str())) {
 					next_path = root_path;
 				}
 				ImGui::SameLine();
