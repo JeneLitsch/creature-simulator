@@ -55,19 +55,7 @@ namespace client::file {
 
 		this->path = next_path;
 
-		ImGui::NewLine();
-		ImGui::Separator();
-		ImGui::NewLine();
-
-		ImGui::InputText("Name", this->new_file_name.data(), 64);
-		
-		if(ImGui::Button("create file")) {
-			std::ofstream ofs{this->path / this->new_file_name.data()};
-		}
-		
-		if(ImGui::Button("create directory")) {
-			std::filesystem::create_directories(this->path / this->new_file_name.data());
-		}
+		this->ui_addtional();
 
 		ImGui::End();
 	}

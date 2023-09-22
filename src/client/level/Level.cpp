@@ -6,6 +6,7 @@
 #include "sim/create.hpp"
 #include "client/edit/Edit.hpp"
 #include "client/file/File.hpp"
+#include "client/file/SaveFile.hpp"
 
 namespace client::level {
 
@@ -102,7 +103,7 @@ namespace client::level {
 		}
 
         if (event.code == sf::Keyboard::S && event.control) {
-			this->push(std::make_unique<file::File>(std::filesystem::path{"."}, [this] (auto path) {
+			this->push(std::make_unique<file::SaveFile>(std::filesystem::path{"."}, [this] (auto path) {
 				this->pop();
 				this->session->export_sim(path);
 			}));

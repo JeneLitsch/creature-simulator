@@ -15,6 +15,7 @@ namespace client::file {
 		virtual void on_event(const core::KeyPressed &) override;
 	protected:
 		virtual void init() override {}
+		virtual void ui_addtional() {}
 		std::filesystem::path path;
 		std::array<char, 64> new_file_name;
 		std::function<void(std::filesystem::path)> callback;
