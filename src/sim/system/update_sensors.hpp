@@ -53,9 +53,9 @@ namespace sim{
                 int y = loc.y + dy;
                 assert(y >= 0 && y < grid.size().y);
                 uint64_t entity_id = grid[{static_cast<std::uint64_t>(x), static_cast<std::uint64_t>(y)}];
-                auto* otherEntity = ecs.get_if(entity_id);
-                if(otherEntity && stx::vector2i{x, y} != loc){
-                    entities.push_back(otherEntity);
+                auto* other_entity = ecs.get_if(entity_id);
+                if(other_entity && stx::vector2i{x, y} != loc){
+                    entities.push_back(other_entity);
                 }
             }
         }
