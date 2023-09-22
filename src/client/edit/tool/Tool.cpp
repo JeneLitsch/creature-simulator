@@ -65,7 +65,7 @@ namespace client::edit {
 	Tool Tool::place_empty_creature() {
 		return Tool {
 			.name = "Empty Creature",
-			.shape = std::make_unique<Point>(),
+			.shape = std::make_unique<Rect>(),
 			.effect = std::make_unique<PlaceEmptyCreature>(),
 		};
 	}
@@ -75,7 +75,7 @@ namespace client::edit {
 	Tool Tool::place_food_spawner() {
 		return Tool {
 			.name = "Food Spawner",
-			.shape = std::make_unique<Point>(),
+			.shape = std::make_unique<Rect>(),
 			.effect = std::make_unique<PlaceFoodSpawner>(),
 		};
 	}
