@@ -2,7 +2,7 @@
 #include "sim/Ecs.hpp"
 
 namespace client::level {
-    void nnConfig(sim::NeuralNetConfig & config){
+    void nn_config(sim::NeuralNetConfig & config){
         if (ImGui::CollapsingHeader("Neural Networks")){
             ImGui::Checkbox("Limit number of mutations", &config.limit_number_of_mutations);
             ImGui::Spacing();
@@ -65,7 +65,7 @@ namespace client::level {
     }
 
 
-    void reproductionConfig(sim::ReproductionConfig & config){
+    void reproduction_config(sim::ReproductionConfig & config){
         if (ImGui::CollapsingHeader("Reproduction")){
 
             ImGui::Spacing();
@@ -104,7 +104,7 @@ namespace client::level {
         }
     }
 
-    void metabolismConfig(sim::MetabolismConfig & config) {
+    void metabolism_config(sim::MetabolismConfig & config) {
         if (ImGui::CollapsingHeader("Metabolism")){
             ImGui::Spacing();
             ImGui::SliderDouble("Maximum Stomach capacity", &config.max_stomach, 0.1f, 100.0f, "%.3f", ImGuiSliderFlags_Logarithmic);
@@ -150,9 +150,9 @@ namespace client::level {
         ImGui::SliderUInt16("Maximum Age", &config.max_age, 100, 10000, "%d", ImGuiSliderFlags_Logarithmic);
         ImGui::Checkbox("Enable long oscilator", &config.enable_long_oscilator);
         ImGui::SameLine();ImGui::Checkbox("Enable short ocsilator", &config.enable_short_oscilator);
-        nnConfig(config.neural_net);
-        reproductionConfig(config.reproduction);
-        metabolismConfig(config.metabolism);
+        nn_config(config.neural_net);
+        reproduction_config(config.reproduction);
+        metabolism_config(config.metabolism);
         entity_sensor_config(config.sensors);
         ImGui::End();
     }
