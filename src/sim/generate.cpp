@@ -67,7 +67,7 @@ namespace sim {
 	std::unique_ptr<Simulation> generate(const WorldPreset & preset) {
 		auto sim = Simulation::empty(preset.size);
 
-		sim->rng.seed(42);
+		sim->rng.seed(preset.seed);
 
 		State state {
             .rng = Xoshiro::Xoshiro256PP(sim->rng()),
