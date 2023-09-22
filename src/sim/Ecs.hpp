@@ -57,6 +57,8 @@ namespace sim {
 		double natural_food_decay_per_tick = 0.0005;
 		// How much food is used when moving
 		double food_decay_per_move = 0.0005;
+		// Amount of food gained when eating a food pellet
+		double food_per_pellet = 1.0;
 		// How much Health gets removed per Tick while the Stomach is empty
 		double starving_health_decay_per_tick = 0.02;
 		// How much Health gets regenerated per Tick, when not starving

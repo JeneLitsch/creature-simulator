@@ -2,7 +2,7 @@
 #include "sim/create.hpp"
 
 namespace sim {
-	void spawn_food(Ecs::Entity & entity, stx::grid2<std::uint64_t> & grid, Ecs & ecs, Xoshiro::Xoshiro256PP & rng) {
+	void spawn_food(Ecs::Entity & entity, stx::grid2<std::uint64_t> & grid, Ecs & ecs, Xoshiro::Xoshiro256PP & rng, const MetabolismConfig & config) {
 		auto * food_spawn = entity.get_if<FoodSpawn>();
 		auto * transform = entity.get_if<Transform>();
 		if(!food_spawn) return;
@@ -20,7 +20,7 @@ namespace sim {
 		stx::vector2i food_position = transform->location + offset;
 
 		if(grid.in_range(food_position) && grid[food_position] == 0) {
-			create_food(ecs, food_position, grid);
+			create_food(ecs, food_position, grid, config);
 		}
 	}
 }
