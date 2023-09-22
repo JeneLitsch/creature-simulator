@@ -16,3 +16,11 @@ add_library(imgui
     imstb_textedit.h
     imstb_truetype.h
 )
+
+target_link_libraries(imgui
+	sfml-graphics
+	sfml-audio
+	sfml-network
+	sfml-system
+	sfml-window
+)
