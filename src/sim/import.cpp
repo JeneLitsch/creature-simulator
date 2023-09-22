@@ -258,6 +258,47 @@ namespace sim {
 				}
 			}
 		}
+
+		void import_config(stx::json::iterator json, Config & config) {
+			if(auto x = json["max_age"].u16()){
+				config.max_age = x.value();
+				std::cout << x.value() << "\n";
+			} 
+			if(auto x = json["enable_short_oscilator"].boolean()) config.enable_short_oscilator = x.value();
+			if(auto x = json["enable_long_oscilator"].boolean()) config.enable_long_oscilator = x.value();
+
+			if(auto x = json["neural_network"]["mutation_rate_per_weight"].number()) config.neural_net.mutation_rate_per_weight = x.value();
+			if(auto x = json["neural_network"]["chance_for_new_node"].number()) config.neural_net.chance_for_new_node = x.value();
+			if(auto x = json["neural_network"]["weight_min"].number()) config.neural_net.weight_min = x.value();
+			if(auto x = json["neural_network"]["weight_max"].number()) config.neural_net.weight_max = x.value();
+			if(auto x = json["neural_network"]["limit_number_of_mutations"].boolean()) config.neural_net.limit_number_of_mutations = x.value();
+			if(auto x = json["neural_network"]["mutation_rolls"].i32()) config.neural_net.mutation_rolls = x.value();
+			if(auto x = json["neural_network"]["chance_per_roll"].number()) config.neural_net.chance_per_roll = x.value();
+			if(auto x = json["neural_network"]["limit_weight_change"].boolean()) config.neural_net.limit_weight_change = x.value();
+			if(auto x = json["neural_network"]["max_weight_change"].number()) config.neural_net.max_weight_change = x.value();
+			if(auto x = json["neural_network"]["max_hidden_nodes"].i32()) config.neural_net.max_hidden_nodes = x.value();
+			if(auto x = json["neural_network"]["use_tanh_for_hidden"].boolean()) config.neural_net.use_tanh_for_hidden = x.value();
+
+			if(auto x = json["reproduction"]["cooldown"].u64()) config.reproduction.cooldown = x.value();
+			if(auto x = json["reproduction"]["food_cost"].number()) config.reproduction.food_cost = x.value();
+			if(auto x = json["reproduction"]["max_color_difference"].i32()) config.reproduction.max_color_difference = x.value();
+
+			if(auto x = json["sensors"]["sensibility"].number()) config.sensors.sensibility = x.value();
+			if(auto x = json["sensors"]["radius"].i32()) config.sensors.radius = x.value();
+			if(auto x = json["sensors"]["enable_food_sensor"].boolean()) config.sensors.enable_food_sensor = x.value();
+			if(auto x = json["sensors"]["enable_stomach_sensor"].boolean()) config.sensors.enable_stomach_sensor = x.value();
+			if(auto x = json["sensors"]["enable_barrier_sensor"].boolean()) config.sensors.enable_barrier_sensor = x.value();
+
+			if(auto x = json["metabolism"]["max_stomach"].number()) config.metabolism.max_stomach = x.value();
+			if(auto x = json["metabolism"]["natural_food_decay_per_tick"].number()) config.metabolism.natural_food_decay_per_tick = x.value();
+			if(auto x = json["metabolism"]["food_decay_per_move"].number()) config.metabolism.food_decay_per_move = x.value();
+			if(auto x = json["metabolism"]["food_per_pellet"].number()) config.metabolism.food_per_pellet = x.value();
+			if(auto x = json["metabolism"]["starving_health_decay_per_tick"].number()) config.metabolism.starving_health_decay_per_tick = x.value();
+			if(auto x = json["metabolism"]["health_regen_per_tick"].number()) config.metabolism.health_regen_per_tick = x.value();
+			if(auto x = json["metabolism"]["food_per_health_regenerated"].number()) config.metabolism.food_per_health_regenerated = x.value();
+			if(auto x = json["metabolism"]["enable_food_sharing"].boolean()) config.metabolism.enable_food_sharing = x.value();
+			if(auto x = json["metabolism"]["food_shared"].number()) config.metabolism.food_shared = x.value();
+		}
 	}
 
 
@@ -272,6 +313,7 @@ namespace sim {
 		auto size = stx::size2u32{import_vector2u32(json["size"])};
 		auto sim = Simulation::empty(size);
 		sim->tickCounter = json["tick_counter"].u64().value_or(0);
+		import_config(json["config"], sim->config);
 		import_rng(json["rng"], sim->rng);
 		for(const auto entity : stx::json::to_array(json["entities"])) {
 			auto id = entity["id"].u64();

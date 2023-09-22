@@ -183,6 +183,48 @@ namespace sim {
 
 			return node;
 		}
+
+		stx::json::node export_config(const Config& config) {
+			stx::json::node node;
+			stx::json::write_iterator json{node};
+			json["max_age"] = config.max_age;
+			json["enable_short_oscilator"] = config.enable_short_oscilator;
+			json["enable_long_oscilator"] = config.enable_long_oscilator;
+
+			json["neural_network"]["mutation_rate_per_weight"] = config.neural_net.mutation_rate_per_weight;
+			json["neural_network"]["chance_for_new_node"] = config.neural_net.chance_for_new_node;
+			json["neural_network"]["weight_min"] = config.neural_net.weight_min;
+			json["neural_network"]["weight_max"] = config.neural_net.weight_max;
+			json["neural_network"]["limit_number_of_mutations"] = config.neural_net.limit_number_of_mutations;
+			json["neural_network"]["mutation_rolls"] = config.neural_net.mutation_rolls;
+			json["neural_network"]["chance_per_roll"] = config.neural_net.chance_per_roll;
+			json["neural_network"]["limit_weight_change"] = config.neural_net.limit_weight_change;
+			json["neural_network"]["max_weight_change"] = config.neural_net.max_weight_change;
+			json["neural_network"]["max_hidden_nodes"] = config.neural_net.max_hidden_nodes;
+			json["neural_network"]["use_tanh_for_hidden"] = config.neural_net.use_tanh_for_hidden;
+
+			json["reproduction"]["cooldown"] = config.reproduction.cooldown;
+			json["reproduction"]["food_cost"] = config.reproduction.food_cost;
+			json["reproduction"]["max_color_difference"] = config.reproduction.max_color_difference;
+
+			json["sensors"]["sensibility"] = config.sensors.sensibility;
+			json["sensors"]["radius"] = config.sensors.radius;
+			json["sensors"]["enable_food_sensor"] = config.sensors.enable_food_sensor;
+			json["sensors"]["enable_stomach_sensor"] = config.sensors.enable_stomach_sensor;
+			json["sensors"]["enable_barrier_sensor"] = config.sensors.enable_barrier_sensor;
+
+			json["metabolism"]["max_stomach"] = config.metabolism.max_stomach;
+			json["metabolism"]["natural_food_decay_per_tick"] = config.metabolism.natural_food_decay_per_tick;
+			json["metabolism"]["food_decay_per_move"] = config.metabolism.food_decay_per_move;
+			json["metabolism"]["food_per_pellet"] = config.metabolism.food_per_pellet;
+			json["metabolism"]["starving_health_decay_per_tick"] = config.metabolism.starving_health_decay_per_tick;
+			json["metabolism"]["health_regen_per_tick"] = config.metabolism.health_regen_per_tick;
+			json["metabolism"]["food_per_health_regenerated"] = config.metabolism.food_per_health_regenerated;
+			json["metabolism"]["enable_food_sharing"] = config.metabolism.enable_food_sharing;
+			json["metabolism"]["food_shared"] = config.metabolism.food_shared;
+
+			return node;
+		}
 	}
 
 
@@ -190,13 +232,14 @@ namespace sim {
 	stx::json::node export_sim(const Simulation & sim) {
 		stx::json::node node;
 		stx::json::write_iterator json{node};
-		json["entities"] = export_ecs(sim.get_ecs());
 		json["rng"] = export_rng(sim.rng);
 
 		json["size"].push_back(sim.get_grid().size().x);
 		json["size"].push_back(sim.get_grid().size().y);
 
 		json["tick_counter"] = sim.tickCounter;
+		json["config"] = export_config(sim.config);
+		json["entities"] = export_ecs(sim.get_ecs());	
 		return node;
 	}
 }

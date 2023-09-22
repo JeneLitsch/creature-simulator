@@ -36,7 +36,7 @@ namespace client::file {
 		for(auto & member : std::filesystem::directory_iterator(this->path)) {
 			auto & member_path = member.path();
 			if(member.is_directory()) {
-				if(ImGui::Button(member_path.filename().c_str())) {
+				if(ImGui::Button(member_path.filename().string().c_str())) {
 					next_path = member_path;
 				}
 			}
@@ -47,7 +47,7 @@ namespace client::file {
 		for(auto & member : std::filesystem::directory_iterator(this->path)) {
 			auto & member_path = member.path();
 			if(member.is_regular_file()) {
-				if(ImGui::Button(member_path.filename().c_str())) {
+				if(ImGui::Button(member_path.filename().string().c_str())) {
 					this->callback(member_path);
 				}
 			}
