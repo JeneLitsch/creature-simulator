@@ -23,9 +23,23 @@ namespace client::file {
 		ImGui::SetWindowFontScale(2);
 		this->ui_header();
 		ImGui::SetWindowFontScale(1);
-		ImGui::Text("%s", path.c_str());
 
 		std::filesystem::path next_path = this->path;
+
+		std::filesystem::path back_path;
+
+		for(const auto & sub_path : this->path) {
+			back_path /= sub_path; 
+			if(ImGui::Button(sub_path.string().c_str())) {
+				next_path = back_path;
+			}
+			ImGui::SameLine();
+			ImGui::Text("/");
+			ImGui::SameLine();
+		}
+
+		ImGui::NewLine();
+
 
 		for(char letter : "ABCDEFGHIJKLMNOPQRSTUVWXYZ") {
 			std::filesystem::path root_path = letter + std::string(":\\");
@@ -37,13 +51,11 @@ namespace client::file {
 			}
 		}
 
-		ImGui::Separator();
+		ImGui::SeparatorText("Directories");
 
 		if(ImGui::Button("..")) {
 			next_path = path.parent_path();
 		}
-
-		ImGui::Separator();
 
 		for(auto & member : std::filesystem::directory_iterator(this->path)) {
 			auto & member_path = member.path();
@@ -54,7 +66,7 @@ namespace client::file {
 			}
 		}
 
-		ImGui::Separator();
+		ImGui::SeparatorText("Files");
 
 		for(auto & member : std::filesystem::directory_iterator(this->path)) {
 			auto & member_path = member.path();
