@@ -262,7 +262,6 @@ namespace sim {
 		void import_config(stx::json::iterator json, Config & config) {
 			if(auto x = json["max_age"].u16()){
 				config.max_age = x.value();
-				std::cout << x.value() << "\n";
 			} 
 			if(auto x = json["enable_short_oscilator"].boolean()) config.enable_short_oscilator = x.value();
 			if(auto x = json["enable_long_oscilator"].boolean()) config.enable_long_oscilator = x.value();

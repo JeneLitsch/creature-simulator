@@ -59,19 +59,18 @@ namespace sim{
 		std::vector<double> hidden = vectorMatrixMult(input, input_matrix);
 		std::vector<double> input_with_hidden = input + hidden;
 		std::vector<double> out;
-		if(config.use_tanh_for_hidden){
-			for(std::size_t i = input_size; i<input_with_hidden.size(); i++){
+		for(std::size_t i = input_size; i<input_with_hidden.size(); i++){
+			input_with_hidden.at(i) = input_with_hidden.at(i) * input_with_hidden.at(i);
+			if(config.use_tanh_for_hidden)
 				input_with_hidden.at(i) = std::tanh(input_with_hidden.at(i));
-			}
-			input_with_hidden = vectorMatrixMult(input_with_hidden, hidden_matrix);
-			for(std::size_t i = input_size; i<input_with_hidden.size(); i++){
+		}
+		input_with_hidden = vectorMatrixMult(input_with_hidden, hidden_matrix);
+		for(std::size_t i = input_size; i<input_with_hidden.size(); i++){
+			input_with_hidden.at(i) = input_with_hidden.at(i) * input_with_hidden.at(i);
+			if(config.use_tanh_for_hidden)
 				input_with_hidden.at(i) = std::tanh(input_with_hidden.at(i));
-			}
-			out = vectorMatrixMult(input_with_hidden, output_matrix);
 		}
-		else{
-			out = vectorMatrixMult(vectorMatrixMult(input_with_hidden, hidden_matrix), output_matrix);
-		}
+		out = vectorMatrixMult(input_with_hidden, output_matrix);
 
 		for(double& num : out){
 			num = std::tanh(num);
