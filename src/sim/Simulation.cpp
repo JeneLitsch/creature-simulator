@@ -1,6 +1,7 @@
 #include "Simulation.hpp"
 #include "stdxx/random.hxx"
 #include <iostream>
+#include <numbers>
 #include "system/metabolize.hpp"
 #include "system/move.hpp"
 #include "system/reproduce.hpp"
@@ -53,11 +54,11 @@ namespace sim {
 		});
 		double oscilator_short = 0;
 		if(config.enable_short_oscilator){
-			oscilator_short = std::sin(static_cast<double>(tickCounter)/10.0);
+			oscilator_short = std::sin(static_cast<double>(tickCounter)/30.0*std::numbers::pi_v<double>);
 		}
 		double oscilator_long = 0;
 		if(config.enable_long_oscilator){
-			oscilator_long = std::sin(static_cast<double>(tickCounter)/200.0);
+			oscilator_long = std::sin(static_cast<double>(tickCounter)/600.0*std::numbers::pi_v<double>);
 		}
 		ecs.run_system(eval_neural, config, oscilator_short, oscilator_long);
 		if(config.metabolism.enable_food_sharing){
