@@ -135,7 +135,7 @@ namespace sim{
 		}
 		else{
 			for(std::size_t i = 0; i<net.input_size; i++){
-				for(std::size_t j = net.input_size; j<net.hidden_size; j++){
+				for(std::size_t j = 0; j<net.hidden_size; j++){
 					if(to_be_mutated(config.mutation_rate_per_weight, rng)){
 						net.input_matrix.at(i).at(j) = change_weight(net.input_matrix.at(i).at(j), rng, config, weight_interval);
 					}
