@@ -3,6 +3,7 @@
 #include "imgui.h"
 #include "client/session/Session.hpp"
 #include "ui.hpp"
+#include "client/level/configMenu.hpp"
 
 namespace client::main_menu {
 
@@ -27,6 +28,8 @@ namespace client::main_menu {
 		ImGui::NewLine();
 		ui_obstacles(this->preset.obstacles, this->radio_index);
 
+		ImGui::SeparatorText("Initial Config");
+		level::ui_config(this->config);
 
 		ImGui::NewLine();
 		ImGui::SetWindowFontScale(2);
@@ -34,6 +37,7 @@ namespace client::main_menu {
 			this->generate();
 		}
 		ImGui::SetWindowFontScale(1);
+
 	}
 
 
@@ -41,7 +45,7 @@ namespace client::main_menu {
 	void New::generate() {
 		this->pop();
 		this->pop();
-		this->push(std::make_unique<session::Session>(this->preset));
+		this->push(std::make_unique<session::Session>(this->preset, this->config));
 	}
 
 

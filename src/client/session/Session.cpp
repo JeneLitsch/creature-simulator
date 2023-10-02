@@ -5,8 +5,9 @@
 #include <fstream>
 
 namespace client::session {
-	Session::Session(const sim::WorldPreset & preset) {
+	Session::Session(const sim::WorldPreset & preset, const sim::Config & config) {
 		this->simulation = sim::Simulation::generate(preset);
+		this->simulation->config = config;
 	}
 
 

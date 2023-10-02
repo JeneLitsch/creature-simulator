@@ -3,6 +3,7 @@
 #include "Sub.hpp"
 #include "xoshiro256.h"
 #include "sim/WorldPreset.hpp"
+#include "sim/Simulation.hpp"
 
 namespace client::main_menu {
 	class Main;
@@ -21,6 +22,7 @@ namespace client::main_menu {
 		void generate();
 
 		sim::WorldPreset preset;
+		sim::Config config;
 
 		Xoshiro::Xoshiro256PP rng;
 

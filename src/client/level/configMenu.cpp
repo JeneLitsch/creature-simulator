@@ -1,5 +1,6 @@
 #include "imgui.h"
 #include "sim/Ecs.hpp"
+#include "configMenu.hpp"
 
 namespace client::level {
     void nn_config(sim::NeuralNetConfig & config){
@@ -152,6 +153,13 @@ namespace client::level {
     void Menu(uint16_t& tick_speed, sim::Config& config) {
         ImGui::Begin("config");
         ImGui::SliderUInt16("Tick speed", &tick_speed, 1, 60, "%d");
+		ui_config(config);
+        ImGui::End();
+    }
+
+
+
+    void ui_config(sim::Config & config) {
         ImGui::SliderUInt16("Maximum Age", &config.max_age, 100, 10000, "%d", ImGuiSliderFlags_Logarithmic);
         ImGui::Checkbox("Enable long oscilator", &config.enable_long_oscilator);
         ImGui::SameLine();ImGui::Checkbox("Enable short ocsilator", &config.enable_short_oscilator);
@@ -159,6 +167,5 @@ namespace client::level {
         reproduction_config(config.reproduction);
         metabolism_config(config.metabolism);
         entity_sensor_config(config.sensors);
-        ImGui::End();
-    }
+	}
 }
