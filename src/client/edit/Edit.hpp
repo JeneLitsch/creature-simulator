@@ -26,6 +26,8 @@ namespace client::edit {
 	private:
 		virtual void on_event(const core::MouseMoved &) override;
 		virtual void on_event(const core::KeyPressed &) override;
+		virtual void on_event(const core::MouseButtonPressed &) override;
+		virtual void on_event(const core::MouseButtonReleased &) override;
 		virtual void init() override;
 
 		stx::reference<level::Level> level;
@@ -36,6 +38,8 @@ namespace client::edit {
 		stx::optref<Tool> current_tool;
 
 		std::uint64_t inspected_id = 0;
+
+		bool is_drawing = false;
 
 		sf::RenderTexture neural_network_graph;
 	};

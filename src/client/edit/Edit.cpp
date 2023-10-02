@@ -35,7 +35,7 @@ namespace client::edit {
 			| ImGuiWindowFlags_NoBringToFrontOnFocus);
 
 
-		ImGui::SetWindowSize(window_size.to<ImVec2>());
+		ImGui::SetWindowSize({0,0});
 		ImGui::SetWindowPos({0,0});
 
 		ImGui::SetWindowFontScale(4);
@@ -69,10 +69,8 @@ namespace client::edit {
 	void Edit::update(double dt) {
 		this->level->update_camera(dt);
 
-		if(sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-			if(this->current_tool) {
-				this->current_tool->draw(session->get_sim(), this->cursor_position);
-			}
+		if(this->current_tool && this->is_drawing) {
+			this->current_tool->draw(session->get_sim(), this->cursor_position);
 		}
 	}
 
@@ -109,6 +107,22 @@ namespace client::edit {
 			this->pop();
 		}
     }
+
+
+
+	void Edit::on_event(const core::MouseButtonPressed & event) {
+		if(event.button == sf::Mouse::Button::Left) {
+			this->is_drawing = true;
+		}
+	}
+
+
+
+	void Edit::on_event(const core::MouseButtonReleased & event) {
+		if(event.button == sf::Mouse::Button::Left) {
+			this->is_drawing = false; 
+		}
+	}
 
 
 

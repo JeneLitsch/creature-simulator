@@ -29,6 +29,7 @@ namespace client::core {
 		virtual void on_event(const KeyPressed &) {}
 		virtual void on_event(const MouseMoved &) {}
 		virtual void on_event(const MouseButtonPressed &) {}
+		virtual void on_event(const MouseButtonReleased &) {}
 		StateManager * state_manager = nullptr;
 	};
 }

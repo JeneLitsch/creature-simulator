@@ -1,5 +1,6 @@
 #include "Event.hpp"
 #include "imgui-SFML.h"
+#include "imgui.h"
 
 namespace client::core {
 	namespace {
@@ -33,6 +34,12 @@ namespace client::core {
 				.button = event.mouseButton.button,
 			};
 		}
+
+		Event event_mouse_button_released(const sf::Event & event) {
+			return MouseButtonReleased {
+				.button = event.mouseButton.button,
+			};
+		}
 	}
 
 
@@ -40,12 +47,15 @@ namespace client::core {
 		sf::Event event;
 		while(window.pollEvent(event)) {
             ImGui::SFML::ProcessEvent(event);
+			if(ImGui::GetIO().WantCaptureMouse) continue;
+			if(ImGui::GetIO().WantCaptureKeyboard) continue;
 			switch (event.type) {
 			case sf::Event::Closed: return event_closed(event);
 			case sf::Event::Resized: return event_window_resized(event);
 			case sf::Event::KeyPressed: return event_button_pressed(event);
 			case sf::Event::MouseMoved: return event_mouse_move(event, window);
 			case sf::Event::MouseButtonPressed: return event_mouse_button_pressed(event);
+			case sf::Event::MouseButtonReleased: return event_mouse_button_released(event);
 			default: break;
 			}
 		}

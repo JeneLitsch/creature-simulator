@@ -24,12 +24,16 @@ namespace client::core {
 		sf::Mouse::Button button;
 	};
 
+	struct MouseButtonReleased {
+		sf::Mouse::Button button;
+	};
+
 	using Event = std::variant<
 		Closed,
 		WindowResized,
         KeyPressed,
 		MouseMoved,
-		MouseButtonPressed
+		MouseButtonPressed, MouseButtonReleased
 	>;
 
 	std::optional<Event> fetch_event(sf::RenderWindow & window);
