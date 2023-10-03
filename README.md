@@ -9,23 +9,23 @@ S - Move camara DOWN
 D - Move camara RIGHT
 
 ## File Save
-CTRL+S - Save Menu aufrufen
-CTRL+o - Load Menu aufrufen
+CTRL+S - Open Save Menu
+CTRL+o - Open Load Menu
 
 ## Menu
 ESC - Return to Menu
 
-## Editor Modus
-SPACE - Editor Modus
+## Editor Mode
+SPACE - Editor Mode
 
 # Tools
 
 Eraser          - Erase Entities
 Barrier         - Build unpassable Walls
-Empty Creature  - Place an Empty Creature with Empty Neural Netz
+Empty Creature  - Place an Empty Creature with Empty Neural Network
 Food            - Place single Food cell
 Food Spawner    - Place Food spawner
-Inspector       - Allows selecting of Creature to Inspect its values
+Inspector       - Allows selection of a Creature to inspect its values
 Medusa          - Turns any Entity to Stone (Barrier)
 
 # Building
@@ -48,5 +48,6 @@ If pulling from github you will have to also specifiy --recursive to pull in the
 git clone git@github.com:JeneLitsch/creature-simulator.git --recursive
 ```
 
+## Linux
 Running `build.sh` or `make build` builds the project and puts the binary in `./build/bin/app`
 Running `run.sh` just executes the binary
