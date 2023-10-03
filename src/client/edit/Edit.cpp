@@ -1,5 +1,5 @@
 #include "Edit.hpp"
-#include "client/level/Level.hpp"
+#include "client/view/View.hpp"
 #include "client/session/Session.hpp"
 #include "imgui.h"
 #include "sim/create.hpp"
@@ -8,9 +8,9 @@
 #include "render_neural_network.hpp"
 
 namespace client::edit {
-	Edit::Edit(stx::reference<level::Level> level) 
-		: level{level}
-		, session{level->session} {
+	Edit::Edit(stx::reference<view::View> view) 
+		: view{view}
+		, session{view->session} {
 		
 		this->tools.push_back(Tool::eraser());
 		this->tools.push_back(Tool::barrier());
@@ -61,13 +61,13 @@ namespace client::edit {
 			this->inspected_id = 0;
 		}
 		
-		this->level->ui_config();
+		this->view->ui_config();
 	}
 
 
 
 	void Edit::update(double dt) {
-		this->level->update_camera(dt);
+		this->view->update_camera(dt);
 
 		if(this->current_tool && this->is_drawing) {
 			this->current_tool->draw(session->get_sim(), this->cursor_position);
@@ -77,10 +77,10 @@ namespace client::edit {
 
 	
 	void Edit::render(sf::RenderTarget & render_target) {
-		this->level->render(render_target);
+		this->view->render(render_target);
 
 		auto old_view = render_target.getView();
-		render_target.setView(level->get_camera());
+		render_target.setView(view->get_camera());
 		if(this->current_tool) {
 			this->current_tool->render(render_target, this->cursor_position);
 		}
@@ -96,7 +96,7 @@ namespace client::edit {
 
 
 	void Edit::on_event(const core::MouseMoved & event)  {
-		auto x = event.window->mapPixelToCoords(event.position.to<sf::Vector2i>(), this->level->get_camera());
+		auto x = event.window->mapPixelToCoords(event.position.to<sf::Vector2i>(), this->view->get_camera());
 		this->cursor_position = stx::position2i{stx::floor(stx::position2f::from(x))};
 	}
 

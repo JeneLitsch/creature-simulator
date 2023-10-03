@@ -10,17 +10,17 @@ namespace client::session {
 	class Session;
 }
 
-namespace client::level {
+namespace client::view {
 
-	class Level : public core::GameState {
+	class View : public core::GameState {
 	public:
-		Level(session::Session & session, sim::Simulation & simulation);
+		View(session::Session & session, sim::Simulation & simulation);
 		virtual void update(double dt) override;
 		virtual void ui(stx::vector2f window_size) final;
 		void ui_config();
 		void update_camera(double dt);
 		virtual void render(sf::RenderTarget & render_target) override;
-		virtual const char * name() override { return "Level"; }
+		virtual const char * name() override { return "View"; }
 		sf::View get_camera() const { return this->camera; }
 		stx::reference<session::Session> session;
 	protected:

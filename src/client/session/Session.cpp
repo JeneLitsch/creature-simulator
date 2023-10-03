@@ -1,5 +1,5 @@
 #include "Session.hpp"
-#include "client/level/Level.hpp"
+#include "client/view/View.hpp"
 #include "sim/export.hpp"
 #include "sim/import.hpp"
 #include <fstream>
@@ -20,7 +20,7 @@ namespace client::session {
 
 
 	void Session::update(double dt) {
-		this->push(std::make_unique<level::Level>(*this, *this->simulation));
+		this->push(std::make_unique<view::View>(*this, *this->simulation));
 	}
 	
 	

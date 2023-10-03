@@ -9,14 +9,14 @@ namespace client::session {
 	class Session;
 }
 
-namespace client::level {
-	class Level;
+namespace client::view {
+	class View;
 }
 
 namespace client::edit {
 	class Edit : public core::GameState {
 	public:
-		Edit(stx::reference<level::Level> level);
+		Edit(stx::reference<view::View> view);
 		virtual void ui(stx::vector2f window_size) final;
 		virtual void update(double dt) override;
 		virtual void render(sf::RenderTarget & render_target) override;
@@ -30,7 +30,7 @@ namespace client::edit {
 		virtual void on_event(const core::MouseButtonReleased &) override;
 		virtual void init() override;
 
-		stx::reference<level::Level> level;
+		stx::reference<view::View> view;
 		stx::reference<session::Session> session;
 		stx::position2i cursor_position;
 

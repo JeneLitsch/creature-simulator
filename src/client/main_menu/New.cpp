@@ -3,7 +3,7 @@
 #include "imgui.h"
 #include "client/session/Session.hpp"
 #include "ui.hpp"
-#include "client/level/configMenu.hpp"
+#include "client/view/configMenu.hpp"
 
 namespace client::main_menu {
 
@@ -29,7 +29,7 @@ namespace client::main_menu {
 		ui_obstacles(this->preset.obstacles, this->radio_index);
 
 		ImGui::SeparatorText("Initial Config");
-		level::ui_config(this->config);
+		view::ui_config(this->config);
 
 		ImGui::NewLine();
 		ImGui::SetWindowFontScale(2);

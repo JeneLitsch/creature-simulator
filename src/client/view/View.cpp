@@ -1,4 +1,4 @@
-#include "Level.hpp"
+#include "View.hpp"
 #include "client/session/Session.hpp"
 #include "imgui.h"
 #include "render.hpp"
@@ -9,9 +9,9 @@
 #include "client/file/SaveFile.hpp"
 #include "client/file/OpenFile.hpp"
 
-namespace client::level {
+namespace client::view {
 
-	Level::Level(session::Session & session, sim::Simulation & simulation)
+	View::View(session::Session & session, sim::Simulation & simulation)
 		: session{session}
 		, tick_timer{tick_speed} 
 		, simulation{simulation} {
@@ -21,7 +21,7 @@ namespace client::level {
 
 
 
-	void Level::ui(stx::vector2f window_size) {
+	void View::ui(stx::vector2f window_size) {
         if (showMenu){
 			this->ui_config();
         }
@@ -29,13 +29,13 @@ namespace client::level {
 
 
 
-	void Level::ui_config() {
-		level::Menu(tick_speed, simulation->config);
+	void View::ui_config() {
+		view::Menu(tick_speed, simulation->config);
 	}
 
 
 
-	void Level::update(double dt) {
+	void View::update(double dt) {
 		this->update_camera(dt);
 
 		if(this->tick_timer(dt)) {
@@ -45,7 +45,7 @@ namespace client::level {
 
 
 
-	void Level::update_camera(double dt) {
+	void View::update_camera(double dt) {
 		const float dt_f = static_cast<float>(dt);
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
 			this->camera_center.x -= dt_f * camera_speed * this->camera_zoom;
@@ -75,7 +75,7 @@ namespace client::level {
 	
 
 	
-	void Level::render(sf::RenderTarget & render_target) {
+	void View::render(sf::RenderTarget & render_target) {
 
 		auto old_view = render_target.getView();
 		camera.setCenter(this->camera_center.to<sf::Vector2f>());
@@ -94,7 +94,7 @@ namespace client::level {
 
 
 	
-    void Level::on_event(const core::KeyPressed& event) {
+    void View::on_event(const core::KeyPressed& event) {
         if (event.code == sf::Keyboard::Tab) {
             showMenu = !showMenu;
         }
@@ -123,7 +123,7 @@ namespace client::level {
 
 
 	
-	void Level::init() {
+	void View::init() {
 
 	}
 }
