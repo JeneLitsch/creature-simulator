@@ -52,7 +52,7 @@ namespace sim{
             for (int dy = -std::min<int>(config.radius, loc.y); dy <= std::min<int>(config.radius, (grid.size().y - loc.y) - 1); ++dy) {
                 int y = loc.y + dy;
                 assert(y >= 0 && y < grid.size().y);
-                uint64_t entity_id = grid[{static_cast<std::uint64_t>(x), static_cast<std::uint64_t>(y)}];
+                uint64_t entity_id = grid(static_cast<std::uint64_t>(x), static_cast<std::uint64_t>(y));
                 auto* other_entity = ecs.get_if(entity_id);
                 if(other_entity && stx::vector2i{x, y} != loc){
                     entities.push_back(other_entity);

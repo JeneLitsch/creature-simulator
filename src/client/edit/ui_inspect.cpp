@@ -44,14 +44,14 @@ namespace client::edit {
 
 
 		void comp_details(sim::Age & comp) {
-			ImGui::Text("Ticks: %lu", comp.age);
+			ImGui::Text("Ticks: %llu", comp.age);
 		}
 
 
 		
 		void comp_details(sim::Reproduction & comp) {
-			ImGui::Text("Max Cooldown: %lu", comp.max_cooldown);
-			ImGui::Text("Current Cooldown: %lu", comp.current_cooldown);
+			ImGui::Text("Max Cooldown: %llu", comp.max_cooldown);
+			ImGui::Text("Current Cooldown: %llu", comp.current_cooldown);
 			ImGui::Text("Wants to reproduce: %s", comp.wants_to_reproduce ? "Yes" : "No");
 		}
 
@@ -112,7 +112,7 @@ namespace client::edit {
 
 	void ui_inspect(sim::Ecs::Entity & entity, sf::RenderTexture & neural_network_graph) {
 		ImGui::Begin("Inspector");
-		ImGui::Text("Entity #%lu", entity.get_id());
+		ImGui::Text("Entity #%llu", entity.get_id());
 
 		ui_inspect_component<sim::Stomach>(entity);
 		ui_inspect_component<sim::Transform>(entity);

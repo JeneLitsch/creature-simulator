@@ -26,7 +26,7 @@ namespace sim {
 		
 		int sum = child.color.r + child.color.g + child.color.b;
 		while(sum < 350){
-			int index = rng() % 3;
+			std::uint64_t index = rng() % 3;
 			switch(index){
 				case 0:
 					child.color.r++;

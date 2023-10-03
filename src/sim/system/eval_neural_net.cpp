@@ -52,7 +52,7 @@ namespace sim {
 		}
 		input.push_back(movement->direction.x);
 		input.push_back(movement->direction.y);
-		input.push_back(sigmoid(movement->same_move));
+		input.push_back(sigmoid(static_cast<double>(movement->same_move)));
 
         NeuralNetwork* neural_network = entity.get_if<NeuralNetwork>();
 

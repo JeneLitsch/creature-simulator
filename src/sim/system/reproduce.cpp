@@ -47,8 +47,9 @@ namespace sim{
             Xoshiro::Xoshiro256PP & rng) {
 			
 			Ecs::Entity & child = create_creature(ecs, position, grid, config, initial_food_value);
-            child.add(neural_net.create_child(rng(), config.neural_net, age.age / config.max_age));
-			child.add(sprite.create_child(rng(), config.reproduction, age.age / config.max_age));
+			double age_proportion = static_cast<double>(age.age) / static_cast<double>(config.max_age);
+            child.add(neural_net.create_child(rng(), config.neural_net, age_proportion));
+			child.add(sprite.create_child(rng(), config.reproduction, age_proportion));
 		}
 	}
 
