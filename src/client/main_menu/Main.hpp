@@ -14,5 +14,7 @@ namespace client::main_menu {
 		virtual void init() override {}
 	private:
 		std::uint64_t sub_menu_count = 0;
+
+		void clear_sub_menus();
 	};
 }

@@ -3,6 +3,7 @@
 #include "imgui.h"
 #include "client/session/Session.hpp"
 #include "calc_margin.hpp"
+#include "client/file/OpenFile.hpp"
 
 namespace client::main_menu {
 	void Main::update(double dt) {
@@ -21,10 +22,16 @@ namespace client::main_menu {
 		ImGui::SetWindowSize(panel_size.to<ImVec2>(), 0);
 		ImGui::SetWindowFontScale(2);
 		if(ImGui::Button("New Simulation", {ImGui::GetContentRegionAvail().x, 0})) {
-			for(std::uint64_t i = 0; i < this->sub_menu_count; ++i) {
-				this->pop();
-			}
+			this->clear_sub_menus();
 			this->push(std::make_unique<New>(*this));
+		}
+		if(ImGui::Button("Load Simulation", {ImGui::GetContentRegionAvail().x, 0})) {
+			this->clear_sub_menus();
+			this->push(std::make_unique<file::OpenFile>("./", [this] (const std::filesystem::path & file) {
+				this->pop();
+				this->pop();
+				this->push(std::make_unique<session::Session>(file));
+			}));
 		}
 		if(ImGui::Button("Quit", {ImGui::GetContentRegionAvail().x, 0})) {
 			this->clear();
@@ -36,5 +43,12 @@ namespace client::main_menu {
 
 	void Main::render(sf::RenderTarget & render_target) {
 		
+	}
+
+
+	void Main::clear_sub_menus() {
+		for(std::uint64_t i = 0; i < this->sub_menu_count; ++i) {
+			this->pop();
+		}
 	}
 }
