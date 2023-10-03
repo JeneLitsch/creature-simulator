@@ -50,11 +50,11 @@ namespace client::edit {
 		this->current_tool = ui_tool(this->tools, this->current_tool);
 		
 		if(auto * entity = session->get_sim().ecs.get_if(this->inspected_id)) {
+			this->neural_network_graph.clear(sf::Color::Black);
 			if(auto * nn = entity->get_if<sim::NeuralNetwork>()) {
-				this->neural_network_graph.clear(sf::Color::Black);
 				render_neural_network(*nn,neural_network_graph, session->get_sim().config.neural_net);
-				neural_network_graph.display();
 			}
+			neural_network_graph.display();
 			ui_inspect(*entity, this->neural_network_graph);
 		}
 		else {
