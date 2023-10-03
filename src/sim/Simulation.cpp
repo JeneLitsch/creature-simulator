@@ -19,8 +19,8 @@ namespace sim {
 	constexpr std::uint64_t FIRST_CREATURE = 256;
 
 	Simulation::Simulation(stx::size2u32 size) 
-		: grid{size, EMPTY}
-		, ecs{FIRST_CREATURE} {
+		: ecs{FIRST_CREATURE} 
+		, grid{size, EMPTY} {
 	}
 
 
