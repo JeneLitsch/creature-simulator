@@ -3,6 +3,7 @@
 
 namespace client::main_menu {
 	class Main : public core::GameState {
+		friend class Sub;
 	public:
 		virtual void update(double dt) override;
 		virtual void ui(stx::vector2f window_size) override;
@@ -12,5 +13,6 @@ namespace client::main_menu {
 	protected:
 		virtual void init() override {}
 	private:
+		std::uint64_t sub_menu_count = 0;
 	};
 }

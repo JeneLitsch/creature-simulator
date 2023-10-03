@@ -6,7 +6,7 @@
 namespace client::main_menu {
 	Sub::Sub(stx::reference<Main> main)
 		: main{main} {
-
+		++main->sub_menu_count;
 	}
 
 
@@ -40,5 +40,10 @@ namespace client::main_menu {
 
 	void Sub::set_title(std::string str) {
 		this->title = str;
+	}
+
+
+	Sub::~Sub() {
+		--this->main->sub_menu_count;
 	}
 }

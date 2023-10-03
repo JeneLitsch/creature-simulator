@@ -12,6 +12,8 @@ namespace client::main_menu {
 		virtual void ui(stx::vector2f window_size) final;
 		virtual void render(sf::RenderTarget & render_target) override;
 
+		virtual ~Sub();
+
 	protected:
 		virtual void ui_content() = 0;
 		virtual void init() override {}
