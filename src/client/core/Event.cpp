@@ -53,10 +53,9 @@ namespace client::core {
 				if(event.type == sf::Event::KeyPressed) return event_button_pressed(event);
 				if(event.type == sf::Event::MouseMoved) return event_mouse_move(event, window);
 			}
-			if(ImGui::GetIO().WantCaptureMouse) {
+			if(!ImGui::GetIO().WantCaptureMouse) {
 				if(event.type == sf::Event::MouseButtonPressed)  return event_mouse_button_pressed(event);
 				if(event.type == sf::Event::MouseButtonReleased) return event_mouse_button_released(event);
-
 			}
 		}
 		return std::nullopt;
