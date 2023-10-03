@@ -63,7 +63,7 @@ All libraries are in the libs folder, so it should build right away without havi
 If pulling from github you will have to also specifiy --recursive to pull in the self-made libraries.
 
 ```
-git clone git@github.com:JeneLitsch/creature-simulator.git --recursive
+git clone https://github.com/JeneLitsch/creature-simulator.git --recursive
 ```
 
 ## Linux
