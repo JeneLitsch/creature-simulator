@@ -1,6 +1,7 @@
 #include "Sub.hpp"
 #include "Main.hpp"
 #include "imgui.h"
+#include "calc_margin.hpp"
 
 namespace client::main_menu {
 	Sub::Sub(stx::reference<Main> main)
@@ -18,8 +19,7 @@ namespace client::main_menu {
 	void Sub::ui(stx::vector2f window_size) {
 		this->main->ui(window_size);
 		
-		constexpr stx::vector2f margin {64,64};
-		
+		const stx::vector2f margin = calc_margin();
 		const stx::vector2f panel_position = window_size * stx::vector2f{0.25f, 0.f} + margin;
 		const stx::vector2f panel_size     = window_size * stx::vector2f{0.75f, 1.f} - 2.f * margin;
 

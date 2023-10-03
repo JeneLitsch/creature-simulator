@@ -2,6 +2,7 @@
 #include "New.hpp"
 #include "imgui.h"
 #include "client/session/Session.hpp"
+#include "calc_margin.hpp"
 
 namespace client::main_menu {
 	void Main::update(double dt) {
@@ -11,8 +12,7 @@ namespace client::main_menu {
 
 
 	void Main::ui(stx::vector2f window_size) {
-		constexpr stx::vector2f margin {64,64};
-		
+		const stx::vector2f margin = calc_margin();
 		const stx::vector2f panel_position = margin;
 		const stx::vector2f panel_size     = window_size * stx::vector2f{0.25f, 1.f} - 2.f * margin;
         
