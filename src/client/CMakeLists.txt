@@ -13,10 +13,6 @@ add_subdirectory(main_menu)
 add_subdirectory(test)
 
 target_link_libraries(client
-	pthread
-)
-
-target_link_libraries(client
 	sfml-graphics
 	sfml-audio
 	sfml-network

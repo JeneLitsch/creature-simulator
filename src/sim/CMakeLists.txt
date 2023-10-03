@@ -12,10 +12,6 @@ add_subdirectory(component)
 add_subdirectory(system)
 
 target_link_libraries(sim
-	"pthread"
-)
-
-target_link_libraries(sim
 	sfml-graphics
 	sfml-audio
 	sfml-network
