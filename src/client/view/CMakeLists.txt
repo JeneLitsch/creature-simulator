@@ -4,4 +4,5 @@ target_sources(client PRIVATE
 	configMenu.cpp
 	View.cpp
 	render.cpp
+	Return.cpp
 )

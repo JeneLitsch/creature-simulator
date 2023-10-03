@@ -8,6 +8,7 @@
 #include "client/file/File.hpp"
 #include "client/file/SaveFile.hpp"
 #include "client/file/OpenFile.hpp"
+#include "Return.hpp"
 
 namespace client::view {
 
@@ -97,6 +98,10 @@ namespace client::view {
     void View::on_event(const core::KeyPressed& event) {
         if (event.code == sf::Keyboard::Tab) {
             showMenu = !showMenu;
+        }
+
+		if (event.code == sf::Keyboard::Escape) {
+			this->push(std::make_unique<Return>(*this));
         }
 
 		if(event.code == sf::Keyboard::Space) {
