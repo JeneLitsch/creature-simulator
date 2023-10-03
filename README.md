@@ -1,16 +1,16 @@
 # Keybinds
 ## Movement
-Q - Zoom in
-E - Zoom out
+Q - Zoom in  
+E - Zoom out  
 
-W - Move camara UP
-A - Move camara LEFT
-S - Move camara DOWN
-D - Move camara RIGHT
+W - Move camara UP  
+A - Move camara LEFT  
+S - Move camara DOWN  
+D - Move camara RIGHT  
 
 ## File Save
-CTRL+S - Open Save Menu
-CTRL+o - Open Load Menu
+CTRL+S - Open Save Menu 
+CTRL+o - Open Load Menu 
 
 ## Menu
 ESC - Return to Menu
@@ -20,30 +20,30 @@ SPACE - Editor Mode
 
 # Tools
 
-Eraser          - Erase Entities
-Barrier         - Build unpassable Walls
-Empty Creature  - Place an Empty Creature with Empty Neural Network
-Food            - Place single Food cell
-Food Spawner    - Place Food spawner
-Inspector       - Allows selection of a Creature to inspect its values
-Medusa          - Turns any Entity to Stone (Barrier)
+Eraser          - Erase Entities  
+Barrier         - Build unpassable Walls  
+Empty Creature  - Place an Empty Creature with Empty Neural Network  
+Food            - Place single Food cell  
+Food Spawner    - Place Food spawner  
+Inspector       - Allows selection of a Creature to inspect its values  
+Medusa          - Turns any Entity to Stone (Barrier)  
 
 # Entities
 
 ## Creatures
-color: starts as white, variates over generations
+color: starts as white, variates over generations  
 incorporate a neural network to learn different behaviours
 
 ## Foodspawners
-color: red
+color: red  
 spawn food in their vicinity at set intervals
 
 ## Food
-color: green
+color: green  
 can be eaten by the creatures
 
 ## Barriers
-color: grey
+color: grey  
 an obstacle for the creatures with no other function
 
 # Building
