@@ -14,7 +14,7 @@ namespace client::edit {
 		std::optional<double> get_weight(sim::NeuralNetwork & neural_network, std::uint64_t i, std::uint64_t a, std::uint64_t b) {
 			if(i == 0) {
 				if(b >= neural_network.input_size) {
-					return neural_network.input_matrix[a][b];
+					return neural_network.input_matrix[a][b - neural_network.input_size];
 				}
 				else {
 					return std::nullopt;
@@ -75,7 +75,7 @@ namespace client::edit {
 			}
 		}
 
-		for(std::uint64_t i = 0; i + 1 < layer_sizes.size(); ++i) {
+		for(std::uint64_t i = 0; (i + 1) < layer_sizes.size(); ++i) {
 			for(std::uint64_t a = 0; a < layer_sizes[i+0]; ++a) {
 				for(std::uint64_t b = 0; b < layer_sizes[i+1]; ++b) {
 					const auto pos_a = calc_pos(i + 0, a);
